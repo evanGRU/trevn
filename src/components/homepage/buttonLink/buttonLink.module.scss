@@ -1,0 +1,28 @@
+.button {
+  border-radius: var(--radius-md);
+  padding: var(--space-04) var(--space-16);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+
+/* Variantes */
+.button--primary {
+  background-color: var(--color-button-white);
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-button-white);
+}
+
+.button--primary:hover {
+  text-decoration: underline;
+}
+
+.button--secondary {
+  background-color: var(--color-button-dark);
+  color: var(--color-text);
+  border: 1px solid var(--color-button-white);
+}
+
+.button--secondary:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,14 @@
+.navbarContainer {
+  background-color: var(--color-background);
+  padding: var(--space-12) var(--space-48);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .navbarButtonsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-08);
+  }
+}

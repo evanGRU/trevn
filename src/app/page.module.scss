@@ -1,0 +1,25 @@
+.heroContainer {
+  width: 100%;
+
+  .textSection {
+    height: 92vh;
+    background-color: rgba(255, 0, 0, 0.05);
+    width: 50%;
+    padding: var(--space-96) var(--space-48);
+
+    .texts {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-48);
+
+      h1 {
+        line-height: 50px;
+      }
+
+      p {
+        font-size: var(--text-2xl);
+        line-height: 20px;
+      }
+    }
+  }
+}
