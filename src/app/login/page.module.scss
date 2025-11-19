@@ -1,0 +1,14 @@
+.formsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+
+  .loginContainer,
+  .signupContainer,
+  .oauthContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

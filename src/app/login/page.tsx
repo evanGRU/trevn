@@ -1,32 +1,25 @@
-"use client";
+import LoginForm from "@/components/auth/LoginForm";
+import OauthButtons from "@/components/auth/OauthButtons";
+import SignupForm from "@/components/auth/SignUpForm";
+import styles from "./page.module.scss";
 
-import { createClient } from "@/utils/supabase/client";
-
-export default function LoginButtons() {
-    const supabase = createClient();
-
-    const handleOAuthLogin = async (provider: "google" | "discord") => {
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider,
-            options: {
-                redirectTo: `${window.location.origin}/auth/callback?next=/home`,
-            },
-        });
-
-        if (error) {
-            console.error("OAuth login error:", error.message);
-        }
-    };
-
+export default function LoginPage() {
     return (
-        <div>
-            <button onClick={() => handleOAuthLogin("google")}>
-                Se connnecter avec Google
-            </button>
+        <div className={styles.formsContainer}>
+            <div className={styles.loginContainer}>
+                <h3>Connexion</h3>
+                <LoginForm />
+            </div>
 
-            <button onClick={() => handleOAuthLogin("discord")}>
-                Se connecter avec Discord
-            </button>
+            <div className={styles.signupContainer}>
+                <h3>Créer un compte</h3>
+                <SignupForm />
+            </div>
+
+            <div className={styles.oauthContainer}>
+                <h3>Ou</h3>
+                <OauthButtons />
+            </div>
         </div>
     );
 }
