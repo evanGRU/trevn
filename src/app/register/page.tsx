@@ -1,6 +1,6 @@
 'use client'
 
-import LoginForm from "@/components/auth/LoginForm";
+import SignupForm from "@/components/auth/SignUpForm";
 import styles from "./page.module.scss";
 import ButtonLink from "@/components/homepage/buttonLink/buttonLink";
 
@@ -9,11 +9,12 @@ export default function LoginPage() {
 
         <div className={styles.formsContainer}>
             <ButtonLink href={"/"}>TREVN</ButtonLink>
-            <div className={styles.loginContainer}>
-                <h3>Connexion</h3>
-                <LoginForm />
+
+            <div className={styles.signupContainer}>
+                <h3>Créer un compte</h3>
+                <SignupForm />
             </div>
-            <p>Pas encore de compte. <a href="/register">Inscrivez-vous ici</a></p>
+            <p>Vous avez déjà un compte. <a href="/login">Connectez-vous ici</a></p>
         </div>
     );
 }

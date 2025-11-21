@@ -10,5 +10,11 @@ export default async function Home() {
         redirect('/login')
     }
 
-    return <HomeClient user={user} />
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("username, avatar_url")
+        .eq("id", user.id)
+        .single();
+
+    return <HomeClient profile={profile} />
 }

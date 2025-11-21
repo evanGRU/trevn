@@ -1,31 +1,20 @@
 "use client"
 
-import { createClient } from '@/utils/supabase/client'
-import { useRouter } from 'next/navigation'
-import type { User } from "@supabase/supabase-js";
-import Image from "next/image";
+import styles from "./page.module.scss";
+import NavbarApp from "@/components/homepage/navbarApp/navbarApp";
+type Profile = {
+    username: string;
+    avatar_url: string | null;
+};
 
-export default function HomeClient({ user }: { user: User }) {
-    const supabase = createClient()
-    const router = useRouter()
-
-    const logout = async () => {
-        await supabase.auth.signOut()
-        router.push('/login')
-    }
-
-    console.log(user);
-
+export default function HomeClient({ profile }: {profile: Profile | null}) {
     return (
-        <div>
-            <p>Bienvenue {user.email}!</p>
-            <Image
-                src={user.user_metadata.picture}
-                alt={"Photo de profil Google"}
-                width={100}
-                height={100}
-            />
-            <button onClick={logout}>Se déconnecter</button>
+        <div className={styles.homePage}>
+            <NavbarApp profile={profile}/>
+
+            <div>
+                <h1>Page des groupes</h1>
+            </div>
         </div>
     )
 }

@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import {useState} from "react";
 import { createClient } from "@/utils/supabase/client";
+import {useRouter} from "next/navigation";
 
 export default function LoginForm() {
     const supabase = createClient();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const router = useRouter();
+
+    const [loginForm, setLoginForm] = useState({
+        email: "",
+        password: ""
+    });
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -14,14 +19,19 @@ export default function LoginForm() {
         setErrorMessage("");
 
         const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
+            email: loginForm.email,
+            password: loginForm.password,
+        });
+
+        setLoginForm({
+            email: "",
+            password: ""
         });
 
         if (error) {
             setErrorMessage(error.message);
         } else {
-            window.location.href = "/home";
+            router.push("/home");
         }
     };
 
@@ -30,16 +40,26 @@ export default function LoginForm() {
             <input
                 type="email"
                 placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={loginForm.email}
+                onChange={(e) =>
+                    setLoginForm({
+                        ...loginForm,
+                        email: e.target.value,
+                    })
+                }
                 required
             />
 
             <input
                 type="password"
                 placeholder="Mot de passe"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={loginForm.password}
+                onChange={(e) =>
+                    setLoginForm({
+                        ...loginForm,
+                        password: e.target.value,
+                    })
+                }
                 required
             />
 
