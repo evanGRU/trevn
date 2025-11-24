@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import HomeClient from './HomeClient'
+import JoinGroupClient from './JoinGroupClient'
 
 export default async function Home() {
     const supabase = await createClient()
@@ -16,5 +16,5 @@ export default async function Home() {
         .eq("id", user.id)
         .single();
 
-    return <HomeClient profile={profile} user={user}/>
+    return <JoinGroupClient profile={profile} user={user}/>
 }
