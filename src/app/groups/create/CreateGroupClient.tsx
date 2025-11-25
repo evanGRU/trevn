@@ -61,7 +61,7 @@ export default function CreateGroupClient({ profile, user }: {profile: Profile |
             return;
         }
 
-        router.push('/app');
+        router.push('/home');
     };
 
     return (
