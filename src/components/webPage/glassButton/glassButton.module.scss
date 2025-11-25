@@ -1,0 +1,26 @@
+.glassBtn {
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: var(--text-xl);
+  width: fit-content;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 40px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.glassBtn:hover {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
