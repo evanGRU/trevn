@@ -1,6 +1,7 @@
 import styles from "./homeCard.module.scss";
 import Image from "next/image";
 import {ReactNode} from "react";
+import {capitalize} from "@/utils/globalFunctions";
 
 type HomeCardVariants = "default" | "background";
 
@@ -16,7 +17,7 @@ export default function HomeCard({children, variant = "default", cardPosition}: 
         <div className={`${styles.card} ${variant === "background" ? styles.cardBackground : ""} ${styles[cardPosition]}`}>
             <div className={styles.cardIcon}>
                 <Image
-                    src={`/webPage/cards/CardIcon${cardPosition.toUpperCase()}.svg`}
+                    src={`/webPage/cards/CardIcon${capitalize(cardPosition)}.svg`}
                     alt={"card icon"}
                     width={32}
                     height={32}
