@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function updateSession(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const token = request.cookies.get("sb-access-token")?.value;
 
