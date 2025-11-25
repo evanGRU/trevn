@@ -1,0 +1,44 @@
+.formsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3em;
+  width: 600px;
+  margin: 100px auto 0 auto;
+
+
+  .loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  button {
+    height: 36px;
+    padding: 0 16px;
+    border: solid 2px #000;
+    font-weight: 700;
+    background-color: #fff;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #000;
+      color: #fff;
+    }
+  }
+
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+
+    input {
+      width: 400px;
+      height: 48px;
+      padding: 0 12px;
+    }
+  }
+}

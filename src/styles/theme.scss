@@ -3,33 +3,18 @@
 
 /* 1. Fonts */
 :root {
-  --font-body: var(--font-inter);
-  --font-heading: var(--font-poppins);
+  --font-body: var(--font-poppins);
+  --font-heading: var(--font-quinn);
 }
 
 /* 2. Colors */
 :root {
-  --color-background: #0D0D0D;
-  --color-surface: #1A1A1A;
-  --color-border: #333333;
+  --color-background: #141414;
+  --color-surface: #181818;
 
   --color-text: #f5f5f5;
   --color-text-dark: #070707;
   --color-text-secondary: #B3B3B3;
-  --color-text-muted: #666666;
-
-  --color-primary: #FF4FE0;
-  --color-secondary: #007BFF;
-
-  --color-button-white: #FFFFFF;
-  --color-button-dark: transparent;
-
-  --color-vote-good: #4ADE80;
-  --color-vote-mid: #FACC15;
-  --color-vote-bad: #FF3B30;
-
-  --color-success: #4ADE80;
-  --color-error: #FF3B30;
 }
 
 /* 3. Spacing scale */
@@ -40,6 +25,7 @@
   --space-16: 1rem;    /* 16px */
   --space-24: 1.5rem;  /* 24px */
   --space-32: 2rem;    /* 32px */
+  --space-40: 2.5rem;  /* 40px */
   --space-48: 3rem;    /* 48px */
   --space-64: 4rem;    /* 64px */
   --space-96: 6rem;    /* 96px */
@@ -58,6 +44,8 @@
   --text-4xl: 2.25rem;  /* 36px */
   --text-5xl: 3rem;     /* 48px */
   --text-6xl: 4rem;     /* 64px */
+  --text-8xl: 5.5rem;     /* 88px */
+  --text-12xl: 8rem;     /* 128px */
 }
 
 /* 5. Radius / Shadows */
@@ -66,12 +54,4 @@
   --radius-md: 0.5rem;  /* 08px */
   --radius-lg: 1rem;    /* 16px */
   --radius-full: 9999px;
-
-  --shadow-main: 0 0 10px 0 rgba(255,79,224,1);
-  --shadow-secondary: 0 0 10px 0 rgba(0,123,255,1);
-  --shadow-dark: 10px 10px 0 0 rgba(44,44,44,1);
-
-  --shadow-vote-good: 0 0 5px 0 rgba(74,222,128,1);
-  --shadow-vote-mid: 0 0 5px 0 rgba(250,204,21,1);
-  --shadow-vote-bad: 0 0 5px 0 rgba(255,59,48,1);
 }
