@@ -53,14 +53,17 @@ export default function HomePage() {
         </section>
 
         <section className={styles.partnerSection}>
-            <h3>Trouve tes jeux préférés grâce à la bibliothèque
-                <Image
-                    src={'/webPage/partnerLogo/steamLogo.png'}
-                    alt={"Steam logo"}
-                    width={180}
-                    height={10}
-                />
-                , intégrée à notre plateforme.
+            <h3>
+                Trouve tes jeux préférés grâce à la bibliothèque{" "}
+                <span className={styles.steamInline}>
+                    <Image
+                        src="/webPage/steamLogo.png"
+                        alt="Steam logo"
+                        width={180}
+                        height={50}
+                    />
+                </span>{" "}
+                intégrée à notre plateforme.
             </h3>
         </section>
 
