@@ -33,7 +33,7 @@ export default function GroupClient({ profile, group }: {profile: Profile | null
                     <h3>Infos du groupe</h3>
                     <p>Nom: {group.name}</p>
                     <p>Description: {group.description}</p>
-                    <p>Créateur: {group.description}</p>
+                    <p>Créateur: {group.created_by}</p>
                     <p>Code d&apos;invitation: {group.invite_code}</p>
                 </div>
 
