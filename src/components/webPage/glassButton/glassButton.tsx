@@ -17,7 +17,7 @@ export default function GlassButton({children, type, linkHref = "", iconPath = "
     return (
         <>
             {type === "link" ? (
-                <Link href={linkHref} className={`${styles.glassBtn} ${iconPath ? styles.withIcon : ""}`}>
+                <Link href={linkHref} className={styles.glassBtn}>
                     {iconPath && (
                         <Image
                             src={iconPath}

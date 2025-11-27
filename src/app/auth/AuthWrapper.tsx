@@ -10,6 +10,7 @@ import {TickIcon} from "@/utils/svg";
 import {createClient} from "@/utils/supabase/client";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
+import {useAuthToast} from "@/utils/useAuthToast";
 
 type Type = "login" | "signup";
 
@@ -35,7 +36,8 @@ export default function AuthForm({ type }: {type: Type}) {
         email: "",
         password: ""
     });
-    const [errorMessage, setErrorMessage] = useState("");
+
+    const {signupToast, errorToast} = useAuthToast();
 
     const checkEmailExistence = async (email: string) => {
         try {
@@ -62,8 +64,6 @@ export default function AuthForm({ type }: {type: Type}) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setErrorMessage("");
-
         try {
             if (isLogin) {
                 const { error } = await supabase.auth.signInWithPassword({
@@ -74,7 +74,7 @@ export default function AuthForm({ type }: {type: Type}) {
                 resetForm(["email", "password"]);
 
                 if (error) {
-                    setErrorMessage(error.message);
+                    errorToast(error.message);
                 } else {
                     router.push("/groups");
                 }
@@ -82,11 +82,9 @@ export default function AuthForm({ type }: {type: Type}) {
                 const emailExists = await checkEmailExistence(formValues.email);
 
                 if (emailExists) {
-                    setErrorMessage(
-                        "Impossible de créer un compte avec cet email. " +
+                    errorToast("Impossible de créer un compte avec cet email. " +
                         "Essayez de réinitialiser votre mot de passe si " +
-                        "vous possédez déjà un compte."
-                    );
+                        "vous possédez déjà un compte.")
                     return;
                 }
 
@@ -100,14 +98,15 @@ export default function AuthForm({ type }: {type: Type}) {
                 });
 
                 if (error) {
-                    setErrorMessage(error.message);
+                    errorToast(error.message);
                 } else {
                     router.push("/login");
+                    signupToast()
                 }
             }
         } catch (err) {
             console.error(err);
-            setErrorMessage("Une erreur est survenue. Veuillez réessayer plus tard.");
+            errorToast("Une erreur est survenue. Veuillez réessayer plus tard.");
         }
     };
 
