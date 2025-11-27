@@ -77,8 +77,8 @@ export default function HomePage() {
                 />
             </div>
             <div className={styles.contentContainer}>
-                <h2>Commence <br/>ton aventure</h2>
-                <GlassButton linkHref={"/login"} iconPath={""}>
+                <h2>Commence <br/>ton aventure <br/>maintenant</h2>
+                <GlassButton type={"link"} linkHref={"/login"} iconPath={""}>
                     Créer ton premier groupe
                 </GlassButton>
             </div>
@@ -89,7 +89,7 @@ export default function HomePage() {
                 <div className={styles.glassContainer}>
                     <h2>Rejoins <br/> la communauté</h2>
                     <p>Participe à la béta, donne ton avis et aide-nous à créer la meilleure <br/> plateforme pour les soirées gaming entre potes.</p>
-                    <GlassButton linkHref={"#"} iconPath={"/webPage/discordIcon.svg"}>
+                    <GlassButton type={"link"} linkHref={"#"} iconPath={"/webPage/discordIcon.svg"}>
                         Rejoindre la bêta
                     </GlassButton>
                 </div>

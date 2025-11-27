@@ -3,27 +3,36 @@ import Image from "next/image";
 import {ReactNode} from "react";
 import Link from "next/link";
 
+type ButtonTypeProps = "link" | "submit"
+
 type HomeCardProps = {
     children: ReactNode,
-    linkHref: string,
+    type: ButtonTypeProps,
+    linkHref: string | "",
     iconPath: string | null
 }
 
-export default function GlassButton({children, linkHref, iconPath = ""}: HomeCardProps) {
+export default function GlassButton({children, type, linkHref = "", iconPath = ""}: HomeCardProps) {
 
     return (
         <>
-            <Link href={linkHref} className={styles.glassBtn}>
-                {iconPath && (
-                    <Image
-                        src={iconPath}
-                        alt={"Button icon"}
-                        width={30}
-                        height={30}
-                    />
-                )}
-                {children}
-            </Link>
+            {type === "link" ? (
+                <Link href={linkHref} className={`${styles.glassBtn} ${iconPath ? styles.withIcon : ""}`}>
+                    {iconPath && (
+                        <Image
+                            src={iconPath}
+                            alt={"Button icon"}
+                            width={30}
+                            height={30}
+                        />
+                    )}
+                    {children}
+                </Link>
+            ) : (
+                <button type={"submit"} className={styles.glassBtn}>
+                    {children}
+                </button>
+            )}
         </>
     )
 }

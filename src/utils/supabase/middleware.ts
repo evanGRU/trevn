@@ -7,7 +7,7 @@ export function updateSession(request: NextRequest) {
     const isPublicRoute =
         pathname === "/" ||
         pathname.startsWith("/login") ||
-        pathname.startsWith("/register") ||
+        pathname.startsWith("/signup") ||
         pathname.startsWith("/_next") ||
         pathname.startsWith("/favicon") ||
         pathname.match(/\.(png|jpg|jpeg|gif|svg|webp)$/);

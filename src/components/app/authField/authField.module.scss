@@ -1,0 +1,62 @@
+.authField {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: var(--text-xs);
+    color: #D7D7D7;
+
+    span {
+      color: #3A94C7;
+    }
+  }
+
+  .fieldContainer {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    input {
+      width: 425px;
+      height: 54px;
+      padding: var(--space-08) var(--space-24);
+      font-size: 16px;
+      color: #FFFFFF;
+      background-color: transparent;
+      border-radius: var(--radius-md);
+      border: solid 1px #D7D7D7;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+      &:focus {
+        border: solid 1px #3A94C7;
+        outline: none;
+      }
+
+      &:-webkit-autofill {
+        -webkit-text-fill-color: #FFFFFF !important;
+        -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.1) inset !important;
+        transition: background-color 5000s ease-in-out 0s !important;
+      }
+    }
+
+    .fieldIcon {
+      height: 100%;
+      aspect-ratio: 1/1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: var(--space-16);
+
+      svg {
+        &:hover {
+          cursor: pointer;
+          color: #3A94C7;
+        }
+      }
+    }
+  }
+}
+
+
