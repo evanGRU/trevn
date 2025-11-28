@@ -22,6 +22,13 @@ interface FormValues {
     password: string;
 }
 
+type ErrorCode =
+    | "missingField"
+    | "invalidFormat"
+    | "emailDoesNotExist"
+    | "weakPassword"
+    | "";
+
 export default function AuthForm({ type }: {type: Type}) {
     const supabase = createClient();
     const router = useRouter();
@@ -32,25 +39,25 @@ export default function AuthForm({ type }: {type: Type}) {
         email: "",
         password: ""
     });
-    const [errorCode, setErrorCode] = useState<{ [key: string]: string }>({});
+    const [errorCode, setErrorCode] = useState<{ [key: string]: ErrorCode }>({});
     const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
 
     const validateForm = () => {
-        const errors: { [key: string]: string } = {};
+        const errors: { [key: string]: ErrorCode } = {};
         if (!formValues.email) {
-            errors.email = "fieldMissing"
+            errors.email = "missingField"
         } else if (!isEmail(formValues.email)) {
             errors.email = "invalidFormat"
         }
 
         if (!formValues.password) {
-            errors.password = "fieldMissing"
+            errors.password = "missingField"
         } else if (!isLogin && formValues.password.length < 6) {
             errors.password = "weakPassword"
         }
 
         if (!isLogin && !formValues.username) {
-            errors.username = "fieldMissing"
+            errors.username = "missingField"
         }
 
         setErrorCode(errors);
@@ -70,25 +77,26 @@ export default function AuthForm({ type }: {type: Type}) {
                 });
 
                 if (error) {
-                    console.log(error);
-                    errorToast("Ton identifiant ou ton mot de passe est incorrecte.");
+                    switch (error.code) {
+                        case "invalid_credentials":
+                            errorToast("Ton identifiant ou ton mot de passe est incorrecte.");
+                            return;
+                        default:
+                            errorToast(error.message);
+                            return;
+                    }
                 } else {
                     router.push("/groups");
                 }
             } else {
-                const emailExists = await doesEmailExist(formValues.email);
-                if (emailExists) {
-                    errorToast(
-                        "Impossible de créer un compte avec cet email. Essayez de réinitialiser votre mot de passe si vous possédez déjà un compte."
-                    );
+                if ((formValues.password).length < 6) {
+                    setErrorCode({password: "weakPassword"});
                     return;
                 }
 
-                if ((formValues.password).length < 6) {
-                    setErrorCode({
-                        ...errorCode,
-                        password: "weakPassword"
-                    });
+                const emailExists = await doesEmailExist(formValues.email);
+                if (emailExists) {
+                    errorToast("Impossible de créer un compte avec cet email. Essayez de réinitialiser votre mot de passe si vous possédez déjà un compte.");
                     return;
                 }
 
@@ -102,7 +110,14 @@ export default function AuthForm({ type }: {type: Type}) {
                 });
 
                 if (error) {
-                    errorToast(error.message);
+                    switch (error.code) {
+                        case "email_address_invalid":
+                            errorToast("L'adresse email " + formValues.email + " est invalide.");
+                            return;
+                        default:
+                            errorToast(error.message);
+                            return;
+                    }
                 } else {
                     router.push("/login");
                     signupToast()
@@ -128,8 +143,6 @@ export default function AuthForm({ type }: {type: Type}) {
             setErrorCode({ email: "emailDoesNotExist" });
             return;
         }
-
-
 
         const { error } = await supabase.auth.resetPasswordForEmail(formValues.email, {
             redirectTo: `${window.location.origin}/reset-password`,
@@ -196,20 +209,20 @@ export default function AuthForm({ type }: {type: Type}) {
                                 <AuthField
                                     fieldType="username"
                                     formValues={formValues}
-                                    setFormValues={(v) => handleChange("username", v.username)}
+                                    handleChange={(e) => handleChange("username", e.target.value)}
                                     errorCode={errorCode.username}
                                 />
                             )}
                             <AuthField
                                 fieldType="email"
                                 formValues={formValues}
-                                setFormValues={(v) => handleChange("email", v.email)}
+                                handleChange={(e) => handleChange("email", e.target.value)}
                                 errorCode={errorCode.email}
                             />
                             <AuthField
                                 fieldType="password"
                                 formValues={formValues}
-                                setFormValues={(v) => handleChange("password", v.password)}
+                                handleChange={(e) => handleChange("password", e.target.value)}
                                 errorCode={errorCode.password}
                             />
                             {isLogin && (

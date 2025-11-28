@@ -2,7 +2,28 @@ import styles from "./authField.module.scss";
 import {HiddenEyeIcon, VisibleEyeIcon} from "@/utils/svg";
 import {useState} from "react";
 
-const fieldPrompts = {
+type ErrorCode =
+    | "missingField"
+    | "invalidFormat"
+    | "emailDoesNotExist"
+    | "weakPassword"
+    | "";
+
+type ErrorMessages = {
+    missingField?: string;
+    invalidFormat?: string;
+    emailDoesNotExist?: string;
+    weakPassword?: string;
+};
+
+const fieldPrompts: Record<
+    "username" | "email" | "password",
+    {
+        label: string;
+        placeholder: string;
+        errors: ErrorMessages;
+    }
+> = {
     username: {
         label: "Nom d'utilisateur",
         placeholder: "Entre ton nom d'utilisateur",
@@ -32,11 +53,11 @@ const fieldPrompts = {
 interface AuthFieldProps {
     fieldType: "username" | "email" | "password";
     formValues: { username: string; email: string; password: string };
-    setFormValues: React.Dispatch<React.SetStateAction<{ username: string; email: string; password: string }>>;
-    errorCode?: string;
+    handleChange: React.ChangeEventHandler<HTMLInputElement>;
+    errorCode?: ErrorCode;
 }
 
-export default function AuthField({fieldType, formValues, setFormValues, errorCode}: AuthFieldProps) {
+export default function AuthField({fieldType, formValues, handleChange, errorCode}: AuthFieldProps) {
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
     return (
@@ -57,12 +78,7 @@ export default function AuthField({fieldType, formValues, setFormValues, errorCo
                     ) : fieldType === "email" ? (
                         "username webauthn"
                     ) : "off"}
-                    onChange={(e) =>
-                        setFormValues({
-                            ...formValues,
-                            [fieldType]: e.target.value,
-                        })
-                    }
+                    onChange={handleChange}
                     required={true}
                     className={`${errorCode ? styles.requiredError : ""}`}
                 />

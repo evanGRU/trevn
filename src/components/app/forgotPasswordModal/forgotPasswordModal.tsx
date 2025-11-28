@@ -10,8 +10,7 @@ export default function ForgotPasswordModal({setModal, email}: {setModal: React.
                     <h3>Instructions envoyées</h3>
                     <p>
                         Nous avons envoyé des instructions pour réinitialiser ton mot de passe à l&apos;adresse email <span>{email}</span>.
-                        Pense à vérifier ta boîte de réception ainsi que tes courriers indésirables. Si tu ne reçois rien tu as probablement
-                        renseigné une adresse email invalide.
+                        Pense à vérifier ta boîte de réception ainsi que tes courriers indésirables.
                     </p>
                 </div>
                 <div className={styles.buttonContainer}>
