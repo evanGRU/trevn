@@ -10,6 +10,9 @@ import {TickIcon} from "@/utils/svg";
 import {createClient} from "@/utils/supabase/client";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
+import {useAuthToast} from "@/utils/useAuthToast";
+import ForgotPasswordModal from "@/components/app/forgotPasswordModal/forgotPasswordModal";
+import {doesEmailExist, isEmail} from "@/utils/globalFunctions";
 
 type Type = "login" | "signup";
 
@@ -19,50 +22,52 @@ interface FormValues {
     password: string;
 }
 
+type ErrorCode =
+    | "missingField"
+    | "invalidFormat"
+    | "emailDoesNotExist"
+    | "weakPassword"
+    | "";
+
 export default function AuthForm({ type }: {type: Type}) {
     const supabase = createClient();
     const router = useRouter();
     const isLogin = type === "login";
-
-    const formVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
-        exit: { opacity: 0, y: -20 }
-    };
-
+    const {signupToast, errorToast} = useAuthToast();
     const [formValues, setFormValues] = useState<FormValues>({
         username: "",
         email: "",
         password: ""
     });
-    const [errorMessage, setErrorMessage] = useState("");
+    const [errorCode, setErrorCode] = useState<{ [key: string]: ErrorCode }>({});
+    const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
 
-    const checkEmailExistence = async (email: string) => {
-        try {
-            const res = await fetch("/api/checkUser", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email }),
-            });
-            const data = await res.json();
-            return data.exists;
-        } catch (err) {
-            console.error(err);
-            return false;
+    const validateForm = () => {
+        const errors: { [key: string]: ErrorCode } = {};
+        if (!formValues.email) {
+            errors.email = "missingField"
+        } else if (!isEmail(formValues.email)) {
+            errors.email = "invalidFormat"
         }
-    };
 
-    const resetForm = (fields: (keyof FormValues)[]) => {
-        setFormValues((prev) => {
-            const updated = { ...prev };
-            fields.forEach((field) => (updated[field] = ""));
-            return updated;
-        });
+        if (!formValues.password) {
+            errors.password = "missingField"
+        } else if (!isLogin && formValues.password.length < 6) {
+            errors.password = "weakPassword"
+        }
+
+        if (!isLogin && !formValues.username) {
+            errors.username = "missingField"
+        }
+
+        setErrorCode(errors);
+
+        return Object.keys(errors).length === 0;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setErrorMessage("");
+        if (!validateForm()) return;
 
         try {
             if (isLogin) {
@@ -71,22 +76,27 @@ export default function AuthForm({ type }: {type: Type}) {
                     password: formValues.password,
                 });
 
-                resetForm(["email", "password"]);
-
                 if (error) {
-                    setErrorMessage(error.message);
+                    switch (error.code) {
+                        case "invalid_credentials":
+                            errorToast("Ton identifiant ou ton mot de passe est incorrecte.");
+                            return;
+                        default:
+                            errorToast(error.message);
+                            return;
+                    }
                 } else {
                     router.push("/groups");
                 }
             } else {
-                const emailExists = await checkEmailExistence(formValues.email);
+                if ((formValues.password).length < 6) {
+                    setErrorCode({password: "weakPassword"});
+                    return;
+                }
 
+                const emailExists = await doesEmailExist(formValues.email);
                 if (emailExists) {
-                    setErrorMessage(
-                        "Impossible de créer un compte avec cet email. " +
-                        "Essayez de réinitialiser votre mot de passe si " +
-                        "vous possédez déjà un compte."
-                    );
+                    errorToast("Impossible de créer un compte avec cet email. Essayez de réinitialiser votre mot de passe si vous possédez déjà un compte.");
                     return;
                 }
 
@@ -100,14 +110,67 @@ export default function AuthForm({ type }: {type: Type}) {
                 });
 
                 if (error) {
-                    setErrorMessage(error.message);
+                    switch (error.code) {
+                        case "email_address_invalid":
+                            errorToast("L'adresse email " + formValues.email + " est invalide.");
+                            return;
+                        default:
+                            errorToast(error.message);
+                            return;
+                    }
                 } else {
                     router.push("/login");
+                    signupToast()
                 }
             }
         } catch (err) {
             console.error(err);
-            setErrorMessage("Une erreur est survenue. Veuillez réessayer plus tard.");
+            errorToast("Une erreur est survenue. Veuillez réessayer plus tard.");
+        }
+    };
+
+    const handleResetPassword = async () => {
+        if (!formValues.email) {
+            setErrorCode({ email: "missingField" });
+            return;
+        } else if (!isEmail(formValues.email)) {
+            setErrorCode({ email: "invalidFormat" });
+            return;
+        }
+
+        const emailExists = await doesEmailExist(formValues.email);
+        if (!emailExists) {
+            setErrorCode({ email: "emailDoesNotExist" });
+            return;
+        }
+
+        const { error } = await supabase.auth.resetPasswordForEmail(formValues.email, {
+            redirectTo: `${window.location.origin}/reset-password`,
+        });
+
+        if (error) {
+            switch (error.code) {
+                case "validation_failed":
+                    errorToast("Impossible de valider l'adresse email, vérifiez son format.");
+                    return;
+                default:
+                    errorToast("Une erreur s'est produite, veuillez réessayer plus tard.");
+                    return;
+            }
+        }
+        setIsForgotPasswordModalOpen(true);
+    };
+
+    const handleChange = (field: keyof FormValues, value: string) => {
+        setFormValues((prev) => ({
+            ...prev,
+            [field]: value
+        }));
+
+        if (!isLogin && value === "") {
+            setErrorCode((prev) => ({ ...prev, [field]: "missingField" }))
+        } else {
+            setErrorCode((prev) => ({ ...prev, [field]: "" }))
         }
     };
 
@@ -116,10 +179,9 @@ export default function AuthForm({ type }: {type: Type}) {
             <AnimatePresence mode="wait">
                 <motion.div
                     key={type}
-                    variants={formVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
                 >
                     <div className={styles.formContainer}>
@@ -143,9 +205,26 @@ export default function AuthForm({ type }: {type: Type}) {
                         </div>
 
                         <form onSubmit={handleSubmit}>
-                            {!isLogin && <AuthField fieldType={"username"} formValues={formValues} setFormValues={setFormValues}/>}
-                            <AuthField fieldType={"email"} formValues={formValues} setFormValues={setFormValues}/>
-                            <AuthField fieldType={"password"} formValues={formValues} setFormValues={setFormValues}/>
+                            {!isLogin && (
+                                <AuthField
+                                    fieldType="username"
+                                    formValues={formValues}
+                                    handleChange={(e) => handleChange("username", e.target.value)}
+                                    errorCode={errorCode.username}
+                                />
+                            )}
+                            <AuthField
+                                fieldType="email"
+                                formValues={formValues}
+                                handleChange={(e) => handleChange("email", e.target.value)}
+                                errorCode={errorCode.email}
+                            />
+                            <AuthField
+                                fieldType="password"
+                                formValues={formValues}
+                                handleChange={(e) => handleChange("password", e.target.value)}
+                                errorCode={errorCode.password}
+                            />
                             {isLogin && (
                                 <div className={styles.loginUtils}>
                                     <label>
@@ -155,11 +234,11 @@ export default function AuthForm({ type }: {type: Type}) {
                                         </span>
                                         Se souvenir de moi
                                     </label>
-                                    <p>Mot de passe oublié</p>
+                                    <button type={"button"} onClick={handleResetPassword} className={styles.forgotButton}>Mot de passe oublié</button>
                                 </div>
                             )}
 
-                            <GlassButton type={"submit"} linkHref={""} iconPath={""}>
+                            <GlassButton type={"submit"}>
                                 {isLogin ? "Se connecter" : "S'inscrire"}
                             </GlassButton>
                         </form>
@@ -177,6 +256,8 @@ export default function AuthForm({ type }: {type: Type}) {
                     </div>
                 </motion.div>
             </AnimatePresence>
+
+            {isForgotPasswordModalOpen && <ForgotPasswordModal setModal={setIsForgotPasswordModalOpen} email={formValues.email}/>}
         </div>
     );
 }

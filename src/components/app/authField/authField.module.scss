@@ -59,4 +59,13 @@
   }
 }
 
+.requiredError {
+  border: solid 1px #E94B42 !important;
+}
+
+.errorMessage {
+  color: #E94B42;
+  font-size: var(--text-xs);
+}
+
 

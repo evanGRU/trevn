@@ -110,6 +110,17 @@
           }
         }
       }
+
+      .forgotButton {
+        background-color: transparent;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
 
     button[type=submit] {
