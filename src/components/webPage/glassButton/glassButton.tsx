@@ -3,16 +3,17 @@ import Image from "next/image";
 import {ReactNode} from "react";
 import Link from "next/link";
 
-type ButtonTypeProps = "link" | "submit"
+type ButtonTypeProps = "link" | "submit" | "button"
 
 type HomeCardProps = {
     children: ReactNode,
     type: ButtonTypeProps,
-    linkHref: string | "",
-    iconPath: string | null
+    linkHref?: string | "",
+    iconPath?: string | null,
+    handleClick?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function GlassButton({children, type, linkHref = "", iconPath = ""}: HomeCardProps) {
+export default function GlassButton({children, type, linkHref = "", iconPath = "", handleClick}: HomeCardProps) {
 
     return (
         <>
@@ -28,8 +29,12 @@ export default function GlassButton({children, type, linkHref = "", iconPath = "
                     )}
                     {children}
                 </Link>
-            ) : (
+            ) : type === "submit" ? (
                 <button type={"submit"} className={styles.glassBtn}>
+                    {children}
+                </button>
+            ) : (
+                <button onClick={() => handleClick && handleClick(false)} type={"button"} className={`${styles.glassBtn} ${styles.button}`}>
                     {children}
                 </button>
             )}

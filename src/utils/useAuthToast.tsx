@@ -13,8 +13,7 @@ export function useAuthToast() {
     };
 
     const errorToast = (errorMessage: string) => {
-        console.error(errorMessage);
-        toast.custom(<CustomToast title="Une erreur s'est produite" type={"error"} />);
+        toast.custom(<CustomToast title={errorMessage} type={"error"} />);
     };
 
     return {

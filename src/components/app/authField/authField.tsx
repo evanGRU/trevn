@@ -6,14 +6,26 @@ const fieldPrompts = {
     username: {
         label: "Nom d'utilisateur",
         placeholder: "Entre ton nom d'utilisateur",
+        errors: {
+            missingField: "Nom d'utilisateur requis.",
+        }
     },
     email: {
         label: "Email",
         placeholder: "Entre ton email",
+        errors: {
+            missingField: "Email requis.",
+            invalidFormat: "Format d'email invalide.",
+            emailDoesNotExist: "Adresse e-mail inexistante."
+        }
     },
     password: {
         label: "Mot de passe",
         placeholder: "Entre ton mot de passe",
+        errors: {
+            missingField: "Mot de passe requis.",
+            weakPassword: "Le mot de passe doit contenir au moins 6 caractères.",
+        }
     },
 };
 
@@ -21,9 +33,10 @@ interface AuthFieldProps {
     fieldType: "username" | "email" | "password";
     formValues: { username: string; email: string; password: string };
     setFormValues: React.Dispatch<React.SetStateAction<{ username: string; email: string; password: string }>>;
+    errorCode?: string;
 }
 
-export default function AuthField({fieldType, formValues, setFormValues}: AuthFieldProps) {
+export default function AuthField({fieldType, formValues, setFormValues, errorCode}: AuthFieldProps) {
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
     return (
@@ -51,6 +64,7 @@ export default function AuthField({fieldType, formValues, setFormValues}: AuthFi
                         })
                     }
                     required={true}
+                    className={`${errorCode ? styles.requiredError : ""}`}
                 />
                 {fieldType === "password" && (
                     <div className={styles.fieldIcon} onClick={() => setIsPasswordHidden(!isPasswordHidden)}>
@@ -58,6 +72,9 @@ export default function AuthField({fieldType, formValues, setFormValues}: AuthFi
                     </div>
                 )}
             </div>
+            {errorCode && (
+                <p className={styles.errorMessage}>{fieldPrompts[fieldType].errors[errorCode]}</p>
+            )}
         </div>
     )
 }
