@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "../styles/globals.scss";
 import "../styles/theme.scss";
 import localFont from "next/font/local";
+import { Toaster } from 'react-hot-toast';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function RootLayout({
     <html lang="fr" className={`${poppins.variable} ${quinn.variable}`}>
       <body>
         {children}
+        <Toaster position="top-center" />
       </body>
     </html>
   );

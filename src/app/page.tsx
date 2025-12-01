@@ -78,7 +78,7 @@ export default function HomePage() {
             </div>
             <div className={styles.contentContainer}>
                 <h2>Commence <br/>ton aventure <br/>maintenant</h2>
-                <GlassButton type={"link"} linkHref={"/login"} iconPath={""}>
+                <GlassButton type={"link"} linkHref={"/login"}>
                     Créer ton premier groupe
                 </GlassButton>
             </div>

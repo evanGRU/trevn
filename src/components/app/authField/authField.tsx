@@ -2,28 +2,62 @@ import styles from "./authField.module.scss";
 import {HiddenEyeIcon, VisibleEyeIcon} from "@/utils/svg";
 import {useState} from "react";
 
-const fieldPrompts = {
+type ErrorCode =
+    | "missingField"
+    | "invalidFormat"
+    | "emailDoesNotExist"
+    | "weakPassword"
+    | "";
+
+type ErrorMessages = {
+    missingField?: string;
+    invalidFormat?: string;
+    emailDoesNotExist?: string;
+    weakPassword?: string;
+};
+
+const fieldPrompts: Record<
+    "username" | "email" | "password",
+    {
+        label: string;
+        placeholder: string;
+        errors: ErrorMessages;
+    }
+> = {
     username: {
         label: "Nom d'utilisateur",
         placeholder: "Entre ton nom d'utilisateur",
+        errors: {
+            missingField: "Nom d'utilisateur requis.",
+        }
     },
     email: {
         label: "Email",
         placeholder: "Entre ton email",
+        errors: {
+            missingField: "Email requis.",
+            invalidFormat: "Format d'email invalide.",
+            emailDoesNotExist: "Adresse e-mail inexistante."
+        }
     },
     password: {
         label: "Mot de passe",
         placeholder: "Entre ton mot de passe",
+        errors: {
+            missingField: "Mot de passe requis.",
+            weakPassword: "Le mot de passe doit contenir au moins 6 caractères.",
+        }
     },
 };
 
 interface AuthFieldProps {
     fieldType: "username" | "email" | "password";
     formValues: { username: string; email: string; password: string };
-    setFormValues: React.Dispatch<React.SetStateAction<{ username: string; email: string; password: string }>>;
+    handleChange: React.ChangeEventHandler<HTMLInputElement>;
+    errorCode?: ErrorCode;
 }
 
-export default function AuthField({fieldType, formValues, setFormValues}: AuthFieldProps) {
+export default function AuthField({fieldType, formValues, handleChange, errorCode}: AuthFieldProps) {
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
     return (
@@ -44,13 +78,9 @@ export default function AuthField({fieldType, formValues, setFormValues}: AuthFi
                     ) : fieldType === "email" ? (
                         "username webauthn"
                     ) : "off"}
-                    onChange={(e) =>
-                        setFormValues({
-                            ...formValues,
-                            [fieldType]: e.target.value,
-                        })
-                    }
+                    onChange={handleChange}
                     required={true}
+                    className={`${errorCode ? styles.requiredError : ""}`}
                 />
                 {fieldType === "password" && (
                     <div className={styles.fieldIcon} onClick={() => setIsPasswordHidden(!isPasswordHidden)}>
@@ -58,6 +88,9 @@ export default function AuthField({fieldType, formValues, setFormValues}: AuthFi
                     </div>
                 )}
             </div>
+            {errorCode && (
+                <p className={styles.errorMessage}>{fieldPrompts[fieldType].errors[errorCode]}</p>
+            )}
         </div>
     )
 }
