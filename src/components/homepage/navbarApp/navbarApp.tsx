@@ -13,7 +13,7 @@ type Profile = {
 export default function NavbarApp({profile} : {profile: Profile | null}) {
     return (
         <div className={styles.navbar}>
-            <ButtonLink href={'/home'}>TREVN</ButtonLink>
+            <ButtonLink href={'/groups'}>TREVN</ButtonLink>
             <div className={styles.buttonsContainer}>
                 <div className={styles.profilContainer}>
                     <Image
