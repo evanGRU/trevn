@@ -2,7 +2,7 @@
 
 import styles from "./page.module.scss";
 import Image from "next/image";
-import AuthField from "@/components/app/authField/authField";
+import AuthField from "@/components/webPage/authField/authField";
 import GlassButton from "@/components/general/glassButton/glassButton";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
