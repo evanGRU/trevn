@@ -48,21 +48,38 @@ button {
 
 
 h1 {
-  font-size: var(--text-6xl);
+  font-size: var(--text-64);
   font-family: var(--font-heading), serif;
   text-transform: uppercase;
 }
 
 h2 {
-  font-size: var(--text-5xl);
+  font-size: var(--text-48);
   font-family: var(--font-heading), serif;
   text-transform: uppercase;
 }
 
 h3 {
-  font-size: var(--text-4xl);
+  font-size: var(--text-36);
 }
 
 h4 {
-  font-size: var(--text-3xl);
+  font-size: var(--text-30);
+}
+
+.glassButtonGlobal {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  }
 }

@@ -1,0 +1,43 @@
+.groupsListContainer {
+  height: 100%;
+  flex: 1;
+  padding: var(--space-24);
+
+  .groupsListHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    gap: var(--space-08);
+
+    .groupsTitle {
+      background-color: var(--color-surface);
+      height: 100%;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      padding-left: var(--space-08);
+      flex: 1;
+
+      h4 {
+        font-size: var(--text-12);
+        font-weight: 400;
+        text-transform: uppercase;
+        color: var(--color-text-gray);
+      }
+    }
+
+    .iconButton {
+      height: 100%;
+      width: auto;
+      aspect-ratio: 1/1;
+      background-color: var(--color-surface);
+      border: solid 1px var(--color-background-secondary);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
+}

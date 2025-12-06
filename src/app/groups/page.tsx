@@ -1,8 +1,8 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import HomeClient from './HomeClient'
+import GroupPageClient from './GroupPageClient'
 
-export default async function Home() {
+export default async function GroupsPage() {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -12,9 +12,9 @@ export default async function Home() {
 
     const { data: profile } = await supabase
         .from("profiles")
-        .select("username, avatar_url")
+        .select("id, username, avatar_url")
         .eq("id", user.id)
         .single();
 
-    return <HomeClient profile={profile} user={user}/>
+    return <GroupPageClient profile={profile}/>
 }

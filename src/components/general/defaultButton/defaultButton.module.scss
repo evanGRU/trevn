@@ -1,0 +1,22 @@
+.defaultBtn {
+  min-width: 380px;
+  height: 48px;
+  padding: 0 var(--space-24);
+  font-weight: 400;
+  font-size: var(--text-16);
+  color: var(--color-text);
+  border: none;
+  background-color: var(--color-background-secondary);
+  border-radius: 40px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-04);
+
+  &:hover {
+    background: var(--color-background-secondary-hover);
+  }
+}
