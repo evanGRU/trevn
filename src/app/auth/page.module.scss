@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("/authBackground.jpg") ;
+  background-image: url("/backgrounds/authBackground.jpg") ;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -38,7 +38,7 @@
 
       h1 {
         height: var(--space-48);
-        font-size: var(--text-5xl);
+        font-size: var(--text-48);
         line-height: var(--space-48);
       }
 
@@ -136,13 +136,13 @@
     margin-top: var(--space-48);
 
     p {
-      font-size: var(--text-sm);
+      font-size: var(--text-14);
       font-weight: 300;
       color: #D7D7D7;
     }
 
     a {
-      font-size: var(--text-sm);
+      font-size: var(--text-14);
       color: #ffffff;
       text-decoration: none;
       transition: 0.3s ease;

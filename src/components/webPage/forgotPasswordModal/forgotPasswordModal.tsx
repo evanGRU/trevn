@@ -1,5 +1,5 @@
 import styles from "./forgotPasswordModal.module.scss";
-import GlassButton from "@/components/webPage/glassButton/glassButton";
+import GlassButton from "@/components/general/glassButton/glassButton";
 
 export default function ForgotPasswordModal({setModal, email}: {setModal: React.Dispatch<React.SetStateAction<boolean>>, email: string}) {
 

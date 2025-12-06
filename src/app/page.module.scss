@@ -1,6 +1,6 @@
 .homePage {
   h2 {
-    font-size: var(--text-12xl);
+    font-size: var(--text-128);
     line-height: 100px;
   }
 }
@@ -13,7 +13,7 @@
   justify-content: center;
 
   h1 {
-    font-size: var(--text-12xl);
+    font-size: var(--text-128);
   }
 }
 
@@ -93,7 +93,7 @@
 
   h3 {
     font-weight: 400;
-    font-size: var(--text-3xl);
+    font-size: var(--text-30);
     line-height: 20px;
     text-align: center;
     width: 100%;
@@ -142,7 +142,7 @@
       }
 
       p {
-        font-size: var(--text-xl);
+        font-size: var(--text-20);
         font-weight: 200;
         z-index: 200;
       }
@@ -180,7 +180,7 @@
   gap: var(--space-24);
 
   h2 {
-    font-size: var(--text-8xl);
+    font-size: var(--text-88);
   }
 
   .footerContainer {

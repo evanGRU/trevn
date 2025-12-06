@@ -3,7 +3,7 @@
 import styles from "./page.module.scss";
 import Image from "next/image";
 import AuthField from "@/components/app/authField/authField";
-import GlassButton from "@/components/webPage/glassButton/glassButton";
+import GlassButton from "@/components/general/glassButton/glassButton";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {TickIcon} from "@/utils/svg";
@@ -11,7 +11,7 @@ import {createClient} from "@/utils/supabase/client";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useAuthToast} from "@/utils/useAuthToast";
-import ForgotPasswordModal from "@/components/app/forgotPasswordModal/forgotPasswordModal";
+import ForgotPasswordModal from "@/components/webPage/forgotPasswordModal/forgotPasswordModal";
 import {doesEmailExist, isEmail} from "@/utils/globalFunctions";
 
 type Type = "login" | "signup";
@@ -188,7 +188,7 @@ export default function AuthForm({ type }: {type: Type}) {
                         <div className={styles.formHeader}>
                             <Link href={"/"}>
                                 <Image
-                                    src="/logo/Logotype_empty.svg"
+                                    src="/logo/logotype_empty.svg"
                                     alt="Logotype Trevn"
                                     width={80}
                                     height={50}
