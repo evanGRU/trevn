@@ -29,7 +29,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
     const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
 
     const [defaultAvatars, setDefaultAvatars] = useState<Avatar[]>([]);
-    const [isPending, setIsPending] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(false);
     const [errorMessages, setErrorMessages] = useState<{[key: string]: string}>({})
 
     useEffect(() => {
@@ -56,6 +56,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
         const errors: {[key: string]: string} = {};
         if (!selectedAvatar && !imageFile) {
             errors.avatar = "Avatar de groupe requis."
+            setIsDisabled(true);
         }
 
         if (!newGroupName) {
@@ -72,7 +73,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
         if (!validateForm()) return;
 
         try {
-            setIsPending(true);
+            setIsDisabled(true);
             let avatarId: string | null = selectedAvatar ?? null;
 
             if (imageFile) {
@@ -84,7 +85,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                     .upload(fileName, imageFile, {upsert: true});
 
                 if (uploadError) {
-                    setIsPending(false);
+                    setIsDisabled(false);
                     errorToast("Impossible d'importer l'avatar de groupe, veuillez réessayer.");
                     return;
                 }
@@ -101,7 +102,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                     .single();
 
                 if (avatarError || !avatarData) {
-                    setIsPending(false);
+                    setIsDisabled(false);
                     errorToast("Impossible d’enregistrer l’avatar, veuillez réessayer.");
                     return;
                 }
@@ -126,7 +127,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                 .single();
 
             if (groupError || !groupData) {
-                setIsPending(false);
+                setIsDisabled(false);
                 errorToast("Impossible de créer le groupe, veuillez réessayer.");
                 return;
             }
@@ -139,7 +140,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                 });
 
             if (linkError) {
-                setIsPending(false);
+                setIsDisabled(false);
                 errorToast("Une erreur est survenue lors de l’ajout du membre.");
                 return;
             }
@@ -149,7 +150,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
             successToast("Ton groupe a été créé avec succès !");
 
         } catch (err) {
-            setIsPending(false);
+            setIsDisabled(false);
             console.error(err);
             errorToast("Une erreur inattendue s'est produite.");
         }
@@ -160,6 +161,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
             ...prev,
             avatar: ""
         }));
+        setIsDisabled(false);
 
         const file = e.target.files?.[0];
         if (!file) return;
@@ -172,9 +174,14 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
         setNewGroupName(value);
 
         if (value === "") {
-            setErrorMessages((prev) => ({ ...prev, [field]: "Nom du groupe requis." }))
+            setErrorMessages((prev) => ({ ...prev, [field]: "Nom du groupe requis." }));
+            setIsDisabled(true);
+        } else if (value.length > 20) {
+            setErrorMessages((prev) => ({ ...prev, [field]: "Le nom du groupe doit faire au maximum 20 caractères."}));
+            setIsDisabled(true);
         } else {
             setErrorMessages((prev) => ({ ...prev, [field]: "" }))
+            setIsDisabled(false);
         }
     }
 
@@ -257,14 +264,14 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                                     label={"Nom du groupe"}
                                     value={newGroupName}
                                     handleChange={(e) => handleChange("name", e.target.value)}
-                                    isRequired={false}
+                                    isRequired={true}
                                     errorMessage={errorMessages?.name}
                                 />
 
                                 <div className={styles.submitButton}>
                                     <GlassButton
                                         type={"submit"}
-                                        isDisabled={isPending}
+                                        isDisabled={isDisabled}
                                     >Créer mon groupe</GlassButton>
                                 </div>
                             </form>
