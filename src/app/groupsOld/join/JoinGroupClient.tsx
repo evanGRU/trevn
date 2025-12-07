@@ -1,7 +1,6 @@
 "use client"
 
 import styles from "./page.module.scss";
-import NavbarApp from "@/components/homepage/navbarApp/navbarApp";
 import {User} from "@supabase/auth-js";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
@@ -37,8 +36,6 @@ export default function JoinGroupClient({ profile }: {profile: Profile | null, u
 
     return (
         <div className={styles.joinGroupPage}>
-            <NavbarApp profile={profile}/>
-
             <div className={styles.joinGroupContainer}>
                 <h1>Créer un nouveau groupe</h1>
 

@@ -160,10 +160,8 @@ export default function EditSettingsModal({
                     ) : modalCode === "avatar" ? (
                         <div>
                             <input type="file" accept="image/*" onChange={handleFileSelect} />
-                            {previewUrl ? (
+                            {previewUrl && (
                                 <Image src={previewUrl} alt="Avatar" width={50} height={50} />
-                            ) : (
-                                <Image src={getPublicAvatarUrl(newValue)} alt="Avatar" width={50} height={50} />
                             )}
                         </div>
                     ) : (

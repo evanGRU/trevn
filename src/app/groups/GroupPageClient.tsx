@@ -1,55 +1,48 @@
 "use client"
 
 import styles from "./page.module.scss";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {createClient} from "@/utils/supabase/client";
 import Image from "next/image";
 import Link from "next/link";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
 import GroupsList from "@/components/app/groupsList/groupsList";
-
-type Profile = {
-    id: string;
-    username: string;
-    avatar_url: string | null;
-} | null;
-
-type Group = {
-    id: string;
-    name: string;
-    description: string | null;
-    invite_code: string;
-    created_at: string;
-    created_by: string;
-};
+import NewGroupModal from "@/components/app/newGroupModal/newGroupModal";
+import {signout} from "@/utils/auth";
+import useSWR from "swr";
+import {useAuthToast} from "@/utils/useAuthToast";
+import {Group, Profile} from "@/utils/types";
 
 export default function GroupPageClient({ profile }: {profile: Profile}) {
     const supabase = createClient();
-    const [groupsList, setGroupsList] = useState<Group[]>([]);
+    const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState<boolean>(false);
+    const {errorToast} = useAuthToast();
 
-    useEffect(() => {
-        const fetchGroups = async () => {
-            const { data, error } = await supabase
-                .from("groups")
-                .select(`
-                    *,
-                    groups_members!inner (
-                        user_id
-                      )
-                `)
-                .eq("groups_members.user_id", profile?.id);
+    const fetchGroups = async (userId: string): Promise<Group[]> => {
+        const { data, error } = await supabase
+            .from("groups")
+            .select(`
+            id, name, description, invite_code,
+            avatar:avatars!avatar_id(id, name, type),
+            groups_members!inner(user_id)
+        `)
+            .eq("groups_members.user_id", userId);
 
-            if (error) {
-                console.error("Erreur fetch groups:", error);
-                return;
-            }
+        if (error) {
+            errorToast('Une erreur a eu lieu lors de la récupération des groupes. Essayer de rafraîchir la page.');
+            throw error;
+        }
+        return (data ?? []).map(g => ({
+            ...g,
+            avatar: Array.isArray(g.avatar) ? g.avatar[0] ?? null : g.avatar
+        }));
+    };
 
-            setGroupsList(data);
-        };
-
-        fetchGroups();
-    }, [profile]);
+    const { data: groupsList, mutate: refreshGroups } = useSWR<Group[]>(
+        profile?.id ? ["groups", profile.id] : null,
+        () => fetchGroups(profile!.id)
+    );
 
     return (
         <div className={styles.mainPage}>
@@ -57,7 +50,7 @@ export default function GroupPageClient({ profile }: {profile: Profile}) {
                 <Link href={"/groups"}>
                     <Image
                         src="/logo/logotype_empty.svg"
-                        alt="Logotype Trevn"
+                        alt="Logotype"
                         width={60}
                         height={36}
                     />
@@ -66,7 +59,7 @@ export default function GroupPageClient({ profile }: {profile: Profile}) {
                 <div className={styles.profileContainer}>
                     <div className={styles.usernameContainer}>
                         <Image
-                            src={getPublicAvatarUrl(profile?.avatar_url)}
+                            src={getPublicAvatarUrl("users", profile?.avatar_url)}
                             alt={"Avatar"}
                             width={28}
                             height={28}
@@ -75,39 +68,49 @@ export default function GroupPageClient({ profile }: {profile: Profile}) {
                         <p>{profile?.username}</p>
                     </div>
 
-                    <div className={`glassButtonGlobal ${styles.glassIconButton}`}>
+                    <button
+                        type={"button"}
+                        className={`glassButtonGlobal ${styles.glassIconButton}`}
+                    >
                         <Image
                             src="/icons/gear.svg"
-                            alt="Icône des paramètres"
+                            alt="Icône paramètres"
                             width={24}
                             height={24}
                         />
-                    </div>
+                    </button>
 
-                    <div className={`glassButtonGlobal ${styles.glassIconButton}`}>
+                    <button
+                        type={"button"}
+                        className={`glassButtonGlobal ${styles.glassIconButton}`}
+                        onClick={() => signout()}
+                    >
                         <Image
                             src="/icons/signout.svg"
-                            alt="Icône de déconnexion"
+                            alt="Icône déconnexion"
                             width={24}
                             height={24}
                         />
-                    </div>
+                    </button>
                 </div>
             </div>
 
             <div className={styles.mainAppContainer}>
-                <GroupsList/>
+                <GroupsList
+                    groups={groupsList ?? []}
+                    setModalState={setIsNewGroupModalOpen}
+                />
 
                 <div className={styles.groupContainer}>
-                    {groupsList.length === 0 ? (
+                    {groupsList?.length === 0 ? (
                         <div className={styles.noGroupsContainer}>
                             <h1>C’est un peu vide ici…</h1>
                             <p>Crée ton premier groupe, propose des jeux et découvre ceux qui font vibrer tes potes.</p>
 
-                            <DefaultButton handleClick={() => alert('open new group modal')}>
+                            <DefaultButton handleClick={() => setIsNewGroupModalOpen(true)}>
                                 <Image
                                     src="/icons/plus.svg"
-                                    alt="Icône de tri"
+                                    alt="Icône ajout"
                                     width={20}
                                     height={20}
                                 />
@@ -119,6 +122,13 @@ export default function GroupPageClient({ profile }: {profile: Profile}) {
                     )}
                 </div>
             </div>
+
+            {isNewGroupModalOpen &&
+                <NewGroupModal
+                    user={profile}
+                    setModal={setIsNewGroupModalOpen}
+                    refreshGroups={refreshGroups}
+                />}
         </div>
     )
 }

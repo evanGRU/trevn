@@ -11,9 +11,10 @@ type GlassButtonProps = {
     linkHref?: string | "",
     iconPath?: string | null,
     handleClick?: React.Dispatch<React.SetStateAction<boolean>>;
+    isDisabled?: boolean;
 }
 
-export default function GlassButton({children, type, linkHref = "", iconPath = "", handleClick}: GlassButtonProps) {
+export default function GlassButton({children, type, linkHref = "", iconPath = "", handleClick, isDisabled}: GlassButtonProps) {
 
     return (
         <>
@@ -30,7 +31,11 @@ export default function GlassButton({children, type, linkHref = "", iconPath = "
                     {children}
                 </Link>
             ) : type === "submit" ? (
-                <button type={"submit"} className={`glassButtonGlobal ${styles.glassBtn}`}>
+                <button
+                    type={"submit"}
+                    className={`glassButtonGlobal ${styles.glassBtn} ${isDisabled ? "glassButtonDisabled" : ""}`}
+                    disabled={isDisabled}
+                >
                     {children}
                 </button>
             ) : (

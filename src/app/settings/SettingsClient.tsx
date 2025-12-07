@@ -174,12 +174,6 @@ export default function SettingsClient({ initialProfile, initialUser }: Settings
                         <li className={styles.gray2}>
                               <span>
                                   <p>Avatar :</p>
-                                  <Image
-                                      src={getPublicAvatarUrl(fullUser.avatar)}
-                                      alt="Photo de profil"
-                                      width={36}
-                                      height={36}
-                                  />
                               </span>
                             <button onClick={() => handleOpenModal("avatar")}>Importer une image</button>
                         </li>
