@@ -2,7 +2,7 @@
   height: 100%;
   width: auto;
   aspect-ratio: 1/1;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-16);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -10,7 +10,7 @@
 
   .cardIcon {
     background-color: #292728;
-    border-radius: 100%;
+    border-radius: var(--radius-full);
     width: 76px;
     height: 76px;
     display: flex;

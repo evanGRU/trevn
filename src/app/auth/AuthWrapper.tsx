@@ -33,7 +33,7 @@ export default function AuthForm({ type }: {type: Type}) {
     const supabase = createClient();
     const router = useRouter();
     const isLogin = type === "login";
-    const {signupToast, errorToast} = useAuthToast();
+    const {successToast, errorToast} = useAuthToast();
     const [formValues, setFormValues] = useState<FormValues>({
         username: "",
         email: "",
@@ -120,7 +120,7 @@ export default function AuthForm({ type }: {type: Type}) {
                     }
                 } else {
                     router.push("/login");
-                    signupToast()
+                    successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser la confirmation.")
                 }
             }
         } catch (err) {

@@ -4,12 +4,8 @@ import toast from "react-hot-toast";
 import CustomToast from "@/components/general/customToast/customToast";
 
 export function useAuthToast() {
-    const loginToast = () => {
-        toast.custom(<CustomToast title={"Connexion réussie"} type={"success"}/>);
-    };
-
-    const signupToast = () => {
-        toast.custom(<CustomToast title="Ton compte est prêt ! Vérifie ta boîte mail pour finaliser la confirmation." type={"success"}/>);
+    const successToast = (successMessage: string) => {
+        toast.custom(<CustomToast title={successMessage} type={"success"}/>);
     };
 
     const errorToast = (errorMessage: string) => {
@@ -17,7 +13,7 @@ export function useAuthToast() {
     };
 
     return {
-        signupToast,
+        successToast,
         errorToast
     };
 }

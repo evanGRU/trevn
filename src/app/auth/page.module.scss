@@ -14,7 +14,7 @@
 .formContainer {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 40px;
+  border-radius: var(--radius-40);
   backdrop-filter: blur(10px);
   padding: var(--space-48);
 
@@ -45,6 +45,7 @@
       p {
         text-align: center;
         font-weight: 300;
+        color: var(--color-text-secondary);
       }
     }
   }
@@ -62,7 +63,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 14px;
+      font-size: var(--text-14);
 
       label {
         display: flex;
@@ -79,7 +80,7 @@
           background: rgba(255, 255, 255, 0.3);
           border: 1px solid rgba(255, 255, 255, 0.4);
           transition: all 0.3s;
-          border-radius: 5px;
+          border-radius: var(--radius-04);
           cursor: pointer;
           margin: 0;
 

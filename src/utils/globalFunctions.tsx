@@ -23,12 +23,12 @@ export const doesEmailExist = async (email: string) => {
     }
 };
 
-export const getPublicAvatarUrl = (path: string | null | undefined) => {
-    if (!path) return "/defaultPP.jpg";
+export const getPublicAvatarUrl = (type: string, path: string | null | undefined ) => {
+    const isGroup = (type === "group");
 
     const { data } = supabase.storage
-        .from("avatars")
-        .getPublicUrl(path);
+        .from(`avatars/${isGroup ? "groups" : "users"}`)
+        .getPublicUrl(path ?? "default00.jpg");
 
     return data.publicUrl;
 };

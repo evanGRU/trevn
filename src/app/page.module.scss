@@ -85,7 +85,7 @@
 
 .partnerSection {
   height: fit-content;
-  padding: 10px var(--space-128);
+  padding: var(--space-12) var(--space-128);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,7 +97,7 @@
     line-height: 20px;
     text-align: center;
     width: 100%;
-    border-radius: 20px;
+    border-radius: var(--radius-20);
     min-width: 550px;
   }
 
@@ -122,7 +122,7 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    border-radius: 50px;
+    border-radius: var(--radius-40);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -155,7 +155,7 @@
       &:before {
         background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 40px;
+        border-radius: var(--radius-40);
         backdrop-filter: blur(10px);
         content: "";
         display: block;

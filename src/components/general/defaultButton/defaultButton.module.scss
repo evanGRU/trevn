@@ -7,7 +7,7 @@
   color: var(--color-text);
   border: none;
   background-color: var(--color-background-secondary);
-  border-radius: 40px;
+  border-radius: var(--radius-40);
   transition: all 0.2s ease;
   cursor: pointer;
   text-transform: uppercase;

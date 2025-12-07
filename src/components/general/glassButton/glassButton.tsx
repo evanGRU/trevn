@@ -18,7 +18,7 @@ export default function GlassButton({children, type, linkHref = "", iconPath = "
     return (
         <>
             {type === "link" ? (
-                <Link href={linkHref} className={styles.glassBtn}>
+                <Link href={linkHref} className={`glassButtonGlobal ${styles.glassBtn}`}>
                     {iconPath && (
                         <Image
                             src={iconPath}
@@ -30,11 +30,11 @@ export default function GlassButton({children, type, linkHref = "", iconPath = "
                     {children}
                 </Link>
             ) : type === "submit" ? (
-                <button type={"submit"} className={styles.glassBtn}>
+                <button type={"submit"} className={`glassButtonGlobal ${styles.glassBtn}`}>
                     {children}
                 </button>
             ) : (
-                <button onClick={() => handleClick && handleClick(false)} type={"button"} className={`${styles.glassBtn} ${styles.button}`}>
+                <button onClick={() => handleClick && handleClick(false)} type={"button"} className={`glassButtonGlobal ${styles.glassBtn} ${styles.button}`}>
                     {children}
                 </button>
             )}

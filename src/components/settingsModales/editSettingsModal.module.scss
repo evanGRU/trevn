@@ -22,11 +22,11 @@
     background-color: #007BFF;
     display: flex;
     align-items: center;
-    padding: 6px 16px;
+    padding: 6px var(--space-16);
   }
 
   form {
-    padding: 16px;
+    padding: var(--space-16);
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -38,7 +38,7 @@
     input {
       height: 36px;
       width: 100%;
-      padding: 0 8px;
+      padding: 0 var(--space-08);
     }
 
     .editModalButtons {
@@ -51,7 +51,7 @@
         border: solid 2px #000;
         background-color: #fff;
         font-weight: 700;
-        padding: 0 12px;
+        padding: 0 var(--space-12);
         height: 36px;
         width: 49%;
 
