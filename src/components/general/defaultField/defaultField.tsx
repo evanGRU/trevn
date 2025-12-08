@@ -26,7 +26,7 @@ export default function DefaultField({type, label, value, placeholder, handleCha
                 className={`${errorMessage ? styles.requiredError : ""}`}
             />
             {errorMessage && (
-                <p className={styles.errorMessage}>{errorMessage}</p>
+                <p className={"errorMessage"}>{errorMessage}</p>
             )}
         </div>
     )

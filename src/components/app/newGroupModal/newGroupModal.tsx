@@ -185,6 +185,38 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
         }
     }
 
+    const handleJoinGroup = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const code = formData.get("invitationCode") as string;
+
+        if (!code) {
+            setErrorMessages(prev => ({
+                ...prev,
+                invitationCode: "Un code d'invitation est requis."
+            }));
+            return
+        }
+
+        const res = await fetch("/api/groups/join", {
+            method: "POST",
+            body: JSON.stringify({ code }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            setErrorMessages(prev => ({
+                ...prev,
+                invitationCode: data.error
+            }));
+        } else {
+            setModal(false);
+            await refreshGroups();
+            successToast("Tu as bien rejoint le groupe !");
+        }
+    };
+
     return defaultAvatars.length > 1 && (
         <div className={styles.fullBackground}>
             <AnimatePresence mode="wait">
@@ -282,15 +314,23 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                         <div className={styles.joinGroupContainer}>
                             <h3>Tu as un code d&apos;invitation?</h3>
 
-                            <form className={styles.joinGroupForm}>
+                            <form className={styles.joinGroupForm} onSubmit={handleJoinGroup}>
                                 <input
+                                    name="invitationCode"
                                     type="text"
                                     placeholder="Code d'invitation"
                                     autoComplete="off"
                                     autoCorrect="off"
+                                    onChange={() => {
+                                        setErrorMessages(prev => ({
+                                            ...prev,
+                                            invitationCode: ""
+                                        }));
+                                    }}
                                 />
-                                <button type={"submit"}>Rejoindre</button>
+                                <button type={"submit"} disabled={!!errorMessages.invitationCode} className={`${!!errorMessages.invitationCode ? "glassButtonDisabled" : ""}`}>Rejoindre</button>
                             </form>
+                            {errorMessages.invitationCode && <p className={"errorMessage"}>{errorMessages.invitationCode}</p>}
                         </div>
                     </div>
 

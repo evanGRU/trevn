@@ -89,7 +89,7 @@ export default function AuthField({fieldType, formValues, handleChange, errorCod
                 )}
             </div>
             {errorCode && (
-                <p className={styles.errorMessage}>{fieldPrompts[fieldType].errors[errorCode]}</p>
+                <p className={"errorMessage"}>{fieldPrompts[fieldType].errors[errorCode]}</p>
             )}
         </div>
     )

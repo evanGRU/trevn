@@ -84,6 +84,8 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-family: var(--font-heading), sans-serif;
+        font-size: var(--text-24);
       }
 
       &:hover {
