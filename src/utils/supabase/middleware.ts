@@ -2,8 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export function updateSession(request: NextRequest) {
     const { pathname } = request.nextUrl;
-    const token = request.cookies.get("sb-access-token")?.value;
-    console.log("Token:", token);
+
     const isPublicRoute =
         pathname === "/" ||
         pathname.startsWith("/login") ||
@@ -16,9 +15,17 @@ export function updateSession(request: NextRequest) {
         return NextResponse.next();
     }
 
+    const token = request.cookies.get("sb-access-token")?.value;
+
     if (!token) {
         const url = request.nextUrl.clone();
         url.pathname = "/login";
+
+        if (process.env.NEXT_PUBLIC_APP_ENV === "local") {
+            url.protocol = "http:";
+            url.hostname = "localhost";
+        }
+
         return NextResponse.redirect(url);
     }
 
