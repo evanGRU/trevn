@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 export function updateSession(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const token = request.cookies.get("sb-access-token")?.value;
-
+    console.log("Token:", token);
     const isPublicRoute =
         pathname === "/" ||
         pathname.startsWith("/login") ||
