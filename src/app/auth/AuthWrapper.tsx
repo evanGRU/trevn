@@ -2,8 +2,8 @@
 
 import styles from "./page.module.scss";
 import Image from "next/image";
-import AuthField from "@/components/app/authField/authField";
-import GlassButton from "@/components/webPage/glassButton/glassButton";
+import AuthField from "@/components/webPage/authField/authField";
+import GlassButton from "@/components/general/glassButton/glassButton";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {TickIcon} from "@/utils/svg";
@@ -11,7 +11,7 @@ import {createClient} from "@/utils/supabase/client";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useAuthToast} from "@/utils/useAuthToast";
-import ForgotPasswordModal from "@/components/app/forgotPasswordModal/forgotPasswordModal";
+import ForgotPasswordModal from "@/components/webPage/forgotPasswordModal/forgotPasswordModal";
 import {doesEmailExist, isEmail} from "@/utils/globalFunctions";
 
 type Type = "login" | "signup";
@@ -33,7 +33,7 @@ export default function AuthForm({ type }: {type: Type}) {
     const supabase = createClient();
     const router = useRouter();
     const isLogin = type === "login";
-    const {signupToast, errorToast} = useAuthToast();
+    const {successToast, errorToast} = useAuthToast();
     const [formValues, setFormValues] = useState<FormValues>({
         username: "",
         email: "",
@@ -120,7 +120,7 @@ export default function AuthForm({ type }: {type: Type}) {
                     }
                 } else {
                     router.push("/login");
-                    signupToast()
+                    successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser la confirmation.")
                 }
             }
         } catch (err) {
@@ -188,7 +188,7 @@ export default function AuthForm({ type }: {type: Type}) {
                         <div className={styles.formHeader}>
                             <Link href={"/"}>
                                 <Image
-                                    src="/logo/Logotype_empty.svg"
+                                    src="/logo/logotype_empty.svg"
                                     alt="Logotype Trevn"
                                     width={80}
                                     height={50}

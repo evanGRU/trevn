@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("/authBackground.jpg") ;
+  background-image: url("/backgrounds/authBackground.jpg") ;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -14,7 +14,7 @@
 .formContainer {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 40px;
+  border-radius: var(--radius-40);
   backdrop-filter: blur(10px);
   padding: var(--space-48);
 
@@ -38,13 +38,14 @@
 
       h1 {
         height: var(--space-48);
-        font-size: var(--text-5xl);
+        font-size: var(--text-48);
         line-height: var(--space-48);
       }
 
       p {
         text-align: center;
         font-weight: 300;
+        color: var(--color-text-secondary);
       }
     }
   }
@@ -62,7 +63,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 14px;
+      font-size: var(--text-14);
 
       label {
         display: flex;
@@ -79,7 +80,7 @@
           background: rgba(255, 255, 255, 0.3);
           border: 1px solid rgba(255, 255, 255, 0.4);
           transition: all 0.3s;
-          border-radius: 5px;
+          border-radius: var(--radius-04);
           cursor: pointer;
           margin: 0;
 
@@ -136,13 +137,13 @@
     margin-top: var(--space-48);
 
     p {
-      font-size: var(--text-sm);
+      font-size: var(--text-14);
       font-weight: 300;
       color: #D7D7D7;
     }
 
     a {
-      font-size: var(--text-sm);
+      font-size: var(--text-14);
       color: #ffffff;
       text-decoration: none;
       transition: 0.3s ease;
