@@ -2,25 +2,7 @@ import styles from "./groupsList.module.scss";
 import Image from "next/image";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
-
-type GroupMembers = {
-    user_id: string;
-}
-
-type Avatar = {
-    id: string;
-    name: string;
-    type: string;
-}
-
-type Group = {
-    avatar: Avatar;
-    description: string;
-    groups_members: GroupMembers[];
-    id: string;
-    invite_code: string;
-    name: string;
-} | null
+import {Group} from "@/utils/types";
 
 interface GroupsListProps {
     groups: Group[];
