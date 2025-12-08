@@ -10,6 +10,7 @@ import {KeyedMutator} from "swr";
 import {AnimatePresence, motion} from "framer-motion";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import {Avatar, Group, Profile} from "@/utils/types";
+import {DbImage} from "@/utils/dbImage/dbImage";
 
 interface NewGroupModalProps {
     user: Profile;
@@ -242,7 +243,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                                             className={`${styles.avatarPreviewButton} ${previewUrl ? styles.avatarPreviewButtonFull : ""} ${errorMessages.avatar ? styles.requiredError : ""}`}>
                                             <label htmlFor="avatarInput">
                                                 {previewUrl ? (
-                                                    <Image
+                                                    <DbImage
                                                         src={previewUrl}
                                                         alt="Preview avatar"
                                                         width={96}
@@ -269,7 +270,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                                             <p>Si tu ne sais pas quoi mettre voici quelques idées, tu pourras toujours le modifier plus tard.</p>
                                             <div className={styles.avatarsSelectors}>
                                                 {defaultAvatars.map((avatar) => (
-                                                    <Image
+                                                    <DbImage
                                                         key={avatar.id}
                                                         src={getPublicAvatarUrl("group", avatar.name)}
                                                         alt="Avatar par défaut"

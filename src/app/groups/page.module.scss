@@ -30,6 +30,8 @@
       img {
         border-radius: var(--radius-04);
         border: solid 1px var(--color-background-secondary);
+        max-height: 28px;
+        max-width: 28px;
       }
 
       p {

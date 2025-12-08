@@ -3,6 +3,7 @@ import Image from "next/image";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
 import {Group} from "@/utils/types";
+import {DbImage} from "@/utils/dbImage/dbImage";
 
 interface GroupsListProps {
     groups: Group[];
@@ -33,7 +34,7 @@ export default function GroupsList({groups, setModalState}: GroupsListProps) {
                     <div className={styles.groupsList}>
                         {groups.map((g: Group) => (
                             <div key={`groupe-${g?.id}`} className={styles.groupCard}>
-                                <Image
+                                <DbImage
                                     src={getPublicAvatarUrl("group", g?.avatar?.name)}
                                     alt="Avatar"
                                     width={48}
