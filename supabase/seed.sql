@@ -3,9 +3,9 @@
 -- ================================
 insert into public.avatars (type, name)
 values
-    ('group', 'defaultGroup01.jpg'),
-    ('group', 'defaultGroup02.jpg'),
-    ('group', 'defaultGroup03.jpg'),
-    ('group', 'defaultGroup04.jpg'),
-    ('group', 'defaultGroup05.jpg'),
-    ('group', 'defaultGroup06.jpg');
+    ('group', 'avatarPreset01.jpg'),
+    ('group', 'avatarPreset02.jpg'),
+    ('group', 'avatarPreset03.jpg'),
+    ('group', 'avatarPreset04.jpg'),
+    ('group', 'avatarPreset05.jpg'),
+    ('group', 'avatarPreset06.jpg');

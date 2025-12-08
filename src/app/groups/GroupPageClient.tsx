@@ -13,6 +13,7 @@ import {signout} from "@/utils/auth";
 import useSWR from "swr";
 import {useAuthToast} from "@/utils/useAuthToast";
 import {Group, Profile} from "@/utils/types";
+import {DbImage} from "@/utils/dbImage/dbImage";
 
 export default function GroupPageClient({ profile }: {profile: Profile}) {
     const supabase = createClient();
@@ -58,7 +59,7 @@ export default function GroupPageClient({ profile }: {profile: Profile}) {
 
                 <div className={styles.profileContainer}>
                     <div className={styles.usernameContainer}>
-                        <Image
+                        <DbImage
                             src={getPublicAvatarUrl("users", profile?.avatar_url)}
                             alt={"Avatar"}
                             width={28}

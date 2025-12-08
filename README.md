@@ -52,19 +52,19 @@ yarn install
 ### Supabase local
 ```bash
 supabase start
-supabase db push --local
+supabase db push --local --include-seed
+supabase migration up
 ```
 
 ### Supabase remote (préprod / prod)
 ```bash
 supabase link --project-ref <PROJECT_REF>
-supabase db push
+supabase db push --include-seed
 ```
 
-### Seed (initialiser les valeurs par défaut)
+### Reset la BDD (uniquement si nécessaire)
 ```bash
-supabase db push --include-seed       # remote
-supabase db push --local --include-seed  # local
+supabase db reset
 ```
 
 
