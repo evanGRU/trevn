@@ -6,10 +6,7 @@ export default async function GroupsPage() {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    console.log(user);
-
     if (!user) {
-        console.log('redirect');
         redirect('/login')
     }
 
