@@ -19,6 +19,7 @@
     "react-dom": "19.2.0",
     "react-hot-toast": "^2.6.0",
     "sass": "^1.94.0",
+    "supabase": "^2.65.6",
     "swr": "^2.3.7"
   },
   "devDependencies": {

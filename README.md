@@ -1,36 +1,178 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trevn
 
-## Getting Started
+Projet Next.js avec Supabase pour la base de données, GitHub pour le versioning et Vercel pour le déploiement.
 
-First, run the development server:
+---
+
+## Table des matières
+
+- [Prérequis](#prérequis)
+- [Installation](#installation)
+- [Initialiser la base de données](#base-de-données)
+- [Lancer le projet](#lancer-le-projet)
+- [Lancer les scripts](#lancer-les-scripts)
+- [Environnements](#environnements)
+- [Bonnes pratiques](#bonnes-pratiques)
+- [Ressources utiles](#ressources-utiles)
+
+---
+
+## Prérequis
+
+- Node.js >= 18
+- npm ou yarn
+- Supabase CLI : [https://supabase.com/docs/guides/cli](https://supabase.com/docs/guides/cli)
+- Docker (pour Supabase local)
+- Git
+
+
+---
+
+## Installation
+
+Clone le projet :
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <REPO_URL>
+cd trevn
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Installe les dépendances :
+```bash
+npm install
+# ou
+yarn install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Base de données
 
-To learn more about Next.js, take a look at the following resources:
+### Supabase local
+```bash
+supabase start
+supabase db push --local
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Supabase remote (préprod / prod)
+```bash
+supabase link --project-ref <PROJECT_REF>
+supabase db push
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Seed (initialiser les valeurs par défaut)
+```bash
+supabase db push --include-seed       # remote
+supabase db push --local --include-seed  # local
+```
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Lancer le projet
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+Ouvre http://localhost:3000
+
+---
+
+## Lancer les scripts
+Si vous avez copié la BDD ce n'est pas nécessaire de copier les scripts.
+```bash
+node scripts/nom_du_script.mjs
+```
+
+
+---
+
+# Informations supplémentaires
+
+
+---
+
+## Environnements
+
+### Fichiers .env
+Le projet utilise trois environnements :
+
+| Environnement | URL | Base Supabase | Fichier .env |
+|---------------|-----|---------------|--------------|
+| Local         | http://localhost:3000 | Supabase local | .env.local |
+| Préprod       | https://preprod.trevn.app | Supabase preprod | .env.preprod |
+| Production    | https://trevn.app | Supabase prod | .env.production |
+
+Exemple de fichier `.env` :
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=<URL_SUPABASE>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<ANON_KEY>
+SUPABASE_SERVICE_ROLE_KEY=<SERVICE_ROLE_KEY>
+
+# Next.js
+NEXT_PUBLIC_APP_ENV=<local|preprod|production>
+
+# Others
+...
+```
+
+### Déploiement
+1. Crée deux projets/domaines :
+    - trevn.app → Production
+    - preprod.trevn.app → Préprod
+
+2. Variables d’environnement dans Vercel :
+
+| Variable | Production | Préprod |
+|----------|------------|---------|
+| NEXT_PUBLIC_SUPABASE_URL | URL prod | URL preprod |
+| NEXT_PUBLIC_SUPABASE_ANON_KEY | ANON_KEY prod | ANON_KEY preprod |
+| SUPABASE_SERVICE_ROLE_KEY | SERVICE_ROLE prod | SERVICE_ROLE preprod |
+
+3. Push Git : Vercel déploie automatiquement le frontend.
+
+
+### Diagramme des environnements
+```text
+           ┌─────────────┐
+           │  Next.js    │
+           │  Frontend   │
+           └──────┬──────┘
+                  │
+        ┌─────────┴──────────┐
+        │                    │
+   ┌────▼─────┐        ┌─────▼─────┐
+   │ Local DB │        │ Preprod DB│
+   │ (Docker) │        │ Supabase  │
+   └──────────┘        └───────────┘
+        │                    │
+        └─────► Prod DB ◄────┘
+              (Supabase)
+```
+
+
+---
+
+## Bonnes pratiques
+- Séparer les environnements
+- Ne jamais connecter préprod à la prod
+- Versionner migrations et seeds
+- Tester en local avant preprod/prod
+- RLS et triggers gérés par init.sql
+- Ne jamais mettre les clés secrets dans Git
+
+---
+
+## Ressources utiles
+- [Supabase Docs](https://supabase.com/docs)
+- [Next.js Docs](https://nextjs.org/docs)
+- [Vercel Docs](https://vercel.com/docs)
+
+
+---
+
+#### [Retourner au début](#Trevn)
