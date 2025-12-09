@@ -6,7 +6,7 @@ export async function POST(req: Request) {
 
     const { data: auth } = await supabase.auth.getUser();
     if (!auth.user) {
-        return Response.json({ error: "Non authentifié" }, { status: 401 });
+        return Response.json({ error: "Non authentifié." }, { status: 401 });
     }
 
     const { data: group, error: groupError } = await supabase
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
     if (!group || groupError) {
         return Response.json(
-            { error: "Code invalide ou groupe introuvable" },
+            { error: "Code invalide ou groupe introuvable." },
             { status: 400 }
         );
     }

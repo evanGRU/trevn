@@ -1,9 +1,9 @@
-import GlassButton from "@/components/webPage/glassButton/glassButton";
+import GlassButton from "@/components/general/glassButton/glassButton";
 import styles from "./page.module.scss";
 import HomeCard from "@/components/webPage/homeCard/homeCard";
 import Image from "next/image";
 
-export default function HomePage() {
+export default function WebPage() {
   return (
     <div className={styles.homePage}>
         <section className={styles.heroSection}>
@@ -21,7 +21,7 @@ export default function HomePage() {
             <div className={styles.cardsTitleLogo}>
                 <h2>Comment ça marche?</h2>
                 <Image
-                    src={'/logo/Logotype_empty.svg'}
+                    src={'/logo/logotype_empty.svg'}
                     alt={"Logo Icon"}
                     width={120}
                     height={70}
@@ -77,8 +77,8 @@ export default function HomePage() {
                 />
             </div>
             <div className={styles.contentContainer}>
-                <h2>Commence <br/>ton aventure</h2>
-                <GlassButton linkHref={"/login"} iconPath={""}>
+                <h2>Commence <br/>ton aventure <br/>maintenant</h2>
+                <GlassButton type={"link"} linkHref={"/login"}>
                     Créer ton premier groupe
                 </GlassButton>
             </div>
@@ -89,7 +89,7 @@ export default function HomePage() {
                 <div className={styles.glassContainer}>
                     <h2>Rejoins <br/> la communauté</h2>
                     <p>Participe à la béta, donne ton avis et aide-nous à créer la meilleure <br/> plateforme pour les soirées gaming entre potes.</p>
-                    <GlassButton linkHref={"#"} iconPath={"/webPage/discordIcon.svg"}>
+                    <GlassButton type={"link"} linkHref={"https://discord.gg/mvWp38PcrV"} iconPath={"/webPage/discordIcon.svg"}>
                         Rejoindre la bêta
                     </GlassButton>
                 </div>
@@ -98,7 +98,7 @@ export default function HomePage() {
 
         <section className={styles.footerSection}>
             <Image
-                src={'/logo/Logotype_empty.svg'}
+                src={'/logo/logotype_empty.svg'}
                 alt={"Logo Icon"}
                 width={150}
                 height={70}

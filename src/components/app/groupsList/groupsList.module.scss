@@ -1,0 +1,108 @@
+.groupsListSection {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  padding: var(--space-24);
+
+}
+
+.groupsListContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+
+  .groupsListHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    gap: var(--space-08);
+
+    .groupsTitle {
+      background-color: var(--color-surface);
+      height: 100%;
+      border-radius: var(--radius-08);
+      display: flex;
+      align-items: center;
+      padding-left: var(--space-08);
+      flex: 1;
+
+      h4 {
+        font-size: var(--text-12);
+        font-weight: 400;
+        text-transform: uppercase;
+        color: var(--color-text-gray);
+      }
+    }
+
+    //.iconButton {
+    //  height: 100%;
+    //  width: auto;
+    //  aspect-ratio: 1/1;
+    //  background-color: var(--color-surface);
+    //  border: solid 1px var(--color-background-secondary);
+    //  border-radius: var(--radius-08);
+    //  display: flex;
+    //  align-items: center;
+    //  justify-content: center;
+    //  cursor: pointer;
+    //}
+  }
+
+  .groupsList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-08);
+    margin-top: 11px;
+    padding: 1px 0 0 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+
+    .groupCard{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: var(--space-08);
+      border-radius: var(--radius-10);
+      background-color: var(--color-background-secondary);
+      padding: var(--space-04);
+      border: 1px solid var(--color-background-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      img {
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: var(--radius-08);
+        max-height: 48px;
+        max-width: 48px;
+      }
+
+      p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: var(--font-heading), sans-serif;
+        font-size: var(--text-24);
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        transform: translateY(-1px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      }
+    }
+  }
+}
+
+.newGroupButtonContainer {
+  margin-top: var(--space-12);
+
+  button {
+    width: 100%;
+    min-width: 0;
+  }
+}
