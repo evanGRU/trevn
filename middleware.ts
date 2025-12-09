@@ -1,7 +1,30 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(request: NextRequest) {
-    const { pathname } = request.nextUrl;
+    const response = NextResponse.next();
+
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                get(name: string) {
+                    return request.cookies.get(name)?.value;
+                },
+                set(name: string, value: string, options) {
+                    response.cookies.set({ name, value, ...options });
+                },
+                remove(name: string, options) {
+                    response.cookies.set({ name, value: "", ...options });
+                },
+            },
+        }
+    );
+
+    const { data } = await supabase.auth.getSession();
+
+    const pathname = request.nextUrl.pathname;
 
     const isPublicRoute =
         pathname === "/" ||
@@ -11,23 +34,13 @@ export async function middleware(request: NextRequest) {
         pathname.startsWith("/favicon") ||
         pathname.match(/\.(png|jpg|jpeg|gif|svg|webp)$/);
 
-    if (isPublicRoute) {
-        return NextResponse.next();
+    if (!data.session && !isPublicRoute) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/login";
+        return NextResponse.redirect(url);
     }
 
-    if (process.env.NEXT_PUBLIC_APP_ENV === "local") {
-        return NextResponse.next();
-    }
-
-    const token = request.cookies.get("sb-access-token")?.value;
-
-    // if (!token) {
-    //     const url = request.nextUrl.clone();
-    //     url.pathname = "/login";
-    //     return NextResponse.redirect(url);
-    // }
-
-    return NextResponse.next();
+    return response;
 }
 
 export const config = {
