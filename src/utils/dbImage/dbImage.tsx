@@ -6,7 +6,7 @@ export const DbImage = (props: AvatarImageProps) => {
     return (
         <Image
             {...props}
-            unoptimized={process.env.NEXT_PUBLIC_APP_ENV === "development"}
+            unoptimized={process.env.NEXT_PUBLIC_APP_ENV === "development" || process.env.NEXT_PUBLIC_APP_ENV === "preprod"}
         />
     );
 };
