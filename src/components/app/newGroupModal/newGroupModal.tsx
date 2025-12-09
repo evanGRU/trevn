@@ -133,6 +133,19 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                 return;
             }
 
+            if (imageFile) {
+                const { error: linkAvatarError } = await supabase
+                    .from("avatars")
+                    .update({group_id: groupData.id})
+                    .eq('id', avatarId);
+
+                if (linkAvatarError) {
+                    setIsDisabled(false);
+                    errorToast("Une erreur est survenue lors de l’ajout de l'avatar.");
+                    return;
+                }
+            }
+
             const { error: linkError } = await supabase
                 .from("groups_members")
                 .insert({
