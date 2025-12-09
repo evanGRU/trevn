@@ -46,20 +46,6 @@ end;
 $$;
 
 -- =========================================
--- TABLE: avatars
--- =========================================
-create table if not exists public.avatars (
-    id uuid primary key default gen_random_uuid(),
-    type text not null,
-    name text,
-    is_custom boolean default false,
-    created_by uuid,
-    created_at timestamp default now(),
-    constraint avatars_created_by_fkey
-        foreign key (created_by) references auth.users(id)
-);
-
--- =========================================
 -- TABLE: profiles
 -- =========================================
 create table if not exists public.profiles (
@@ -69,7 +55,26 @@ create table if not exists public.profiles (
     created_at timestamp default now(),
     updated_at timestamp default now(),
     constraint profiles_id_fkey
-        foreign key (id) references auth.users(id)
+    foreign key (id)
+    references auth.users(id)
+    on delete cascade
+    );
+
+-- =========================================
+-- TABLE: avatars
+-- =========================================
+create table if not exists public.avatars (
+    id uuid primary key default gen_random_uuid(),
+    group_id text,
+    type text not null,
+    name text,
+    is_custom boolean default false,
+    created_by uuid,
+    created_at timestamp default now(),
+    constraint avatars_created_by_fkey
+        foreign key (created_by)
+        references auth.users(id)
+        on delete set null
 );
 
 -- =========================================
@@ -84,10 +89,22 @@ create table if not exists public.groups (
     invite_code text unique,
     avatar_id uuid,
     constraint groups_created_by_fkey
-        foreign key (created_by) references auth.users(id),
+        foreign key (created_by)
+        references auth.users(id)
+        on update cascade
+        on delete cascade,
     constraint groups_avatar_id_fkey
-        foreign key (avatar_id) references public.avatars(id)
+        foreign key (avatar_id)
+        references public.avatars(id)
+        on delete set null
 );
+
+-- FK: avatars.group_id → groups.id ON DELETE CASCADE
+alter table public.avatars
+    add constraint avatars_group_id_fkey
+        foreign key (group_id)
+            references public.groups(id)
+            on delete cascade;
 
 -- =========================================
 -- TABLE: groups_members
@@ -98,9 +115,13 @@ create table if not exists public.groups_members (
     user_id uuid,
     created_at timestamp with time zone default now(),
     constraint groups_members_group_id_fkey
-        foreign key (group_id) references public.groups(id),
+        foreign key (group_id)
+        references public.groups(id)
+        on delete cascade,
     constraint groups_members_user_id_fkey
-        foreign key (user_id) references auth.users(id)
+        foreign key (user_id)
+        references auth.users(id)
+        on delete cascade
 );
 
 -- =========================================
@@ -133,22 +154,26 @@ alter table public.groups_members enable row level security;
 create policy "All authenticated users can select all groups"
 on public.groups
 for select
+to authenticated
     using (true);
 
 create policy "Users must be authenticated to create groups"
 on public.groups
 for insert
+to authenticated
 with check (auth.uid() IS NOT NULL);
 
 -- Policies for groups_members
 create policy "Users can insert their own membership"
 on public.groups_members
 for insert
+to authenticated
 with check (auth.uid() = user_id);
 
 create policy "Users can read their memberships"
 on public.groups_members
 for select
+to authenticated
     using (auth.uid() = user_id);
 
 -- =========================================
