@@ -3,9 +3,8 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { User } from "@supabase/auth-js";
-import NavbarApp from "@/components/homepage/navbarApp/navbarApp";
 import styles from "./page.module.scss";
-import EditSettingsModal from "@/components/homepage/settingsModales/editSettingsModal";
+import EditSettingsModal from "@/components/settingsModales/editSettingsModal";
 import { createClient } from "@/utils/supabase/client";
 import { getPublicAvatarUrl } from "@/utils/globalFunctions";
 
@@ -145,8 +144,6 @@ export default function SettingsClient({ initialProfile, initialUser }: Settings
 
     return (
         <div className={styles.settingsPage}>
-            <NavbarApp profile={profile} />
-
             <div className={styles.settingsContainer}>
                 <h1>Page paramètres</h1>
 
@@ -177,12 +174,6 @@ export default function SettingsClient({ initialProfile, initialUser }: Settings
                         <li className={styles.gray2}>
                               <span>
                                   <p>Avatar :</p>
-                                  <Image
-                                      src={getPublicAvatarUrl(fullUser.avatar)}
-                                      alt="Photo de profil"
-                                      width={36}
-                                      height={36}
-                                  />
                               </span>
                             <button onClick={() => handleOpenModal("avatar")}>Importer une image</button>
                         </li>
