@@ -23,11 +23,9 @@ export const doesEmailExist = async (email: string) => {
     }
 };
 
-export const getPublicAvatarUrl = (type: string, path: string | null | undefined ) => {
-    const isGroup = (type === "group");
-
+export const getPublicAvatarUrl = (type: string | undefined, path: string | null | undefined ) => {
     const { data } = supabase.storage
-        .from(`avatars/${isGroup ? "groups" : "users"}`)
+        .from(`avatars/${type ?? ""}`)
         .getPublicUrl(path ?? "default00.jpg");
 
     return data.publicUrl;
