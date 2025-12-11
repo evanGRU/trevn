@@ -1,0 +1,36 @@
+.searchField {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: var(--color-surface);
+  height: 36px;
+  border-radius: var(--radius-08);
+  width: 224px;
+  border: 1px solid var(--color-background-secondary);
+  padding: var(--space-04) var(--space-32) var(--space-04) var(--space-12);
+
+  input {
+    font-size: var(--text-12);
+    color: var(--color-text);
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+
+    &:focus {
+      border: none;
+      outline: none;
+    }
+  }
+
+  .iconContainer {
+    height: 100%;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+  }
+}
