@@ -1,8 +1,12 @@
 import 'dotenv/config';
+// import dotenv from "dotenv";
+// dotenv.config({ path: ".env.local" });
+
 import { createClient } from '@supabase/supabase-js';
 import fetch from 'node-fetch';
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 const STEAM_KEY = process.env.STEAM_KEY;
 const MAX_RESULTS = 50000;
 const DELAY_MS = 500;
