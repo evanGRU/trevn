@@ -1,20 +1,17 @@
 .headerContainer {
   width: 100%;
-  height: 64px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-24);
+  padding: var(--space-24) var(--space-24) var(--space-48) var(--space-24);
 
   h2 {
-    font-size: var(--text-32);
-    line-height: var(--space-32);
+    font-size: var(--text-36);
+    line-height: var(--space-36);
   }
 
   .headerButtonsContainer {
     height: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
     gap: var(--space-12);
 
@@ -23,6 +20,40 @@
       font-weight: 300;
       font-size: var(--text-12);
       padding: 0 var(--space-32);
+    }
+  }
+}
+
+
+.gameCardContainer {
+  margin: 0 var(--space-24);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-32);
+
+  .gameCard {
+    border-radius: var(--radius-16);
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+
+    img {
+      transition: all 0.3s ease;
+      height: 100%;
+      width: 100%;
+      opacity: 0.3;
+      object-fit: contain;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:hover {
+      img {
+        opacity: 1;
+      }
     }
   }
 }

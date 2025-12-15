@@ -1,111 +1,17 @@
-"use client";
+import { createClient } from "@/utils/supabase/server";
+import GroupDetailsClient from "@/app/groups/[groupId]/GroupDetailClient";
 
-import { createClient } from "@/utils/supabase/client";
-import {useParams} from "next/navigation";
-import {GroupDetails, SelectedMenu} from "@/utils/types";
-import {useToasts} from "@/utils/useToasts";
-import styles from "./page.module.scss";
-import {DbImage} from "@/components/general/dbImage/dbImage";
-import {getPublicAvatarUrl} from "@/utils/globalFunctions";
-import useSWR from "swr";
-import {useState} from "react";
-import GamesList from "@/components/app/gamesList/gamesList";
+export default async function GroupsPageLayout() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
 
-
-export default function GroupDetailsPage() {
-    const supabase = createClient();
-    const { groupId } = useParams();
-    const {errorToast} = useToasts()
-    const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>("games")
-
-    const fetchGroupDetails = async (): Promise<GroupDetails> => {
-        const { data, error } = await supabase
-            .from("groups")
-            .select(`
-                id,
-                name,
-                description,
-                avatar:avatars!avatar_id(id, name, type)
-            `)
-            .eq("id", groupId)
-            .single();
-
-        if (error) {
-            errorToast("Une erreur a eu lieu lors de la récupération des infos de ce groupe. Essayer de rafraîchir la page.");
-            throw error;
-        }
-
-        return {
-            ...data,
-            avatar: Array.isArray(data.avatar) ? data.avatar[0] ?? null : data.avatar
-        };
-    };
-
-    const { data: group, mutate: refreshGroup } = useSWR<GroupDetails>(
-        groupId ? ["group", groupId] : null,
-        () => fetchGroupDetails()
-    );
-
-    const getSelectedContent = () => {
-        switch (selectedMenu) {
-            case "games":
-                return <GamesList></GamesList>;
-            case "members":
-                return <h2>Membres</h2>;
-            case "settings":
-                return <h2>Paramètres</h2>;
-        }
-    }
-
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("id, username, avatar_url")
+        .eq("id", user?.id)
+        .single();
 
     return (
-        <div className={styles.groupDetailContainer}>
-            <div className={styles.groupDetailsSection}>
-                <div className={styles.groupDetailsContainer}>
-                    <DbImage
-                        src={getPublicAvatarUrl(group?.avatar.type, group?.avatar.name)}
-                        alt={"Avatar group"}
-                        width={120}
-                        height={120}
-                    />
-                    <div className={styles.groupDetailsContent}>
-                        <h1>{group?.name}</h1>
-                        <p>
-                            A CHANGER !!!!! Le Lorem Ipsum est simplement du faux texte employé dans la page.
-                            Le Lorem Ipsum est simplement du faux texte employé dans la page.
-                            Le Lorem Ipsum est simplement du faux texte employé dans la page.
-                            Le Lorem Ipsum est simplement du faux texte employé dans la page.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <nav className={styles.groupNavbarSection}>
-                <ul>
-                    <li
-                        onClick={() => setSelectedMenu("games")}
-                        className={`${selectedMenu === "games" ? styles.selectedMenu : ""}`}
-                    >
-                        Jeux
-                    </li>
-                    <li
-                        onClick={() => setSelectedMenu("members")}
-                        className={`${selectedMenu === "members" ? styles.selectedMenu : ""}`}
-                    >
-                        Membres
-                    </li>
-                    <li
-                        onClick={() => setSelectedMenu("settings")}
-                        className={`${selectedMenu === "settings" ? styles.selectedMenu : ""}`}
-                    >
-                        Paramètres
-                    </li>
-                </ul>
-            </nav>
-
-            <div className={styles.groupSelectedContent}>
-                {getSelectedContent()}
-            </div>
-        </div>
+        <GroupDetailsClient profile={profile}/>
     );
 }
