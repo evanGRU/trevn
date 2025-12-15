@@ -9,7 +9,8 @@ import {DbImage} from "@/components/general/dbImage/dbImage";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import useSWR from "swr";
 import {useState} from "react";
-import GamesList from "@/components/app/gamesList/gamesList";
+import {GamesList} from "@/components/app/gamesList/gamesList";
+import {useGamesScroll} from "@/utils/GamesScrollContext";
 
 
 export default function GroupDetailsClient({profile}: {profile: Profile}) {
@@ -17,6 +18,7 @@ export default function GroupDetailsClient({profile}: {profile: Profile}) {
     const { groupId } = useParams();
     const {errorToast} = useToasts()
     const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>("games")
+    const gamesListRef = useGamesScroll();
 
     const fetchGroupDetails = async (): Promise<GroupDetails> => {
         const { data, error } = await supabase
@@ -49,7 +51,12 @@ export default function GroupDetailsClient({profile}: {profile: Profile}) {
     const getSelectedContent = () => {
         switch (selectedMenu) {
             case "games":
-                return <GamesList profile={profile} groupId={groupId}/>;
+                return (
+                    <GamesList
+                        ref={gamesListRef}
+                        profile={profile}
+                        groupId={groupId}
+                    />);
             case "members":
                 return <h2>Membres</h2>;
             case "settings":
@@ -57,9 +64,8 @@ export default function GroupDetailsClient({profile}: {profile: Profile}) {
         }
     }
 
-
     return (
-        <div className={styles.groupDetailContainer}>
+        <>
             <div className={styles.groupDetailsSection}>
                 <div className={styles.groupDetailsContainer}>
                     <DbImage
@@ -106,6 +112,6 @@ export default function GroupDetailsClient({profile}: {profile: Profile}) {
             <div className={styles.groupSelectedContent}>
                 {getSelectedContent()}
             </div>
-        </div>
+        </>
     );
 }

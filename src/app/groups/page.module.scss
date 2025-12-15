@@ -12,11 +12,12 @@
   padding-right: var(--space-24);
 
   .mainContentContainer {
-    height: 100%;
     flex: 6;
     border: solid 1px var(--color-background-secondary);
     border-top-left-radius: var(--radius-24);
     border-top-right-radius: var(--radius-24);
+    overflow-Y: scroll;
+    scrollbar-width: none;
 
     .noGroupsContainer {
       width: 100%;
