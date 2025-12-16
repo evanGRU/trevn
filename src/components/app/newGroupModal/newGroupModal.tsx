@@ -5,12 +5,12 @@ import {useEffect, useState} from "react";
 import GlassButton from "@/components/general/glassButton/glassButton";
 import {nanoid} from "nanoid";
 import {createClient} from "@/utils/supabase/client";
-import {useAuthToast} from "@/utils/useAuthToast";
+import {useToasts} from "@/utils/useToasts";
 import {KeyedMutator} from "swr";
-import {AnimatePresence, motion} from "framer-motion";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import {Avatar, Group, Profile} from "@/utils/types";
-import {DbImage} from "@/utils/dbImage/dbImage";
+import {DbImage} from "@/components/general/dbImage/dbImage";
+import ModalWrapper from "@/components/general/modalWrapper/modalWrapper";
 
 interface NewGroupModalProps {
     user: Profile;
@@ -20,7 +20,7 @@ interface NewGroupModalProps {
 
 export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupModalProps) {
     const supabase = createClient();
-    const {successToast, errorToast} = useAuthToast();
+    const {successToast, errorToast} = useToasts();
 
     const [newGroupName, setNewGroupName] = useState<string>("");
     const inviteCode = nanoid(10);
@@ -38,7 +38,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
             const { data, error } = await supabase
                 .from("avatars")
                 .select("id, type, name")
-                .eq("type", "group")
+                .eq("type", "groups")
                 .eq("is_custom", false);
 
             if (error) {
@@ -94,7 +94,7 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                 const {data: avatarData, error: avatarError} = await supabase
                     .from("avatars")
                     .insert({
-                        type: "group",
+                        type: "groups",
                         name: fileName,
                         is_custom: true,
                         created_by: user.id
@@ -232,136 +232,112 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
     };
 
     return defaultAvatars.length > 1 && (
-        <div className={styles.fullBackground}>
-            <AnimatePresence mode="wait">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    <div className={styles.newGroupModalContainer}>
-                        <div className={styles.createGroupContainer}>
-                            <div className={styles.formHeader}>
-                                <h1>Créer un nouveau groupe</h1>
-                                <p>Fais de ton groupe un espace unique en choisissant son nom et son icône.</p>
-                            </div>
+        <ModalWrapper setModal={setModal} closeIconPosition={{top: "326px", right: "272px"}}>
+            <div className={styles.createGroupContainer}>
+                <div className={styles.formHeader}>
+                    <h1>Créer un nouveau groupe</h1>
+                    <p>Fais de ton groupe un espace unique en choisissant son nom et son icône.</p>
+                </div>
 
-                            <form className={styles.createGroupForm} onSubmit={handleCreateGroup}>
-                                <div className={styles.avatarInput}>
-                                    <label htmlFor={"avatar"}>Avatar de groupe <span>*</span></label>
-                                    <div className={styles.avatarContainer}>
-                                        <button
-                                            type={"button"}
-                                            className={`${styles.avatarPreviewButton} ${previewUrl ? styles.avatarPreviewButtonFull : ""} ${errorMessages.avatar ? styles.requiredError : ""}`}>
-                                            <label htmlFor="avatarInput">
-                                                {previewUrl ? (
-                                                    <DbImage
-                                                        src={previewUrl}
-                                                        alt="Preview avatar"
-                                                        width={96}
-                                                        height={96}
-                                                    />
-                                                ) : (
-                                                    <Image
-                                                        src="/icons/avatar.svg"
-                                                        alt="Icône avatar"
-                                                        width={32}
-                                                        height={32}
-                                                    />
-                                                )}
-                                            </label>
-                                            <input
-                                                id="avatarInput"
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={handleFileSelect}
-                                            />
-                                        </button>
-
-                                        <div className={styles.avatarsButtonsContainer}>
-                                            <p>Si tu ne sais pas quoi mettre voici quelques idées, tu pourras toujours le modifier plus tard.</p>
-                                            <div className={styles.avatarsSelectors}>
-                                                {defaultAvatars.map((avatar) => (
-                                                    <DbImage
-                                                        key={avatar.id}
-                                                        src={getPublicAvatarUrl("group", avatar.name)}
-                                                        alt="Avatar par défaut"
-                                                        width={48}
-                                                        height={48}
-                                                        className={styles.suggestedAvatar}
-                                                        onClick={() => {
-                                                            setErrorMessages((prev) => ({
-                                                                    ...prev,
-                                                                    avatar: ""
-                                                            }));
-                                                            setSelectedAvatar(avatar.id);
-                                                            setPreviewUrl(getPublicAvatarUrl("group", avatar.name));
-                                                        }}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <DefaultField
-                                    type={"text"}
-                                    label={"Nom du groupe"}
-                                    value={newGroupName}
-                                    handleChange={(e) => handleChange("name", e.target.value)}
-                                    isRequired={true}
-                                    errorMessage={errorMessages?.name}
-                                />
-
-                                <div className={styles.submitButton}>
-                                    <GlassButton
-                                        type={"submit"}
-                                        isDisabled={isDisabled}
-                                    >Créer mon groupe</GlassButton>
-                                </div>
-                            </form>
-
-
-                        </div>
-
-                        <div className={styles.joinGroupContainer}>
-                            <h3>Tu as un code d&apos;invitation?</h3>
-
-                            <form className={styles.joinGroupForm} onSubmit={handleJoinGroup}>
+                <form className={styles.createGroupForm} onSubmit={handleCreateGroup}>
+                    <div className={styles.avatarInput}>
+                        <label htmlFor={"avatar"}>Avatar de groupe <span>*</span></label>
+                        <div className={styles.avatarContainer}>
+                            <button
+                                type={"button"}
+                                className={`${styles.avatarPreviewButton} ${previewUrl ? styles.avatarPreviewButtonFull : ""} ${errorMessages.avatar ? styles.requiredError : ""}`}>
+                                <label htmlFor="avatarInput">
+                                    {previewUrl ? (
+                                        <DbImage
+                                            src={previewUrl}
+                                            alt="Preview avatar"
+                                            width={96}
+                                            height={96}
+                                        />
+                                    ) : (
+                                        <Image
+                                            src="/icons/avatar.svg"
+                                            alt="Avatar icon"
+                                            width={32}
+                                            height={32}
+                                        />
+                                    )}
+                                </label>
                                 <input
-                                    name="invitationCode"
-                                    type="text"
-                                    placeholder="Code d'invitation"
-                                    autoComplete="off"
-                                    autoCorrect="off"
-                                    onChange={() => {
-                                        setErrorMessages(prev => ({
-                                            ...prev,
-                                            invitationCode: ""
-                                        }));
-                                    }}
+                                    id="avatarInput"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileSelect}
                                 />
-                                <button type={"submit"} disabled={!!errorMessages.invitationCode} className={`${!!errorMessages.invitationCode ? "glassButtonDisabled" : ""}`}>Rejoindre</button>
-                            </form>
-                            {errorMessages.invitationCode && <p className={"errorMessage"}>{errorMessages.invitationCode}</p>}
+                            </button>
+
+                            <div className={styles.avatarsButtonsContainer}>
+                                <p>Si tu ne sais pas quoi mettre voici quelques idées, tu pourras toujours le modifier plus tard.</p>
+                                <div className={styles.avatarsSelectors}>
+                                    {defaultAvatars.map((avatar) => (
+                                        <DbImage
+                                            key={avatar.id}
+                                            src={getPublicAvatarUrl(avatar.type, avatar.name)}
+                                            alt="Avatar preset"
+                                            width={48}
+                                            height={48}
+                                            className={styles.suggestedAvatar}
+                                            onClick={() => {
+                                                setErrorMessages((prev) => ({
+                                                    ...prev,
+                                                    avatar: ""
+                                                }));
+                                                setSelectedAvatar(avatar.id);
+                                                setPreviewUrl(getPublicAvatarUrl(avatar.type, avatar.name));
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <button
-                        type={"button"}
-                        className={styles.closeModalIcon}
-                        onClick={() => setModal(false)}
-                    >
-                        <Image
-                            src="/icons/close.svg"
-                            alt="Icône de fermeture"
-                            width={24}
-                            height={24}
-                        />
-                    </button>
-                </motion.div>
-            </AnimatePresence>
-        </div>
+                    <DefaultField
+                        type={"text"}
+                        label={"Nom du groupe"}
+                        value={newGroupName}
+                        handleChange={(e) => handleChange("name", e.target.value)}
+                        isRequired={true}
+                        errorMessage={errorMessages?.name}
+                    />
+
+                    <div className={styles.submitButton}>
+                        <GlassButton
+                            type={"submit"}
+                            isDisabled={isDisabled}
+                        >Créer mon groupe</GlassButton>
+                    </div>
+                </form>
+
+
+            </div>
+
+            <div className={styles.joinGroupContainer}>
+                <h3>Tu as un code d&apos;invitation?</h3>
+
+                <form className={styles.joinGroupForm} onSubmit={handleJoinGroup}>
+                    <input
+                        name="invitationCode"
+                        type="text"
+                        placeholder="Code d'invitation"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        onChange={() => {
+                            setErrorMessages(prev => ({
+                                ...prev,
+                                invitationCode: ""
+                            }));
+                        }}
+                    />
+                    <button type={"submit"} disabled={!!errorMessages.invitationCode} className={`${!!errorMessages.invitationCode ? "glassButtonDisabled" : ""}`}>Rejoindre</button>
+                </form>
+                {errorMessages.invitationCode && <p className={"errorMessage"}>{errorMessages.invitationCode}</p>}
+            </div>
+        </ModalWrapper>
     )
 }

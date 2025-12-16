@@ -18,7 +18,7 @@ const quinn = localFont({
 })
 
 export const metadata: Metadata = {
-    title: "Trevn - Choisissez ensemble à quoi jouer ce soir.",
+    title: "Trevn - Choisissez ensemble à quoi jouer ce soir",
     description: "La plateforme pour organiser vos soirées gaming, proposer des jeux et voter entre potes",
     icons: {
         icon: '/favicon.svg',

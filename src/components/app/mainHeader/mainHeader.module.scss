@@ -1,0 +1,57 @@
+.mainHeader {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-24);
+
+  .logo {
+    height: 36px;
+    width: 60px;
+  }
+
+  .profileContainer {
+    display: flex;
+    gap: var(--space-08);
+
+    .usernameContainer {
+      border: solid 1px var(--color-background-secondary);
+      border-radius: var(--radius-08);
+      background-color: var(--color-surface);
+      height: 36px;
+      display: flex;
+      align-items: center;
+      padding: var(--space-04);
+      min-width: 150px;
+      gap: var(--space-04);
+
+      img {
+        border-radius: var(--radius-04);
+        border: solid 1px var(--color-background-secondary);
+        height: 28px;
+        width: 28px;
+      }
+
+      p {
+        font-family: var(--font-heading), sans-serif;
+        font-size: var(--text-24);
+      }
+    }
+
+    .glassIconButton {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-08);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+    }
+  }
+}

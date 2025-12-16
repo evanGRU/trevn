@@ -7,22 +7,23 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env_name: ["Production – trevn-preprod", "Production – trevn"]
+
+    environment: ${{ matrix.env_name }}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install
+      - run: npm install
 
       - name: Run Steam sync script
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           STEAM_KEY: ${{ secrets.STEAM_KEY }}
         run: node scripts/fetch_steam_dump.mjs

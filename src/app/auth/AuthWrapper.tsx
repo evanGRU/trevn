@@ -10,7 +10,7 @@ import {TickIcon} from "@/utils/svg";
 import {createClient} from "@/utils/supabase/client";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
-import {useAuthToast} from "@/utils/useAuthToast";
+import {useToasts} from "@/utils/useToasts";
 import ForgotPasswordModal from "@/components/webPage/forgotPasswordModal/forgotPasswordModal";
 import {doesEmailExist, isEmail} from "@/utils/globalFunctions";
 
@@ -33,7 +33,7 @@ export default function AuthForm({ type }: {type: Type}) {
     const supabase = createClient();
     const router = useRouter();
     const isLogin = type === "login";
-    const {successToast, errorToast} = useAuthToast();
+    const {successToast, errorToast} = useToasts();
     const [formValues, setFormValues] = useState<FormValues>({
         username: "",
         email: "",

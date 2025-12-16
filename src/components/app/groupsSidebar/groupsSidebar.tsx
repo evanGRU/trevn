@@ -1,19 +1,23 @@
-import styles from "./groupsList.module.scss";
+import styles from "./groupsSidebar.module.scss";
 import Image from "next/image";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
 import {Group} from "@/utils/types";
-import {DbImage} from "@/utils/dbImage/dbImage";
+import {DbImage} from "@/components/general/dbImage/dbImage";
+import Link from "next/link";
+import {useParams} from "next/navigation";
 
 interface GroupsListProps {
     groups: Group[];
     setModalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function GroupsList({groups, setModalState}: GroupsListProps) {
+export default function GroupsSidebar({groups, setModalState}: GroupsListProps) {
+    const params = useParams();
+    const selectedGroupId = params.groupId;
 
     return (
-        <div className={styles.groupsListSection}>
+        <aside className={styles.groupsListSection}>
             <div className={styles.groupsListContainer}>
                 <div className={styles.groupsListHeader}>
                     <div className={styles.groupsTitle}>
@@ -33,15 +37,19 @@ export default function GroupsList({groups, setModalState}: GroupsListProps) {
                 {groups.length > 0 && (
                     <div className={styles.groupsList}>
                         {groups.map((g: Group) => (
-                            <div key={`groupe-${g?.id}`} className={styles.groupCard}>
+                            <Link
+                                key={`groupe-${g?.id}`}
+                                className={`${styles.groupCard} ${g?.id === selectedGroupId ? styles.selectedGroup : ""}`}
+                                href={`/groups/${g?.id}`}
+                            >
                                 <DbImage
-                                    src={getPublicAvatarUrl("group", g?.avatar?.name)}
-                                    alt="Avatar"
+                                    src={getPublicAvatarUrl(g?.avatar.type, g?.avatar.name)}
+                                    alt="Group avatar"
                                     width={48}
                                     height={48}
                                 />
                                 <p>{g?.name}</p>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 )}
@@ -52,7 +60,7 @@ export default function GroupsList({groups, setModalState}: GroupsListProps) {
                     <DefaultButton handleClick={() => setModalState(true)}>
                         <Image
                             src="/icons/plus.svg"
-                            alt="Icône ajout"
+                            alt="Plus icon"
                             width={20}
                             height={20}
                         />
@@ -60,6 +68,6 @@ export default function GroupsList({groups, setModalState}: GroupsListProps) {
                     </DefaultButton>
                 </div>
             )}
-        </div>
+        </aside>
     )
 }
