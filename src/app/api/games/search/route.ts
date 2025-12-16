@@ -1,9 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import {createSupabaseServerClient} from "@/utils/supabase/server";
 
 const normalizeString = (str: string) =>
     str.toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
@@ -35,6 +30,7 @@ async function getValidImage(appId: number) {
 }
 
 export async function GET(req: Request) {
+    const supabase = await createSupabaseServerClient();
     const { searchParams } = new URL(req.url);
     const rawQuery = searchParams.get("q")?.trim() ?? "";
 
