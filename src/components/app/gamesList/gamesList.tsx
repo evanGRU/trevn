@@ -88,6 +88,7 @@ export const GamesList = forwardRef<GamesListHandle, {profile: Profile, groupId:
                                 game={game}
                                 groupId={groupId}
                                 refreshGamesList={refreshGamesList}
+                                gamesList={filteredGames}
                             />
                         ))}
                     </div>

@@ -20,6 +20,11 @@
     .mainImage {
       opacity: 1;
     }
+    .bottomButtons {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
   }
 
   .gameCardInterface {
@@ -30,47 +35,104 @@
     flex-direction: column;
     justify-content: space-between;
 
-    .topButtons {
+    .glass {
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: var(--space-12);
+      justify-content: center;
+    }
+  }
+}
 
-      .glassElement {
-        height: 32px;
-        width: 32px;
-        border-radius: var(--radius-full);
-        background-color: rgba(255, 255, 255, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+.topButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-12);
 
-        h4 {
-          font-size: var(--text-16);
-          font-weight: 400;
-          transform: translateY(1px);
-          line-height: var(--space-16);
-        }
+  .glass {
+    height: 32px;
+    width: 32px;
+    border-radius: var(--radius-full);
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 
-        img {
-          height: 20px;
-          width: 20px;
-        }
-      }
+    h4 {
+      font-size: var(--text-16);
+      font-weight: 400;
+      transform: translateY(1px);
+      line-height: var(--space-16);
+    }
 
-      .glassButton {
-        cursor: pointer;
-        padding: 0;
+    img {
+      height: 20px;
+      width: 20px;
+    }
+  }
 
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.5);
-          box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
-      }
+  .glassButton {
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+  }
+}
+
+.bottomButtons {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-08);
+  padding: var(--space-12);
+  height: 80px;
+  border-bottom-right-radius: var(--radius-16);
+  border-bottom-left-radius: var(--radius-16);
+  background: linear-gradient(180deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.8) 100%);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: all 0.3s ease;
+
+  a {
+    height: 32px;
+    width: 100%;
+    border-radius: var(--radius-08);
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    font-size: var(--text-12);
+    font-weight: 400;
+    text-decoration: none;
+    color: var(--color-text);
+    line-height: var(--space-12);
+
+    img {
+      height: 16px;
+      width: 16px;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .glassDeleteButton {
+    height: 32px;
+    width: 32px !important;
+    flex-shrink: 0;
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    border-radius: var(--radius-08);
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+      background-color: rgba(255, 0, 0, 0.3);
+      border: 1px solid rgba(255, 0, 0, 0.4);
     }
   }
 }
