@@ -1,9 +1,4 @@
-import {createClient} from "@supabase/supabase-js";
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import {createSupabaseServerClient} from "@/utils/supabase/server";
 
 const steamLibraryImages = (appId: number) => [
     // Best quality first
@@ -33,6 +28,7 @@ async function getLibraryImage(appId: number) {
 }
 
 export async function GET(req: Request) {
+    const supabase = await createSupabaseServerClient()
     const { searchParams } = new URL(req.url);
     const groupId = searchParams.get("groupId");
 
@@ -41,10 +37,12 @@ export async function GET(req: Request) {
     }
 
     const { data, error } = await supabase
-        .from("groups_games")
+        .from("groups_games_with_likes")
         .select(`
-            game_id,
-            steam_apps_min!inner(id, name)
+            id:game_id,
+            name,
+            likes_count,
+            is_liked
         `)
         .eq("group_id", groupId);
 
@@ -54,14 +52,14 @@ export async function GET(req: Request) {
 
     const gamesWithImages = await Promise.all(
         (data ?? []).map(async (row) => {
-            const game = row.steam_apps_min;
-            const {name, id}: any = game;
-            const image = await getLibraryImage(id);
+            const imageUrl = await getLibraryImage(row.id);
 
             return {
-                id: id,
-                name: name,
-                imageUrl: image,
+                id: row.id,
+                name: row.name,
+                imageUrl,
+                likes_count: row.likes_count,
+                is_liked: row.is_liked
             };
         })
     );

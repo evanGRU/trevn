@@ -32,8 +32,17 @@ export type GroupDetails = {
 
 export type SelectedMenu = "games" | "members" | "settings";
 
+// Games
 export type GameResult = {
     id: number;
     imageUrl: string;
+    name: string;
+};
+
+export type GameCapsuleData = {
+    id: number;
+    imageUrl: string;
+    is_liked: boolean;
+    likes_count: number;
     name: string;
 };

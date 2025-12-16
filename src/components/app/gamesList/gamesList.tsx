@@ -3,12 +3,12 @@ import GlassButton from "@/components/general/glassButton/glassButton";
 import SearchField from "@/components/general/searchField/searchField";
 import {forwardRef, useImperativeHandle, useMemo, useRef, useState} from "react";
 import AddGameModal from "@/components/app/addGameModal/addGameModal";
-import {GameResult, Profile} from "@/utils/types";
+import {GameCapsuleData, Profile} from "@/utils/types";
 import useSWR from "swr";
-import Image from "next/image";
 import {ParamValue} from "next/dist/server/request/params";
 import {useToasts} from "@/utils/useToasts";
 import {useDebounce} from "@/utils/useDebounce";
+import GameCapsule from "@/components/app/gameCapsule/gameCapsule";
 
 export type GamesListHandle = {
     enableScroll: () => void;
@@ -40,7 +40,7 @@ export const GamesList = forwardRef<GamesListHandle, {profile: Profile, groupId:
         const q = debouncedSearch.toLowerCase().trim();
         if (!q) return gamesList;
 
-        return gamesList.filter((game: GameResult) =>
+        return gamesList.filter((game: GameCapsuleData) =>
             game.name.toLowerCase().includes(q)
         );
     }, [gamesList, debouncedSearch]);
@@ -82,15 +82,13 @@ export const GamesList = forwardRef<GamesListHandle, {profile: Profile, groupId:
                 )}
                 {filteredGames.length > 0 ? (
                     <div className={styles.gameCardContainer}>
-                        {filteredGames?.map((game: GameResult) => (
-                            <div key={`game-card-${game.id}`} className={styles.gameCard}>
-                                <Image
-                                    src={game.imageUrl}
-                                    alt={game.name}
-                                    height={900}
-                                    width={600}
-                                />
-                            </div>
+                        {filteredGames?.map((game: GameCapsuleData) => (
+                            <GameCapsule
+                                key={`game-card-${game.id}`}
+                                game={game}
+                                groupId={groupId}
+                                refreshGamesList={refreshGamesList}
+                            />
                         ))}
                     </div>
                 ) : (search && (

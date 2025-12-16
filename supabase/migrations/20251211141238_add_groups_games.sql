@@ -19,7 +19,7 @@ create table if not exists public.groups_games (
         foreign key (added_by)
         references auth.users(id)
         on delete set null,
-    CONSTRAINT groups_games_unique UNIQUE (group_id, game_id)
+    constraint groups_games_unique unique (group_id, game_id)
 );
 
 -- INDEXES
