@@ -3,7 +3,7 @@
 import toast from "react-hot-toast";
 import CustomToast from "@/components/general/customToast/customToast";
 
-export function useAuthToast() {
+export function useToasts() {
     const successToast = (successMessage: string) => {
         toast.custom(<CustomToast title={successMessage} type={"success"}/>);
     };

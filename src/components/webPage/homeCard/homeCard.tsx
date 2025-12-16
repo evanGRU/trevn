@@ -18,7 +18,7 @@ export default function HomeCard({children, variant = "default", cardPosition}: 
             <div className={styles.cardIcon}>
                 <Image
                     src={`/webPage/cards/CardIcon${capitalize(cardPosition)}.svg`}
-                    alt={"card icon"}
+                    alt={"Card icon"}
                     width={32}
                     height={32}
                 />

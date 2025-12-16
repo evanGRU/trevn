@@ -15,6 +15,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-08);
+  line-height: var(--space-16);
 
   &:hover {
     background: var(--color-background-secondary-hover);

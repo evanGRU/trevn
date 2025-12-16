@@ -1,8 +1,8 @@
-import { createClient } from '@/utils/supabase/server';
+import { createSupabaseServerClient } from '@/utils/supabase/server';
 import SettingsClient from './SettingsClient';
 
 export default async function Settings() {
-    const supabase = await createClient();
+    const supabase = await createSupabaseServerClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     const { data: profileData } = await supabase
