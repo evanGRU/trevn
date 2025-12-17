@@ -27,7 +27,6 @@ export default function GroupDetailsClient({profile}: {profile: Profile}) {
                 return (
                     <GamesList
                         ref={gamesListRef}
-                        profile={profile}
                         groupId={groupId}
                     />);
             case "members":
