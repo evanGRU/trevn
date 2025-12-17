@@ -1,12 +1,10 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
 import {useParams} from "next/navigation";
-import {GroupDetails, Profile, SelectedMenu} from "@/utils/types";
-import {useToasts} from "@/utils/useToasts";
+import {Profile, SelectedMenu} from "@/utils/types";
 import styles from "./page.module.scss";
 import {DbImage} from "@/components/general/dbImage/dbImage";
-import {getPublicAvatarUrl} from "@/utils/globalFunctions";
+import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
 import useSWR from "swr";
 import {useState} from "react";
 import {GamesList} from "@/components/app/gamesList/gamesList";
@@ -14,38 +12,13 @@ import {useGamesScroll} from "@/utils/GamesScrollContext";
 
 
 export default function GroupDetailsClient({profile}: {profile: Profile}) {
-    const supabase = createClient();
     const { groupId } = useParams();
-    const {errorToast} = useToasts()
     const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>("games")
     const gamesListRef = useGamesScroll();
 
-    const fetchGroupDetails = async (): Promise<GroupDetails> => {
-        const { data, error } = await supabase
-            .from("groups")
-            .select(`
-                id,
-                name,
-                description,
-                avatar:avatars!avatar_id(id, name, type)
-            `)
-            .eq("id", groupId)
-            .single();
-
-        if (error) {
-            errorToast("Une erreur a eu lieu lors de la récupération des infos de ce groupe. Essayer de rafraîchir la page.");
-            throw error;
-        }
-
-        return {
-            ...data,
-            avatar: Array.isArray(data.avatar) ? data.avatar[0] ?? null : data.avatar
-        };
-    };
-
-    const { data: group, mutate: refreshGroup } = useSWR<GroupDetails>(
-        groupId ? ["group", groupId] : null,
-        () => fetchGroupDetails()
+    const { data: group, isLoading, mutate: refreshGroup } = useSWR(
+        groupId ? `/api/groups/detail?groupId=${groupId}` : null,
+        (url) => fetcher(url, "Impossible de récupérer les infos de ce groupe. Essaye de rafraîchir la page.")
     );
 
     const getSelectedContent = () => {
@@ -64,7 +37,7 @@ export default function GroupDetailsClient({profile}: {profile: Profile}) {
         }
     }
 
-    return (
+    return !isLoading && (
         <>
             <div className={styles.groupDetailsSection}>
                 <div className={styles.groupDetailsContainer}>

@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     try {
         const { email } = await request.json();
         if (!email) {
-            return NextResponse.json({ error: "Email manquant" }, { status: 400 });
+            return NextResponse.json({ error: "Missing email" }, { status: 400 });
         }
 
         const { data, error } = await supabaseAdmin.auth.admin.listUsers({
@@ -24,6 +24,6 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ exists });
     } catch (err) {
-        return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+        return NextResponse.json({ error: "Server Error" }, { status: 500 });
     }
 }

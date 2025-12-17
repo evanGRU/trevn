@@ -3,12 +3,12 @@ import GlassButton from "@/components/general/glassButton/glassButton";
 import SearchField from "@/components/general/searchField/searchField";
 import {forwardRef, useImperativeHandle, useMemo, useRef, useState} from "react";
 import AddGameModal from "@/components/app/addGameModal/addGameModal";
-import {GameCapsuleData, Profile} from "@/utils/types";
+import {GameCapsuleData} from "@/utils/types";
 import useSWR from "swr";
 import {ParamValue} from "next/dist/server/request/params";
-import {useToasts} from "@/utils/useToasts";
 import {useDebounce} from "@/utils/useDebounce";
 import GameCapsule from "@/components/app/gameCapsule/gameCapsule";
+import { fetcher } from "@/utils/globalFunctions";
 
 export type GamesListHandle = {
     enableScroll: () => void;
@@ -16,23 +16,16 @@ export type GamesListHandle = {
     isAtTop: () => boolean;
 };
 
-export const GamesList = forwardRef<GamesListHandle, {profile: Profile, groupId: ParamValue}>(({profile, groupId}, ref) => {
+export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue}>(({groupId}, ref) => {
     const [isAddGameModalOpen, setIsAddGameModalOpen] = useState(false);
-    const {errorToast} = useToasts();
-
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search, 500);
-
     const gamesRef = useRef<HTMLDivElement>(null);
 
-    const { data: gamesList, error, isLoading, mutate: refreshGamesList } = useSWR(
+    const { data: gamesList, isLoading, mutate: refreshGamesList } = useSWR(
         groupId ? `/api/games?groupId=${groupId}` : null,
-        (url) => fetch(url).then(r => r.json())
+        (url) => fetcher(url, "Impossible de récupérer la liste des jeux. Essaye de rafraîchir la page.")
     );
-
-    if (error) {
-        errorToast('Une erreur a eu lieu lors de la récupération des jeux. Essayer de rafraîchir la page.')
-    }
 
     const filteredGames = useMemo(() => {
         if (!gamesList) return [];
@@ -103,7 +96,6 @@ export const GamesList = forwardRef<GamesListHandle, {profile: Profile, groupId:
             {isAddGameModalOpen && (
                 <AddGameModal
                     setModal={setIsAddGameModalOpen}
-                    profile={profile}
                     groupId={groupId}
                     refreshGamesList={refreshGamesList}
                 />

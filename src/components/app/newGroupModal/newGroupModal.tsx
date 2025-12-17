@@ -4,22 +4,19 @@ import DefaultField from "@/components/general/defaultField/defaultField";
 import {useEffect, useState} from "react";
 import GlassButton from "@/components/general/glassButton/glassButton";
 import {nanoid} from "nanoid";
-import {createClient} from "@/utils/supabase/client";
 import {useToasts} from "@/utils/useToasts";
-import {KeyedMutator} from "swr";
-import {getPublicAvatarUrl} from "@/utils/globalFunctions";
-import {Avatar, Group, Profile} from "@/utils/types";
+import useSWR, {KeyedMutator} from "swr";
+import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
+import {Avatar, Group} from "@/utils/types";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import ModalWrapper from "@/components/general/modalWrapper/modalWrapper";
 
 interface NewGroupModalProps {
-    user: Profile;
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
     refreshGroups: KeyedMutator<Group[]>;
 }
 
-export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupModalProps) {
-    const supabase = createClient();
+export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalProps) {
     const {successToast, errorToast} = useToasts();
 
     const [newGroupName, setNewGroupName] = useState<string>("");
@@ -29,29 +26,22 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
 
-    const [defaultAvatars, setDefaultAvatars] = useState<Avatar[]>([]);
     const [isDisabled, setIsDisabled] = useState(false);
-    const [errorMessages, setErrorMessages] = useState<{[key: string]: string}>({})
+    const [errorMessages, setErrorMessages] = useState<{[key: string]: string}>({});
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { data: avatarsPresets, error: avatarPresetsError, isLoading: isAvatarsPresetsLoading } = useSWR(
+        '/api/avatars/presets',
+        (url) => fetcher(url, "Impossible de charger les presets d'avatars")
+    );
 
     useEffect(() => {
-        const fetchDefaultAvatars = async () => {
-            const { data, error } = await supabase
-                .from("avatars")
-                .select("id, type, name")
-                .eq("type", "groups")
-                .eq("is_custom", false);
-
-            if (error) {
-                errorToast('Une erreur s\'est produite, veuillez réessayer.');
-                setModal(false);
-                throw error;
-            }
-
-            setDefaultAvatars(data);
+        if (avatarPresetsError) {
+            errorToast("Une erreur s'est produite, veuillez réessayer.")
+            setModal(false)
         }
+    }, [avatarPresetsError]);
 
-        fetchDefaultAvatars();
-    }, []);
 
     const validateForm = () => {
         const errors: {[key: string]: string} = {};
@@ -68,105 +58,44 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
         return Object.keys(errors).length === 0;
     };
 
-    const handleCreateGroup = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!user?.id) return;
+    const handleCreateGroup = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (isDisabled) return;
         if (!validateForm()) return;
 
+        setIsLoading(true);
+
+        const formData = new FormData();
+        formData.append('name', newGroupName);
+        formData.append('inviteCode', inviteCode);
+
+        if (selectedAvatar) {
+            formData.append('avatarId', selectedAvatar);
+        }
+
+        if (imageFile) {
+            formData.append('image', imageFile);
+        }
+
         try {
-            setIsDisabled(true);
-            let avatarId: string | null = selectedAvatar ?? null;
+            const res = await fetch('/api/groups/new', {
+                method: 'POST',
+                body: formData,
+            });
 
-            if (imageFile) {
-                const fileExt = imageFile.name.split(".").pop();
-                const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+            const data = await res.json();
 
-                const {error: uploadError} = await supabase.storage
-                    .from("avatars/groups")
-                    .upload(fileName, imageFile, {upsert: true});
-
-                if (uploadError) {
-                    setIsDisabled(false);
-                    errorToast("Impossible d'importer l'avatar de groupe, veuillez réessayer.");
-                    return;
-                }
-
-                const {data: avatarData, error: avatarError} = await supabase
-                    .from("avatars")
-                    .insert({
-                        type: "groups",
-                        name: fileName,
-                        is_custom: true,
-                        created_by: user.id
-                    })
-                    .select("*")
-                    .single();
-
-                if (avatarError || !avatarData) {
-                    setIsDisabled(false);
-                    errorToast("Impossible d’enregistrer l’avatar, veuillez réessayer.");
-                    return;
-                }
-
-                avatarId = avatarData.id;
-            }
-
-            const { data: groupData, error: groupError } = await supabase
-                .from("groups")
-                .insert({
-                    name: newGroupName,
-                    created_by: user.id,
-                    invite_code: inviteCode,
-                    avatar_id: avatarId
-                })
-                .select(`
-                    *,
-                    groups_members (
-                        user_id
-                    )
-                `)
-                .single();
-
-            if (groupError || !groupData) {
-                setIsDisabled(false);
-                errorToast("Impossible de créer le groupe, veuillez réessayer.");
-                return;
-            }
-
-            if (imageFile) {
-                const { error: linkAvatarError } = await supabase
-                    .from("avatars")
-                    .update({group_id: groupData.id})
-                    .eq('id', avatarId);
-
-                if (linkAvatarError) {
-                    setIsDisabled(false);
-                    errorToast("Une erreur est survenue lors de l’ajout de l'avatar.");
-                    return;
-                }
-            }
-
-            const { error: linkError } = await supabase
-                .from("groups_members")
-                .insert({
-                    group_id: groupData.id,
-                    user_id: user.id
-                });
-
-            if (linkError) {
-                setIsDisabled(false);
-                errorToast("Une erreur est survenue lors de l’ajout du membre.");
-                return;
+            if (!res.ok) {
+                throw new Error(data.error);
             }
 
             setModal(false);
             await refreshGroups();
-            successToast("Ton groupe a été créé avec succès !");
-
-        } catch (err) {
+            successToast('Ton groupe a été créé avec succès !');
+        } catch (err: any) {
+            errorToast(err.message || 'Erreur lors de la création du groupe');
+        } finally {
             setIsDisabled(false);
-            console.error(err);
-            errorToast("Une erreur inattendue s'est produite.");
         }
     };
 
@@ -201,37 +130,48 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
 
     const handleJoinGroup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (isLoading) return;
+        setIsLoading(true);
+
         const formData = new FormData(e.currentTarget);
-        const code = formData.get("invitationCode") as string;
+        const code = formData.get('invitationCode')?.toString().trim();
 
         if (!code) {
             setErrorMessages(prev => ({
                 ...prev,
-                invitationCode: "Un code d'invitation est requis."
+                invitationCode: "Un code d'invitation est requis.",
             }));
-            return
+            setIsLoading(false);
+            return;
         }
 
-        const res = await fetch("/api/groups/join", {
-            method: "POST",
-            body: JSON.stringify({ code }),
-        });
+        try {
+            const res = await fetch('/api/groups/join', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code }),
+            })
 
-        const data = await res.json();
+            const data = await res.json();
 
-        if (!res.ok) {
-            setErrorMessages(prev => ({
-                ...prev,
-                invitationCode: data.error
-            }));
-        } else {
-            setModal(false);
+            if (!res.ok) {
+                setErrorMessages(prev => ({ ...prev, invitationCode: data.error }));
+                return;
+            }
+
             await refreshGroups();
-            successToast("Tu as bien rejoint le groupe !");
+            setModal(false);
+            successToast('Tu as bien rejoint le groupe !');
+        } catch (err: any) {
+            console.error(err.message);
+            errorToast("Une erreur s'est produite.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    return defaultAvatars.length > 1 && (
+    return !isAvatarsPresetsLoading && (
         <ModalWrapper setModal={setModal} closeIconPosition={{top: "326px", right: "272px"}}>
             <div className={styles.createGroupContainer}>
                 <div className={styles.formHeader}>
@@ -274,14 +214,14 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                             <div className={styles.avatarsButtonsContainer}>
                                 <p>Si tu ne sais pas quoi mettre voici quelques idées, tu pourras toujours le modifier plus tard.</p>
                                 <div className={styles.avatarsSelectors}>
-                                    {defaultAvatars.map((avatar) => (
+                                    {avatarsPresets?.map((avatar: Avatar) => (
                                         <DbImage
                                             key={avatar.id}
                                             src={getPublicAvatarUrl(avatar.type, avatar.name)}
                                             alt="Avatar preset"
                                             width={48}
                                             height={48}
-                                            className={styles.suggestedAvatar}
+                                            className={`${styles.avatarPreset} ${selectedAvatar === avatar.id ? styles.selectedAvatar : ""}`}
                                             onClick={() => {
                                                 setErrorMessages((prev) => ({
                                                     ...prev,
@@ -309,17 +249,16 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                     <div className={styles.submitButton}>
                         <GlassButton
                             type={"submit"}
-                            isDisabled={isDisabled}
-                        >Créer mon groupe</GlassButton>
+                            isDisabled={isLoading || isDisabled}
+                        >
+                            Créer mon groupe
+                        </GlassButton>
                     </div>
                 </form>
-
-
             </div>
 
             <div className={styles.joinGroupContainer}>
                 <h3>Tu as un code d&apos;invitation?</h3>
-
                 <form className={styles.joinGroupForm} onSubmit={handleJoinGroup}>
                     <input
                         name="invitationCode"
@@ -334,7 +273,14 @@ export default function NewGroupModal({user, setModal, refreshGroups}: NewGroupM
                             }));
                         }}
                     />
-                    <button type={"submit"} disabled={!!errorMessages.invitationCode} className={`${!!errorMessages.invitationCode ? "glassButtonDisabled" : ""}`}>Rejoindre</button>
+
+                    <button
+                        type={"submit"}
+                        disabled={!!errorMessages.invitationCode || isLoading}
+                        className={`${!!errorMessages.invitationCode || isLoading? "glassButtonDisabled" : ""}`}
+                    >
+                        Rejoindre
+                    </button>
                 </form>
                 {errorMessages.invitationCode && <p className={"errorMessage"}>{errorMessages.invitationCode}</p>}
             </div>

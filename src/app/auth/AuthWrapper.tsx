@@ -7,12 +7,11 @@ import GlassButton from "@/components/general/glassButton/glassButton";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {TickIcon} from "@/utils/svg";
-import {createClient} from "@/utils/supabase/client";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useToasts} from "@/utils/useToasts";
 import ForgotPasswordModal from "@/components/webPage/forgotPasswordModal/forgotPasswordModal";
-import {doesEmailExist, isEmail} from "@/utils/globalFunctions";
+import {isEmail} from "@/utils/globalFunctions";
 
 type Type = "login" | "signup";
 
@@ -30,7 +29,6 @@ type ErrorCode =
     | "";
 
 export default function AuthForm({ type }: {type: Type}) {
-    const supabase = createClient();
     const router = useRouter();
     const isLogin = type === "login";
     const {successToast, errorToast} = useToasts();
@@ -41,6 +39,7 @@ export default function AuthForm({ type }: {type: Type}) {
     });
     const [errorCode, setErrorCode] = useState<{ [key: string]: ErrorCode }>({});
     const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(false);
 
     const validateForm = () => {
         const errors: { [key: string]: ErrorCode } = {};
@@ -68,66 +67,61 @@ export default function AuthForm({ type }: {type: Type}) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!validateForm()) return;
+        if (isDisabled) return;
+        setIsDisabled(true);
 
         try {
+            const mode = isLogin ? 'login' : 'signup';
+
+            const res = await fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    mode,
+                    email: formValues.email,
+                    password: formValues.password,
+                    username: formValues.username,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                switch (data.error) {
+                    case 'invalid_credentials':
+                        errorToast('Ton identifiant ou mot de passe est incorrect.');
+                        break;
+                    case 'email_not_confirmed':
+                        errorToast("Ton email n'a pas encore été confirmé.");
+                        break;
+                    case 'weakPassword':
+                        setErrorCode({ password: 'weakPassword' });
+                        break;
+                    case 'duplicate_email':
+                        errorToast('Email déjà utilisé. Essaie de réinitialiser ton mot de passe.');
+                        break;
+                    case 'email_address_invalid':
+                        errorToast("L'adresse email est invalide.");
+                        break;
+                    default:
+                        errorToast('Une erreur est survenue. Veuillez réessayer.');
+                }
+                return;
+            }
+
             if (isLogin) {
-                const { error } = await supabase.auth.signInWithPassword({
-                    email: formValues.email,
-                    password: formValues.password,
-                });
-
-                if (error) {
-                    switch (error.code) {
-                        case "invalid_credentials":
-                            errorToast("Ton identifiant ou ton mot de passe est incorrecte.");
-                            return;
-                        default:
-                            errorToast(error.message);
-                            return;
-                    }
-                } else {
-                    router.push("/groups");
-                }
+                router.push('/groups');
             } else {
-                if ((formValues.password).length < 6) {
-                    setErrorCode({password: "weakPassword"});
-                    return;
-                }
-
-                const emailExists = await doesEmailExist(formValues.email);
-                if (emailExists) {
-                    errorToast("Impossible de créer un compte avec cet email. Essayez de réinitialiser votre mot de passe si vous possédez déjà un compte.");
-                    return;
-                }
-
-                const { error } = await supabase.auth.signUp({
-                    email: formValues.email,
-                    password: formValues.password,
-                    options: {
-                        data: { username: formValues.username },
-                        emailRedirectTo: `${window.location.origin}/auth/callback`,
-                    },
-                });
-
-                if (error) {
-                    switch (error.code) {
-                        case "email_address_invalid":
-                            errorToast("L'adresse email " + formValues.email + " est invalide.");
-                            return;
-                        default:
-                            errorToast(error.message);
-                            return;
-                    }
-                } else {
-                    router.push("/login");
-                    successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser la confirmation.")
-                }
+                router.push('/login');
+                successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser ton isncription.");
             }
         } catch (err) {
             console.error(err);
-            errorToast("Une erreur est survenue. Veuillez réessayer plus tard.");
+            errorToast('Une erreur est survenue. Veuillez réessayer plus tard.');
+        } finally {
+            setIsDisabled(false);
         }
-    };
+    }
 
     const handleResetPassword = async () => {
         if (!formValues.email) {
@@ -137,29 +131,22 @@ export default function AuthForm({ type }: {type: Type}) {
             setErrorCode({ email: "invalidFormat" });
             return;
         }
+        setIsDisabled(true);
 
-        const emailExists = await doesEmailExist(formValues.email);
-        if (!emailExists) {
-            setErrorCode({ email: "emailDoesNotExist" });
-            return;
+        try {
+            await fetch('/api/auth/reset-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: formValues.email }),
+            });
+
+            setIsForgotPasswordModalOpen(true);
+        } catch {
+            errorToast('Une erreur s’est produite.');
+        } finally {
+            setIsDisabled(false);
         }
-
-        const { error } = await supabase.auth.resetPasswordForEmail(formValues.email, {
-            redirectTo: `${window.location.origin}/reset-password`,
-        });
-
-        if (error) {
-            switch (error.code) {
-                case "validation_failed":
-                    errorToast("Impossible de valider l'adresse email, vérifiez son format.");
-                    return;
-                default:
-                    errorToast("Une erreur s'est produite, veuillez réessayer plus tard.");
-                    return;
-            }
-        }
-        setIsForgotPasswordModalOpen(true);
-    };
+    }
 
     const handleChange = (field: keyof FormValues, value: string) => {
         setFormValues((prev) => ({
@@ -173,6 +160,16 @@ export default function AuthForm({ type }: {type: Type}) {
             setErrorCode((prev) => ({ ...prev, [field]: "" }))
         }
     };
+
+    useEffect(() => {
+        if (!isForgotPasswordModalOpen) {
+            setFormValues({
+                username: "",
+                email: "",
+                password: ""
+            });
+        }
+    }, [isForgotPasswordModalOpen]);
 
     return (
         <div className={styles.authPage}>
@@ -234,11 +231,18 @@ export default function AuthForm({ type }: {type: Type}) {
                                         </span>
                                         Se souvenir de moi
                                     </label>
-                                    <button type={"button"} onClick={handleResetPassword} className={styles.forgotButton}>Mot de passe oublié</button>
+                                    <button
+                                        type={"button"}
+                                        onClick={handleResetPassword}
+                                        className={styles.forgotButton}
+                                        disabled={isDisabled}
+                                    >
+                                        Mot de passe oublié
+                                    </button>
                                 </div>
                             )}
 
-                            <GlassButton type={"submit"}>
+                            <GlassButton type={"submit"} isDisabled={isDisabled}>
                                 {isLogin ? "Se connecter" : "S'inscrire"}
                             </GlassButton>
                         </form>

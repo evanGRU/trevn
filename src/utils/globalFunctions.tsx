@@ -1,27 +1,13 @@
 import {createClient} from "@/utils/supabase/client";
-
+import {useToasts} from "@/utils/useToasts";
 const supabase = createClient();
+const {errorToast} = useToasts();
 
 export const capitalize = (s: string) => s[0].toUpperCase() + s.slice(1);
 
 export const isEmail = (email: string) => {
     return /\S+@\S+\.\S+/.test(email);
 }
-
-export const doesEmailExist = async (email: string) => {
-    try {
-        const res = await fetch("/api/checkUser", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-        });
-        const data = await res.json();
-        return data.exists;
-    } catch (err) {
-        console.error(err);
-        return false;
-    }
-};
 
 export const getPublicAvatarUrl = (type: string | undefined, path: string | null | undefined ) => {
     const { data } = supabase.storage
@@ -59,3 +45,12 @@ export const smoothScroll = (el: HTMLElement, direction: "top" | "bottom", onCom
 
     requestAnimationFrame(animate);
 };
+
+export const fetcher = async (url: string, errorMessage: string) => {
+    const res = await fetch(url)
+    if (!res.ok) {
+        errorToast(errorMessage);
+        return;
+    }
+    return res.json();
+}
