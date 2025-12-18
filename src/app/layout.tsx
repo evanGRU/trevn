@@ -30,7 +30,12 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
         <html lang="fr" className={`${poppins.variable} ${quinn.variable}`}>
             <body>
                 {children}
-                <Toaster position="top-center" />
+                <Toaster
+                    position="top-center"
+                    containerStyle={{
+                        zIndex: 9999999
+                    }}
+                />
             </body>
         </html>
     );

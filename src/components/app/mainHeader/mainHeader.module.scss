@@ -35,6 +35,8 @@
       p {
         font-family: var(--font-heading), sans-serif;
         font-size: var(--text-24);
+        line-height: var(--space-24);
+        transform: translateY(1px);
       }
     }
 

@@ -4,45 +4,60 @@ import Image from "next/image";
 import {useState} from "react";
 import {useDebounce} from "@/utils/useDebounce";
 import useSWR, {KeyedMutator} from "swr";
-import {GameResult, Profile} from "@/utils/types";
-import {createClient} from "@/utils/supabase/client";
+import {GameResult} from "@/utils/types";
 import {ParamValue} from "next/dist/server/request/params";
+import {fetcher} from "@/utils/globalFunctions";
+import {useToasts} from "@/utils/useToasts";
 
 interface NewGroupModalProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
-    profile: Profile;
     groupId: ParamValue;
-    refreshGamesList: KeyedMutator<GameResult[]>
+    refreshGamesList: KeyedMutator<GameResult[]>;
 }
 
-export default function AddGameModal({setModal, profile, groupId, refreshGamesList}: NewGroupModalProps) {
+export default function AddGameModal({setModal, groupId, refreshGamesList}: NewGroupModalProps) {
     const [query, setQuery] = useState("");
     const debouncedQuery = useDebounce(query, 500);
-    const supabase = createClient();
+    const {errorToast} = useToasts();
+    const [isLoading, setIsLoading] = useState(false);
 
-    const fetcher = (url: string) => fetch(url).then(res => {
-        if (!res.ok) throw new Error("Fetch failed");
-        return res.json();
-    });
-
-    const { data, error, isValidating } = useSWR<GameResult[]>(
+    const { data, error, isValidating } = useSWR(
         debouncedQuery && debouncedQuery.trim().length > 1 ? `/api/games/search?q=${encodeURIComponent(debouncedQuery)}` : null,
-        fetcher
+        (url) => fetcher(url, "Une erreur s'est produite, veuillez réessayer.")
     );
 
     const handleAddGame = async (game: GameResult) => {
-        const { error } = await supabase.from("groups_games").insert({
-            group_id: groupId,
-            game_id: game.id,
-            added_by: profile?.id,
-        });
+        if (!groupId) return;
+        if (isLoading) return;
+        setIsLoading(true);
 
-        if (error) {
-            console.log('erreur :', error)
+        try {
+            const res = await fetch('/api/games/new', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ groupId, gameId: game.id }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                switch (data.error) {
+                    case 'game_already_added':
+                        errorToast('Ce jeu a déjà été ajouté à ce groupe.')
+                        break
+                    default:
+                        errorToast('Impossible d’ajouter le jeu.')
+                }
+                return
+            }
+
+            await refreshGamesList();
+            setModal(false);
+        } catch (err) {
+            errorToast("Une erreur s'est produite.");
+        } finally {
+            setIsLoading(false);
         }
-
-        await refreshGamesList()
-        setModal(false);
     }
 
     return (
@@ -89,7 +104,7 @@ export default function AddGameModal({setModal, profile, groupId, refreshGamesLi
                     {(!isValidating && (data && data.length === 0 || !data && error)) && (
                         <p className={styles.textSecondary}>Aucun résultat</p>
                     )}
-                    {data?.map(game => (
+                    {data?.map((game: GameResult) => (
                         <li key={game.id} className={styles.gameResultCard}>
                             <button
                                 onClick={() => handleAddGame(game)}

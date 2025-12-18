@@ -1,3 +1,13 @@
+// Auth
+export type ErrorCode =
+    | "missingField"
+    | "invalidFormat"
+    | "emailDoesNotExist"
+    | "weakPassword"
+    | "maxCharacterLimit"
+    | "minCharacterLimit"
+    | "";
+
 // MainPage
 export type Profile = {
     id: string;

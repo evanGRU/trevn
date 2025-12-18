@@ -2,52 +2,28 @@
 
 import styles from "./page.module.scss";
 import {useCallback, useRef, useState} from "react";
-import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
 import GroupsSidebar from "@/components/app/groupsSidebar/groupsSidebar";
 import NewGroupModal from "@/components/app/newGroupModal/newGroupModal";
 import useSWR from "swr";
-import { useToasts } from "@/utils/useToasts";
-import {Group, Profile} from "@/utils/types";
+import {Profile} from "@/utils/types";
 import MainHeader from "@/components/app/mainHeader/mainHeader";
-import {smoothScroll} from "@/utils/globalFunctions";
+import {fetcher, smoothScroll} from "@/utils/globalFunctions";
 import {GamesListHandle} from "@/components/app/gamesList/gamesList";
 import { GamesScrollContext } from "@/utils/GamesScrollContext";
 
 export default function GroupsPageLayoutClient({profile, children}: { profile: Profile, children: React.ReactNode}) {
-    const supabase = createClient();
     const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState<boolean>(false);
-    const {errorToast} = useToasts();
 
     const containerRef = useRef<HTMLElement>(null);
     const gamesListRef = useRef<GamesListHandle>(null);
     const isScrollingRef = useRef(false);
     const atBottomRef = useRef(false);
 
-    const fetchGroups = async (userId: string): Promise<Group[]> => {
-        const { data, error } = await supabase
-            .from("groups")
-            .select(`
-                id, name,
-                avatar:avatars!avatar_id(id, name, type),
-                groups_members!inner(user_id)
-            `)
-            .eq("groups_members.user_id", userId);
-
-        if (error) {
-            errorToast('Une erreur a eu lieu lors de la récupération des groupes. Essayer de rafraîchir la page.');
-            throw error;
-        }
-        return (data ?? []).map(g => ({
-            ...g,
-            avatar: Array.isArray(g.avatar) ? g.avatar[0] ?? null : g.avatar
-        }));
-    };
-
-    const { data: groupsList, mutate: refreshGroups } = useSWR<Group[]>(
-        profile?.id ? ["groups", profile.id] : null,
-        () => fetchGroups(profile!.id)
+    const { data: groupsList, mutate: refreshGroups } = useSWR(
+        '/api/groups',
+        (url) => fetcher(url, "Impossible de récupérer la liste des groupes. Essaye de rafraîchir la page.")
     );
 
     const handleScroll = useCallback(() => {
@@ -97,7 +73,6 @@ export default function GroupsPageLayoutClient({profile, children}: { profile: P
 
             {isNewGroupModalOpen && (
                 <NewGroupModal
-                    user={profile}
                     setModal={setIsNewGroupModalOpen}
                     refreshGroups={refreshGroups}
                 />
