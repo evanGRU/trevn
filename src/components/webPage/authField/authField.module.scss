@@ -40,7 +40,7 @@
       }
     }
 
-    .fieldIcon {
+    .fieldInsideContainer {
       height: 100%;
       aspect-ratio: 1/1;
       display: flex;
@@ -54,6 +54,11 @@
           cursor: pointer;
           color: #3A94C7;
         }
+      }
+
+      p {
+        font-size: var(--text-12);
+        color: var(--color-text-secondary);
       }
     }
   }

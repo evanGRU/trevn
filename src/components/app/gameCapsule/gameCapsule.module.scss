@@ -1,6 +1,5 @@
 .gameCard {
   border-radius: var(--radius-16);
-  overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
@@ -14,6 +13,7 @@
     opacity: 0.4;
     object-fit: contain;
     background-color: rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-16);
   }
 
   &:hover {
@@ -22,8 +22,11 @@
     }
     .bottomButtons {
       opacity: 1;
-      transform: translateY(0);
       pointer-events: auto;
+
+      a, .glassDeleteButton {
+        transform: translateY(0);
+      }
     }
   }
 
@@ -52,8 +55,8 @@
   padding: var(--space-12);
 
   .glass {
-    height: 32px;
-    width: 32px;
+    height: 36px;
+    width: 36px;
     border-radius: var(--radius-full);
     background-color: rgba(255, 255, 255, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.4);
@@ -91,16 +94,15 @@
   height: 80px;
   border-bottom-right-radius: var(--radius-16);
   border-bottom-left-radius: var(--radius-16);
-  background: linear-gradient(180deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.8) 100%);
+  background: linear-gradient(180deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.7) 100%);
   opacity: 0;
-  transform: translateY(10px);
   pointer-events: none;
   transition: all 0.3s ease;
 
   a {
-    height: 32px;
+    height: 36px;
     width: 100%;
-    border-radius: var(--radius-08);
+    border-radius: var(--radius-24);
     background-color: rgba(255, 255, 255, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.4);
     font-size: var(--text-12);
@@ -108,6 +110,7 @@
     text-decoration: none;
     color: var(--color-text);
     line-height: var(--space-12);
+    transform: translateY(10px);
 
     img {
       height: 16px;
@@ -121,14 +124,15 @@
   }
 
   .glassDeleteButton {
-    height: 32px;
-    width: 32px !important;
+    height: 36px;
+    width: 36px !important;
     flex-shrink: 0;
     background-color: rgba(255, 0, 0, 0.1);
     border: 1px solid rgba(255, 0, 0, 0.2);
-    border-radius: var(--radius-08);
+    border-radius: var(--radius-full);
     cursor: pointer;
     padding: 0;
+    transform: translateY(10px);
 
     &:hover {
       background-color: rgba(255, 0, 0, 0.3);

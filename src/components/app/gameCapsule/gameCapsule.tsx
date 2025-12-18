@@ -15,14 +15,13 @@ interface GameCapsuleProps {
 }
 
 export default function GameCapsule({game, groupId, refreshGamesList, gamesList}: GameCapsuleProps) {
-    const [likeIsLoading, setLikeIsLoading] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const {errorToast, successToast} = useToasts();
 
     const toggleLike = async () => {
-        if (isDeleting) return;
-        setLikeIsLoading(true);
+        if (isLoading) return;
+        setIsLoading(true);
 
         const previousGames = gamesList;
         const newGames = previousGames.map(g =>
@@ -58,13 +57,13 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList}
             console.error(err);
             errorToast('Une erreur est survenue');
         } finally {
-            setLikeIsLoading(false);
+            setIsLoading(false);
         }
     }
 
     const handleDelete = async () => {
-        if (isDeleting) return;
-        setIsDeleting(true);
+        if (isLoading) return;
+        setIsLoading(true);
 
         const previousGames = gamesList;
         await refreshGamesList(
@@ -92,7 +91,7 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList}
             console.error(err);
             errorToast('Une erreur est survenue');
         } finally {
-            setIsDeleting(false);
+            setIsLoading(false);
         }
     }
 
@@ -110,7 +109,7 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList}
                 <div className={styles.topButtons}>
                     <button
                         type={"button"}
-                        disabled={likeIsLoading}
+                        disabled={isLoading}
                         className={`${styles.glass} ${styles.glassButton}`}
                         onClick={toggleLike}
                     >
@@ -145,7 +144,7 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList}
                         type={"button"}
                         className={`${styles.glass} ${styles.glassDeleteButton}`}
                         onClick={handleDelete}
-                        disabled={isDeleting}
+                        disabled={isLoading}
                     >
                         <Image
                             src={`/icons/trash.svg`}

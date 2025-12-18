@@ -1,19 +1,15 @@
 import styles from "./authField.module.scss";
 import {HiddenEyeIcon, VisibleEyeIcon} from "@/utils/svg";
 import {useState} from "react";
-
-type ErrorCode =
-    | "missingField"
-    | "invalidFormat"
-    | "emailDoesNotExist"
-    | "weakPassword"
-    | "";
+import {ErrorCode} from "@/utils/types";
 
 type ErrorMessages = {
     missingField?: string;
     invalidFormat?: string;
     emailDoesNotExist?: string;
     weakPassword?: string;
+    maxCharacterLimit?: string;
+    minCharacterLimit?: string;
 };
 
 const fieldPrompts: Record<
@@ -29,6 +25,8 @@ const fieldPrompts: Record<
         placeholder: "Entre ton nom d'utilisateur",
         errors: {
             missingField: "Nom d'utilisateur requis.",
+            maxCharacterLimit: "Le nom d'utilisateur ne peux pas dépasser 20 caractères.",
+            minCharacterLimit: "Le nom d'utilisateur requiert au moins 3 caractères."
         }
     },
     email: {
@@ -55,9 +53,10 @@ interface AuthFieldProps {
     formValues: { username: string; email: string; password: string };
     handleChange: React.ChangeEventHandler<HTMLInputElement>;
     errorCode?: ErrorCode;
+    maxLength?: number;
 }
 
-export default function AuthField({fieldType, formValues, handleChange, errorCode}: AuthFieldProps) {
+export default function AuthField({fieldType, formValues, handleChange, errorCode, maxLength}: AuthFieldProps) {
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
     return (
@@ -81,10 +80,16 @@ export default function AuthField({fieldType, formValues, handleChange, errorCod
                     onChange={handleChange}
                     required={true}
                     className={`${errorCode ? styles.requiredError : ""}`}
+                    maxLength={maxLength}
                 />
                 {fieldType === "password" && (
-                    <div className={styles.fieldIcon} onClick={() => setIsPasswordHidden(!isPasswordHidden)}>
+                    <div className={styles.fieldInsideContainer} onClick={() => setIsPasswordHidden(!isPasswordHidden)}>
                         {isPasswordHidden ? <HiddenEyeIcon/> : <VisibleEyeIcon/>}
+                    </div>
+                )}
+                {fieldType === "username" && maxLength && (
+                    <div className={styles.fieldInsideContainer}>
+                        <p>{formValues["username"].length}/{maxLength - 1}</p>
                     </div>
                 )}
             </div>

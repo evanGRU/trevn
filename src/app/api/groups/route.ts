@@ -27,7 +27,8 @@ export async function GET() {
             user_id
           )
         `)
-        .eq('groups_members.user_id', user.id);
+        .eq('groups_members.user_id', user.id)
+        .order('created_at', { ascending: false });
 
     if (error) {
         return NextResponse.json(

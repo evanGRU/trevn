@@ -12,13 +12,14 @@ import {useToasts} from "@/utils/useToasts";
 interface NewGroupModalProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
     groupId: ParamValue;
-    refreshGamesList: KeyedMutator<GameResult[]>
+    refreshGamesList: KeyedMutator<GameResult[]>;
 }
 
 export default function AddGameModal({setModal, groupId, refreshGamesList}: NewGroupModalProps) {
     const [query, setQuery] = useState("");
     const debouncedQuery = useDebounce(query, 500);
     const {errorToast} = useToasts();
+    const [isLoading, setIsLoading] = useState(false);
 
     const { data, error, isValidating } = useSWR(
         debouncedQuery && debouncedQuery.trim().length > 1 ? `/api/games/search?q=${encodeURIComponent(debouncedQuery)}` : null,
@@ -27,6 +28,8 @@ export default function AddGameModal({setModal, groupId, refreshGamesList}: NewG
 
     const handleAddGame = async (game: GameResult) => {
         if (!groupId) return;
+        if (isLoading) return;
+        setIsLoading(true);
 
         try {
             const res = await fetch('/api/games/new', {
@@ -51,8 +54,9 @@ export default function AddGameModal({setModal, groupId, refreshGamesList}: NewG
             await refreshGamesList();
             setModal(false);
         } catch (err) {
-            console.error(err);
             errorToast("Une erreur s'est produite.");
+        } finally {
+            setIsLoading(false);
         }
     }
 

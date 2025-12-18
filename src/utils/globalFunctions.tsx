@@ -1,7 +1,6 @@
 import {createClient} from "@/utils/supabase/client";
 import {useToasts} from "@/utils/useToasts";
 const supabase = createClient();
-const {errorToast} = useToasts();
 
 export const capitalize = (s: string) => s[0].toUpperCase() + s.slice(1);
 
@@ -47,6 +46,8 @@ export const smoothScroll = (el: HTMLElement, direction: "top" | "bottom", onCom
 };
 
 export const fetcher = async (url: string, errorMessage: string) => {
+    const {errorToast} = useToasts();
+
     const res = await fetch(url)
     if (!res.ok) {
         errorToast(errorMessage);

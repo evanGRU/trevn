@@ -52,6 +52,8 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
 
         if (!newGroupName) {
             errors.name = "Nom du groupe requis."
+        } else if (newGroupName.length < 3) {
+            errors.name = "Le nom du groupe requiert au moins 3 caractères."
         }
 
         setErrorMessages(errors);
@@ -93,7 +95,8 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
             await refreshGroups();
             successToast('Ton groupe a été créé avec succès !');
         } catch (err: any) {
-            errorToast(err.message || 'Erreur lors de la création du groupe');
+            errorToast("Une erreur est survenue.");
+            setIsDisabled(false);
         } finally {
             setIsDisabled(false);
         }
@@ -119,8 +122,8 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
         if (value === "") {
             setErrorMessages((prev) => ({ ...prev, [field]: "Nom du groupe requis." }));
             setIsDisabled(true);
-        } else if (value.length > 20) {
-            setErrorMessages((prev) => ({ ...prev, [field]: "Le nom du groupe doit faire au maximum 20 caractères."}));
+        } else if (value.length > 30) {
+            setErrorMessages((prev) => ({ ...prev, [field]: "Le nom du groupe doit faire au maximum 30 caractères."}));
             setIsDisabled(true);
         } else {
             setErrorMessages((prev) => ({ ...prev, [field]: "" }))
@@ -244,6 +247,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                         handleChange={(e) => handleChange("name", e.target.value)}
                         isRequired={true}
                         errorMessage={errorMessages?.name}
+                        maxLength={31}
                     />
 
                     <div className={styles.submitButton}>

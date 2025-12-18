@@ -12,6 +12,7 @@ import {useEffect, useState} from "react";
 import {useToasts} from "@/utils/useToasts";
 import ForgotPasswordModal from "@/components/webPage/forgotPasswordModal/forgotPasswordModal";
 import {isEmail} from "@/utils/globalFunctions";
+import {ErrorCode} from "@/utils/types";
 
 type Type = "login" | "signup";
 
@@ -20,13 +21,6 @@ interface FormValues {
     email: string;
     password: string;
 }
-
-type ErrorCode =
-    | "missingField"
-    | "invalidFormat"
-    | "emailDoesNotExist"
-    | "weakPassword"
-    | "";
 
 export default function AuthForm({ type }: {type: Type}) {
     const router = useRouter();
@@ -57,6 +51,8 @@ export default function AuthForm({ type }: {type: Type}) {
 
         if (!isLogin && !formValues.username) {
             errors.username = "missingField"
+        } else if (!isLogin && (formValues.username).length < 3) {
+            errors.username = "minCharacterLimit"
         }
 
         setErrorCode(errors);
@@ -97,14 +93,11 @@ export default function AuthForm({ type }: {type: Type}) {
                     case 'weakPassword':
                         setErrorCode({ password: 'weakPassword' });
                         break;
-                    case 'duplicate_email':
-                        errorToast('Email déjà utilisé. Essaie de réinitialiser ton mot de passe.');
-                        break;
                     case 'email_address_invalid':
                         errorToast("L'adresse email est invalide.");
                         break;
                     default:
-                        errorToast('Une erreur est survenue. Veuillez réessayer.');
+                        errorToast("Une erreur est survenue lors de l'inscription. Si vous possédez déjà un compte ou si le problème persiste, vous pouvez tenter de réinitialiser votre mot de passe ou contacter le support.");
                 }
                 return;
             }
@@ -113,7 +106,7 @@ export default function AuthForm({ type }: {type: Type}) {
                 router.push('/groups');
             } else {
                 router.push('/login');
-                successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser ton isncription.");
+                successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser ton inscription.");
             }
         } catch (err) {
             console.error(err);
@@ -156,6 +149,8 @@ export default function AuthForm({ type }: {type: Type}) {
 
         if (!isLogin && value === "") {
             setErrorCode((prev) => ({ ...prev, [field]: "missingField" }))
+        } else if (field === "username" && value.length > 20) {
+            setErrorCode((prev) => ({ ...prev, [field]: "maxCharacterLimit" }))
         } else {
             setErrorCode((prev) => ({ ...prev, [field]: "" }))
         }
@@ -206,6 +201,7 @@ export default function AuthForm({ type }: {type: Type}) {
                                 <AuthField
                                     fieldType="username"
                                     formValues={formValues}
+                                    maxLength={21}
                                     handleChange={(e) => handleChange("username", e.target.value)}
                                     errorCode={errorCode.username}
                                 />
