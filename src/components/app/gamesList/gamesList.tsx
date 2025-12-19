@@ -3,7 +3,7 @@ import GlassButton from "@/components/general/glassButton/glassButton";
 import SearchField from "@/components/general/searchField/searchField";
 import {forwardRef, useImperativeHandle, useMemo, useRef, useState} from "react";
 import AddGameModal from "@/components/app/addGameModal/addGameModal";
-import {GameCapsuleData} from "@/utils/types";
+import {GameCapsuleData, Member} from "@/utils/types";
 import useSWR from "swr";
 import {ParamValue} from "next/dist/server/request/params";
 import {useDebounce} from "@/utils/useDebounce";
@@ -16,7 +16,7 @@ export type GamesListHandle = {
     isAtTop: () => boolean;
 };
 
-export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue}>(({groupId}, ref) => {
+export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue, members: Member[]}>(({groupId, members}, ref) => {
     const [isAddGameModalOpen, setIsAddGameModalOpen] = useState(false);
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search, 500);
@@ -82,6 +82,7 @@ export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue}>(({gr
                                 groupId={groupId}
                                 refreshGamesList={refreshGamesList}
                                 gamesList={filteredGames}
+                                members={members}
                             />
                         ))}
                     </div>

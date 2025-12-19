@@ -27,6 +27,7 @@ export default function DefaultField({type, label, value, placeholder, handleCha
                     autoComplete={"off"}
                     className={`${errorMessage ? styles.requiredError : ""}`}
                     maxLength={maxLength}
+                    autoFocus={true}
                 />
                 {maxLength && (
                     <div className={styles.fieldInsideContainer}>

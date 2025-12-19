@@ -12,7 +12,7 @@
     width: 100%;
     opacity: 0.4;
     object-fit: contain;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-16);
   }
 
@@ -56,17 +56,8 @@
 
   .glass {
     height: 36px;
-    width: 36px;
-    border-radius: var(--radius-full);
     background-color: rgba(255, 255, 255, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.4);
-
-    h4 {
-      font-size: var(--text-16);
-      font-weight: 400;
-      transform: translateY(1px);
-      line-height: var(--space-16);
-    }
 
     img {
       height: 20px;
@@ -77,11 +68,28 @@
   .glassButton {
     cursor: pointer;
     padding: 0;
+    width: 36px;
+    border-radius: var(--radius-full);
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.5);
       box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+  }
+
+  .glassCounter {
+    width: auto;
+    border-radius: var(--radius-24);
+    padding: var(--space-08);
+    gap: var(--space-12);
+
+    h4 {
+      font-family: var(--font-heading), sans-serif;
+      font-size: var(--text-16);
+      font-weight: 400;
+      transform: translateY(1px);
+      line-height: var(--space-16);
     }
   }
 }
@@ -105,12 +113,13 @@
     border-radius: var(--radius-24);
     background-color: rgba(255, 255, 255, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.4);
-    font-size: var(--text-12);
+    font-size: var(--text-16);
     font-weight: 400;
     text-decoration: none;
     color: var(--color-text);
-    line-height: var(--space-12);
+    line-height: var(--space-16);
     transform: translateY(10px);
+    font-family: var(--font-heading), sans-serif;
 
     img {
       height: 16px;
@@ -127,16 +136,16 @@
     height: 36px;
     width: 36px !important;
     flex-shrink: 0;
-    background-color: rgba(255, 0, 0, 0.1);
-    border: 1px solid rgba(255, 0, 0, 0.2);
+    background-color: var(--red-dark);
+    border: 1px solid var(--red-border);
     border-radius: var(--radius-full);
     cursor: pointer;
     padding: 0;
     transform: translateY(10px);
 
     &:hover {
-      background-color: rgba(255, 0, 0, 0.3);
-      border: 1px solid rgba(255, 0, 0, 0.4);
+      background-color: var(--red-dark-hover);
+      border: 1px solid var(--red-hover-border);
     }
   }
 }

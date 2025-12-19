@@ -74,6 +74,7 @@ export default function AddGameModal({setModal, groupId, refreshGamesList}: NewG
                     placeholder={"RECHERCHER UN JEU"}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    autoFocus={true}
                 />
                 <div className={styles.iconButton}>
                     {query ? (

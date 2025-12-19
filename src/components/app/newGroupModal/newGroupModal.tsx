@@ -85,10 +85,9 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                 body: formData,
             });
 
-            const data = await res.json();
-
+            // const data = await res.json();
             if (!res.ok) {
-                throw new Error(data.error);
+                errorToast("Impossible de créer un groupe.");
             }
 
             setModal(false);
@@ -175,7 +174,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
     };
 
     return !isAvatarsPresetsLoading && (
-        <ModalWrapper setModal={setModal} closeIconPosition={{top: "326px", right: "272px"}}>
+        <ModalWrapper setModal={setModal} closeIconPosition={{top: "326px", right: "270px"}}>
             <div className={styles.createGroupContainer}>
                 <div className={styles.formHeader}>
                     <h1>Créer un nouveau groupe</h1>

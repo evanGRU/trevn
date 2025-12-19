@@ -25,6 +25,12 @@ export async function GET(req: Request) {
             id,
             name,
             type
+          ),
+          members:groups_members!group_id (
+            profiles ( 
+              username,
+              avatar_url
+            )
           )
         `)
         .eq('id', groupId)
