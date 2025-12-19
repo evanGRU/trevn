@@ -6,7 +6,7 @@ import {ParamValue} from "next/dist/server/request/params";
 import {useState} from "react";
 import Link from "next/link";
 import {useToasts} from "@/utils/useToasts";
-import LikeCounterIcon from "@/components/app/likeCounterIcon/likeCounterIcon";
+import LikeCounterIcon from "@/components/app/games/likeCounterIcon/likeCounterIcon";
 import DeleteModal from "@/components/general/deleteModal/deleteModal";
 
 interface GameCapsuleProps {
@@ -159,7 +159,7 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList,
                 <DeleteModal
                     setModal={setIsDeleteModalOpen}
                     handleDelete={handleDelete}
-                    title={"Êtes-vous sur de vouloir supprimer ce jeu?"}
+                    title={"Es-tu sûr de vouloir supprimer ce jeu?"}
                     paragraphe={"En faisant cela, toutes les personnes ayant liké ce jeu devront le refaire si celui-ci est ajouté à nouveau."}
                 />
             )}

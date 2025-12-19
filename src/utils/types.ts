@@ -10,9 +10,10 @@ export type ErrorCode =
 
 // MainPage
 export type Profile = {
-    id: string;
-    username: string;
-    avatar_url: string | null;
+    email: string | undefined;
+    id?: string;
+    username?: string;
+    avatar_url?: string;
 } | null;
 
 export type Avatar = {

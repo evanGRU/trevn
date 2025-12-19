@@ -11,7 +11,12 @@ export default async function GroupsDetailPage() {
         .eq("id", user?.id)
         .single();
 
+    const fullProfile = {
+        ...profile,
+        email: user?.email
+    };
+
     return (
-        <GroupDetailsClient profile={profile}/>
+        <GroupDetailsClient profile={fullProfile}/>
     );
 }

@@ -4,13 +4,13 @@ import styles from "./page.module.scss";
 import {useCallback, useRef, useState} from "react";
 import Image from "next/image";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
-import GroupsSidebar from "@/components/app/groupsSidebar/groupsSidebar";
-import NewGroupModal from "@/components/app/newGroupModal/newGroupModal";
+import GroupsSidebar from "@/components/app/groups/groupsSidebar/groupsSidebar";
+import NewGroupModal from "@/components/app/groups/newGroupModal/newGroupModal";
 import useSWR from "swr";
 import {Profile} from "@/utils/types";
 import MainHeader from "@/components/app/mainHeader/mainHeader";
 import {fetcher, smoothScroll} from "@/utils/globalFunctions";
-import {GamesListHandle} from "@/components/app/gamesList/gamesList";
+import {GamesListHandle} from "@/components/app/games/gamesList/gamesList";
 import { GamesScrollContext } from "@/utils/GamesScrollContext";
 
 export default function GroupsPageLayoutClient({profile, children}: { profile: Profile, children: React.ReactNode}) {

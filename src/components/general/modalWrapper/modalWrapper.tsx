@@ -13,7 +13,7 @@ interface ModalProps {
 
 export default function ModalWrapper({children, setModal, closeIconPosition}: ModalProps) {
     return (
-        <div className={styles.fullBackground}>
+        <div className={"fullBackground"}>
             <AnimatePresence mode="wait">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

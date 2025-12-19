@@ -198,7 +198,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                                         />
                                     ) : (
                                         <Image
-                                            src="/icons/avatar.svg"
+                                            src="/icons/picture.svg"
                                             alt="Avatar icon"
                                             width={32}
                                             height={32}

@@ -3,13 +3,13 @@ import {ReactNode} from "react";
 
 type DefaultButtonProps = {
     children: ReactNode,
-    handleClick?: React.Dispatch<React.SetStateAction<boolean>>;
+    handleClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function DefaultButton({children, handleClick}: DefaultButtonProps) {
 
     return (
-        <button onClick={() => handleClick && handleClick(false)} type={"button"} className={styles.defaultBtn}>
+        <button onClick={handleClick} type={"button"} className={styles.defaultBtn}>
             {children}
         </button>
     )

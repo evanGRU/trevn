@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { GamesListHandle } from "@/components/app/gamesList/gamesList";
+import { GamesListHandle } from "@/components/app/games/gamesList/gamesList";
 
 export const GamesScrollContext = createContext<React.RefObject<GamesListHandle | null> | null>(null);
 

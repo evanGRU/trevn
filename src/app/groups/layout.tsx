@@ -14,8 +14,13 @@ export default async function GroupsPageLayout({children}: {children: React.Reac
         .eq("id", user.id)
         .single();
 
+    const fullProfile = {
+        ...profile,
+        email: user.email
+    };
+
     return (
-        <GroupsLayoutClient profile={profile}>
+        <GroupsLayoutClient profile={fullProfile}>
             {children}
         </GroupsLayoutClient>
     );
