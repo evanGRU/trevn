@@ -29,8 +29,9 @@ export type Group = {
 
 
 // GroupDetailsPage
-export type GroupMembers = {
-    user_id: string;
+export type Member = {
+    username: string;
+    avatar_url: string;
 }
 
 export type GroupDetails = {

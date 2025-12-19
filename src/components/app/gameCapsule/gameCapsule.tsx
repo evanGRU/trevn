@@ -1,23 +1,26 @@
 import styles from "./gameCapsule.module.scss";
-import {GameCapsuleData} from "@/utils/types";
+import {GameCapsuleData, Member} from "@/utils/types";
 import Image from "next/image";
 import {KeyedMutator} from "swr";
 import {ParamValue} from "next/dist/server/request/params";
 import {useState} from "react";
 import Link from "next/link";
 import {useToasts} from "@/utils/useToasts";
+import LikeCounterIcon from "@/components/app/likeCounterIcon/likeCounterIcon";
+import DeleteModal from "@/components/general/deleteModal/deleteModal";
 
 interface GameCapsuleProps {
     game: GameCapsuleData;
     groupId: ParamValue;
     refreshGamesList: KeyedMutator<GameCapsuleData[]>;
     gamesList: GameCapsuleData[];
+    members: Member[];
 }
 
-export default function GameCapsule({game, groupId, refreshGamesList, gamesList}: GameCapsuleProps) {
+export default function GameCapsule({game, groupId, refreshGamesList, gamesList, members}: GameCapsuleProps) {
     const [isLoading, setIsLoading] = useState(false);
-
     const {errorToast, successToast} = useToasts();
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const toggleLike = async () => {
         if (isLoading) return;
@@ -54,8 +57,7 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList}
             await refreshGamesList();
         } catch (err) {
             await refreshGamesList(previousGames, false);
-            console.error(err);
-            errorToast('Une erreur est survenue');
+            errorToast('Une erreur est survenue.');
         } finally {
             setIsLoading(false);
         }
@@ -96,66 +98,72 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList}
     }
 
     return (
-        <div className={styles.gameCard}>
-            <Image
-                src={game.imageUrl}
-                alt={game.name}
-                height={900}
-                width={600}
-                className={styles.mainImage}
-            />
+        <>
+            <div className={styles.gameCard}>
+                <Image
+                    src={game.imageUrl}
+                    alt={game.name}
+                    height={900}
+                    width={600}
+                    className={styles.mainImage}
+                />
 
-            <div className={styles.gameCardInterface}>
-                <div className={styles.topButtons}>
-                    <button
-                        type={"button"}
-                        disabled={isLoading}
-                        className={`${styles.glass} ${styles.glassButton}`}
-                        onClick={toggleLike}
-                    >
-                        <Image
-                            src={`/icons/${game.is_liked ? "likeFill" : "likeEmpty"}.svg`}
-                            alt={"Like Icon"}
-                            height={20}
-                            width={20}
-                        />
-                    </button>
+                <div className={styles.gameCardInterface}>
+                    <div className={styles.topButtons}>
+                        <button
+                            type={"button"}
+                            disabled={isLoading}
+                            className={`${styles.glass} ${styles.glassButton}`}
+                            onClick={toggleLike}
+                        >
+                            <Image
+                                src={`/icons/${game.is_liked ? "likeFill" : "likeEmpty"}.svg`}
+                                alt={"Like Icon"}
+                                height={20}
+                                width={20}
+                            />
+                        </button>
 
-                    <div className={styles.glass}>
-                        <h4>{game.likes_count}</h4>
+                        <div className={`${styles.glass} ${styles.glassCounter}`}>
+                            <h4>{game.likes_count > 1 ? game.likes_count + " likes" : game.likes_count + " like"}</h4>
+                            <LikeCounterIcon likes={game.likes_count} totalMembers={members.length}/>
+                        </div>
+                    </div>
+
+                    <div className={styles.bottomButtons}>
+                        <Link
+                            href={`https://store.steampowered.com/app/${game.id}`}
+                            target="_blank"
+                            className={styles.glass}
+                        >
+                            Page steam
+                        </Link>
+                        <button
+                            type={"button"}
+                            className={`${styles.glass} ${styles.glassDeleteButton}`}
+                            onClick={() => setIsDeleteModalOpen(true)}
+                            disabled={isLoading}
+                        >
+                            <Image
+                                src={`/icons/trash.svg`}
+                                alt={"Trash Icon"}
+                                height={20}
+                                width={20}
+                            />
+                        </button>
                     </div>
                 </div>
-
-                <div className={styles.bottomButtons}>
-                    <Link
-                        href={`https://store.steampowered.com/app/${game.id}`}
-                        target="_blank"
-                        className={styles.glass}
-                    >
-                        <Image
-                            src={`/icons/arrowLink.svg`}
-                            alt={"Arrow link Icon"}
-                            height={20}
-                            width={20}
-                        />
-                        Page steam
-                    </Link>
-                    <button
-                        type={"button"}
-                        className={`${styles.glass} ${styles.glassDeleteButton}`}
-                        onClick={handleDelete}
-                        disabled={isLoading}
-                    >
-                        <Image
-                            src={`/icons/trash.svg`}
-                            alt={"Trash Icon"}
-                            height={20}
-                            width={20}
-                        />
-                    </button>
-                </div>
             </div>
-        </div>
+
+            {isDeleteModalOpen && (
+                <DeleteModal
+                    setModal={setIsDeleteModalOpen}
+                    handleDelete={handleDelete}
+                    title={"Êtes-vous sur de vouloir supprimer ce jeu?"}
+                    paragraphe={"En faisant cela, toutes les personnes ayant liké ce jeu devront le refaire si celui-ci est ajouté à nouveau."}
+                />
+            )}
+        </>
     )
 }
 

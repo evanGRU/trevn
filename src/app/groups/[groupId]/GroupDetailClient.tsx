@@ -20,6 +20,7 @@ export default function GroupDetailsClient({profile}: {profile: Profile}) {
         groupId ? `/api/groups/detail?groupId=${groupId}` : null,
         (url) => fetcher(url, "Impossible de récupérer les infos de ce groupe. Essaye de rafraîchir la page.")
     );
+    const members = group?.members;
 
     const getSelectedContent = () => {
         switch (selectedMenu) {
@@ -28,6 +29,7 @@ export default function GroupDetailsClient({profile}: {profile: Profile}) {
                     <GamesList
                         ref={gamesListRef}
                         groupId={groupId}
+                        members={members}
                     />);
             case "members":
                 return <h2>Membres</h2>;
