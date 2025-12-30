@@ -80,7 +80,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
         }
 
         try {
-            const res = await fetch('/api/groups/new', {
+            const res = await fetch('/api/groups', {
                 method: 'POST',
                 body: formData,
             });
