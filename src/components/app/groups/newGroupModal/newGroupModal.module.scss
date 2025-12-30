@@ -135,10 +135,18 @@
     }
   }
 
-  .submitButton {
-    button {
-      font-size: var(--text-16) !important;
-      font-weight: 400;
+  .fieldAndButtonContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .submitButton {
+      margin-top: var(--space-04);
+      button {
+        font-size: var(--text-16) !important;
+        font-weight: 400;
+      }
     }
   }
 }

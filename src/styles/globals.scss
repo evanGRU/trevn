@@ -114,6 +114,7 @@ ul {
 .errorMessage {
   color: #E94B42;
   font-size: var(--text-12);
+  height: 16px;
 }
 
 .fullBackground {
@@ -125,6 +126,6 @@ ul {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 10000;
 }

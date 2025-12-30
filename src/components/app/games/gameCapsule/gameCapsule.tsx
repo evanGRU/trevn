@@ -8,6 +8,7 @@ import Link from "next/link";
 import {useToasts} from "@/utils/useToasts";
 import LikeCounterIcon from "@/components/app/games/likeCounterIcon/likeCounterIcon";
 import DeleteModal from "@/components/general/deleteModal/deleteModal";
+import {AnimatePresence, motion} from "framer-motion";
 
 interface GameCapsuleProps {
     game: GameCapsuleData;
@@ -86,6 +87,7 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList,
                 errorToast("Erreur lors de la suppression du jeu.")
             }
 
+            setIsDeleteModalOpen(false);
             successToast(`Le jeu ${game.name} a bien été supprimé.`)
             await refreshGamesList();
         } catch (err) {
@@ -99,7 +101,14 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList,
 
     return (
         <>
-            <div className={styles.gameCard}>
+            <motion.div
+                layout
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0 }}
+                transition={{ duration: 0.3 }}
+                className={styles.gameCard}
+            >
                 <Image
                     src={game.imageUrl}
                     alt={game.name}
@@ -153,16 +162,19 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList,
                         </button>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
-            {isDeleteModalOpen && (
-                <DeleteModal
-                    setModal={setIsDeleteModalOpen}
-                    handleDelete={handleDelete}
-                    title={"Es-tu sûr de vouloir supprimer ce jeu?"}
-                    paragraphe={"En faisant cela, toutes les personnes ayant liké ce jeu devront le refaire si celui-ci est ajouté à nouveau."}
-                />
-            )}
+            <AnimatePresence mode={"wait"}>
+                {isDeleteModalOpen && (
+                    <DeleteModal
+                        setModal={setIsDeleteModalOpen}
+                        handleDelete={handleDelete}
+                        title={"Es-tu sûr de vouloir supprimer ce jeu ?"}
+                        paragraphe={"En faisant cela, toutes les personnes ayant liké ce jeu devront le refaire si celui-ci est ajouté à nouveau."}
+                        closeIconTopPosition={"150px"}
+                    />
+                )}
+            </AnimatePresence>
         </>
     )
 }

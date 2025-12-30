@@ -1,7 +1,7 @@
 "use client";
 
 import {useParams} from "next/navigation";
-import {Profile, SelectedMenu} from "@/utils/types";
+import {SelectedMenu} from "@/utils/types";
 import styles from "./page.module.scss";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
@@ -11,7 +11,7 @@ import {GamesList} from "@/components/app/games/gamesList/gamesList";
 import {useGamesScroll} from "@/utils/GamesScrollContext";
 
 
-export default function GroupDetailsClient({profile}: {profile: Profile}) {
+export default function GroupDetailsClient() {
     const { groupId } = useParams();
     const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>("games")
     const gamesListRef = useGamesScroll();
@@ -51,10 +51,7 @@ export default function GroupDetailsClient({profile}: {profile: Profile}) {
                     <div className={styles.groupDetailsContent}>
                         <h1>{group?.name}</h1>
                         <p>
-                            A CHANGER !!!!! Le Lorem Ipsum est simplement du faux texte employé dans la page.
-                            Le Lorem Ipsum est simplement du faux texte employé dans la page.
-                            Le Lorem Ipsum est simplement du faux texte employé dans la page.
-                            Le Lorem Ipsum est simplement du faux texte employé dans la page.
+                            {group?.description}
                         </p>
                     </div>
                 </div>

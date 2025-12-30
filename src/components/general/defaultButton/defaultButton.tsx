@@ -4,12 +4,13 @@ import {ReactNode} from "react";
 type DefaultButtonProps = {
     children: ReactNode,
     handleClick?: React.MouseEventHandler<HTMLButtonElement>;
+    disabled?: boolean;
 }
 
-export default function DefaultButton({children, handleClick}: DefaultButtonProps) {
+export default function DefaultButton({children, handleClick, disabled}: DefaultButtonProps) {
 
     return (
-        <button onClick={handleClick} type={"button"} className={styles.defaultBtn}>
+        <button onClick={handleClick} type={"button"} className={`${styles.defaultBtn} ${disabled ? styles.disabled : ""}`} disabled={disabled}>
             {children}
         </button>
     )

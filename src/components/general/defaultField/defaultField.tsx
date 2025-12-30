@@ -1,4 +1,6 @@
 import styles from "./defaultField.module.scss";
+import {HiddenEyeIcon, VisibleEyeIcon} from "@/utils/svg";
+import {useState} from "react";
 
 interface DefaultFieldProps {
     type: string;
@@ -9,9 +11,12 @@ interface DefaultFieldProps {
     isRequired?: boolean;
     errorMessage?: string;
     maxLength?: number;
+    autoFocus?: boolean;
 }
 
-export default function DefaultField({type, label, value, placeholder, handleChange, isRequired, errorMessage, maxLength}: DefaultFieldProps) {
+export default function DefaultField({type, label, value, placeholder, handleChange, isRequired, errorMessage, maxLength, autoFocus = true}: DefaultFieldProps) {
+    const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
     return (
         <div className={styles.defaultField}>
             <label htmlFor={type}>{label} {isRequired && <span>*</span>}</label>
@@ -19,25 +24,34 @@ export default function DefaultField({type, label, value, placeholder, handleCha
                 <input
                     id={type}
                     value={value}
-                    type={type}
+                    type={type === "password" && isPasswordHidden ? "password" : (
+                        type === "email" ? "email" : "text"
+                    )}
                     placeholder={placeholder}
                     onChange={handleChange}
                     required={isRequired}
                     autoCorrect="off"
-                    autoComplete={"off"}
+                    autoComplete={type === "password" ? (
+                        "new-password"
+                    ) : type === "email" ? (
+                        "username webauthn"
+                    ) : "off"}
                     className={`${errorMessage ? styles.requiredError : ""}`}
-                    maxLength={maxLength}
-                    autoFocus={true}
+                    maxLength={maxLength && (maxLength + 1)}
+                    autoFocus={autoFocus}
                 />
                 {maxLength && (
                     <div className={styles.fieldInsideContainer}>
-                        <p>{value.length}/{maxLength - 1}</p>
+                        <p>{value.length}/{maxLength}</p>
+                    </div>
+                )}
+                {type === "password" && (
+                    <div className={styles.fieldInsideContainer} onClick={() => setIsPasswordHidden(!isPasswordHidden)}>
+                        {isPasswordHidden ? <HiddenEyeIcon/> : <VisibleEyeIcon/>}
                     </div>
                 )}
             </div>
-            {errorMessage && (
-                <p className={"errorMessage"}>{errorMessage}</p>
-            )}
+            <p className={"errorMessage"}>{errorMessage ?? " "}</p>
         </div>
     )
 }

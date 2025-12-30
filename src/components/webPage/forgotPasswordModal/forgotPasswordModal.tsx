@@ -14,7 +14,7 @@ export default function ForgotPasswordModal({setModal, email}: {setModal: React.
                     </p>
                 </div>
                 <div className={styles.buttonContainer}>
-                    <GlassButton type={"button"} handleClick={setModal}>
+                    <GlassButton type={"button"} handleClick={() => setModal(false)}>
                         J&apos;ai compris
                     </GlassButton>
                 </div>

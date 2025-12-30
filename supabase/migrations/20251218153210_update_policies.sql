@@ -1,13 +1,20 @@
-drop policy "Users can read their memberships" on "public"."groups_members";
+DROP policy "Users can read their memberships" ON "public"."groups_members";
 
-create policy "Users can view members of their groups"
-on "public"."groups_members"
-for select
-to authenticated
-using (true);
+CREATE policy "Users can view members of their groups"
+ON "public"."groups_members"
+FOR SELECT
+TO authenticated
+USING (true);
 
-alter table public.profiles enable row level security;
 
-create policy "Public profiles are viewable by everyone"
-on "public"."profiles" for select
-using ( true );
+-- Profiles policies
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+CREATE policy "Public profiles are viewable by everyone"
+ON "public"."profiles" FOR SELECT
+USING ( true );
+
+CREATE POLICY "Users can update their own profile"
+ON "public"."profiles" FOR UPDATE
+TO authenticated
+USING (auth.uid() = id);

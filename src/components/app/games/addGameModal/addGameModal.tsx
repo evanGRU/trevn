@@ -63,10 +63,7 @@ export default function AddGameModal({setModal, groupId, refreshGamesList}: NewG
     return (
         <ModalWrapper
             setModal={setModal}
-            closeIconPosition={{
-                top: "250px",
-                right: "270px"
-            }}
+            closeIconTopPosition={"250px"}
         >
             <div className={styles.searchGameField}>
                 <input

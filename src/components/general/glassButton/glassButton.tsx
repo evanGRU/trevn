@@ -10,7 +10,7 @@ type GlassButtonProps = {
     type: ButtonTypeProps,
     linkHref?: string | "",
     iconPath?: string | null,
-    handleClick?: React.Dispatch<React.SetStateAction<boolean>>;
+    handleClick?: React.MouseEventHandler<HTMLButtonElement>;
     isDisabled?: boolean;
 }
 
@@ -39,7 +39,7 @@ export default function GlassButton({children, type, linkHref = "", iconPath = "
                     {children}
                 </button>
             ) : (
-                <button onClick={() => handleClick && handleClick(false)} type={"button"} className={`glassButtonGlobal ${styles.glassBtn} ${styles.button}`}>
+                <button onClick={handleClick} type={"button"} className={`glassButtonGlobal ${styles.glassBtn} ${styles.button}`}>
                     {children}
                 </button>
             )}

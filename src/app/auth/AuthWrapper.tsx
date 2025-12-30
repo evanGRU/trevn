@@ -12,7 +12,7 @@ import {useEffect, useState} from "react";
 import {useToasts} from "@/utils/useToasts";
 import ForgotPasswordModal from "@/components/webPage/forgotPasswordModal/forgotPasswordModal";
 import {isEmail} from "@/utils/globalFunctions";
-import {ErrorCode} from "@/utils/types";
+import {UserErrorCode} from "@/utils/types";
 
 type Type = "login" | "signup";
 
@@ -31,12 +31,12 @@ export default function AuthForm({ type }: {type: Type}) {
         email: "",
         password: ""
     });
-    const [errorCode, setErrorCode] = useState<{ [key: string]: ErrorCode }>({});
+    const [errorCode, setErrorCode] = useState<{ [key: string]: UserErrorCode }>({});
     const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
 
     const validateForm = () => {
-        const errors: { [key: string]: ErrorCode } = {};
+        const errors: { [key: string]: UserErrorCode } = {};
         if (!formValues.email) {
             errors.email = "missingField"
         } else if (!isEmail(formValues.email)) {

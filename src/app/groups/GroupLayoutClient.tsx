@@ -7,13 +7,13 @@ import DefaultButton from "@/components/general/defaultButton/defaultButton";
 import GroupsSidebar from "@/components/app/groups/groupsSidebar/groupsSidebar";
 import NewGroupModal from "@/components/app/groups/newGroupModal/newGroupModal";
 import useSWR from "swr";
-import {Profile} from "@/utils/types";
 import MainHeader from "@/components/app/mainHeader/mainHeader";
 import {fetcher, smoothScroll} from "@/utils/globalFunctions";
 import {GamesListHandle} from "@/components/app/games/gamesList/gamesList";
 import { GamesScrollContext } from "@/utils/GamesScrollContext";
+import {AnimatePresence} from "framer-motion";
 
-export default function GroupsPageLayoutClient({profile, children}: { profile: Profile, children: React.ReactNode}) {
+export default function GroupsPageLayoutClient({children}: {children: React.ReactNode}) {
     const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState<boolean>(false);
 
     const containerRef = useRef<HTMLElement>(null);
@@ -45,9 +45,14 @@ export default function GroupsPageLayoutClient({profile, children}: { profile: P
         });
     }, []);
 
-    return (
+    const { data: profile, isLoading, mutate: refreshProfile } = useSWR(
+        '/api/user',
+        (url) => fetcher(url, "Une erreur s'est produite en essayant de récuperer ton profil. Essaye de rafraîchir la page.")
+    );
+
+    return !isLoading ? (
         <div className={styles.mainPage}>
-            <MainHeader profile={profile}/>
+            <MainHeader profile={profile} refreshProfile={refreshProfile}/>
 
             <div className={styles.mainAppContainer}>
                 <GroupsSidebar
@@ -71,12 +76,14 @@ export default function GroupsPageLayoutClient({profile, children}: { profile: P
                 </GamesScrollContext.Provider>
             </div>
 
-            {isNewGroupModalOpen && (
-                <NewGroupModal
-                    setModal={setIsNewGroupModalOpen}
-                    refreshGroups={refreshGroups}
-                />
-            )}
+            <AnimatePresence mode="wait">
+                {isNewGroupModalOpen && (
+                    <NewGroupModal
+                        setModal={setIsNewGroupModalOpen}
+                        refreshGroups={refreshGroups}
+                    />
+                )}
+            </AnimatePresence>
         </div>
-    );
+    ) : (<p>Chargement...</p>);
 }

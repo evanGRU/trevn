@@ -1,17 +1,31 @@
 // Auth
-export type ErrorCode =
+export type UserErrorCode =
     | "missingField"
     | "invalidFormat"
     | "emailDoesNotExist"
     | "weakPassword"
     | "maxCharacterLimit"
     | "minCharacterLimit"
+    | "notTheSame"
+    | "samePassword"
     | "";
+
+export type UserErrorMessages = {
+    missingField?: string;
+    invalidFormat?: string;
+    emailDoesNotExist?: string;
+    weakPassword?: string;
+    maxCharacterLimit?: string;
+    minCharacterLimit?: string;
+    notTheSame?: string;
+    samePassword?: string;
+};
 
 // MainPage
 export type Profile = {
-    email: string | undefined;
+    email?: string | undefined;
     id?: string;
+    new_email?: string;
     username?: string;
     avatar_url?: string;
 } | null;
@@ -28,6 +42,14 @@ export type Group = {
     name: string;
 } | null;
 
+// UserSettings
+export type UserProps = 'username' | 'email' | 'password';
+
+export type SettingTab = {
+    name: string;
+    iconPath: string;
+    id: string;
+}
 
 // GroupDetailsPage
 export type Member = {

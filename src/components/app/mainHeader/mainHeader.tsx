@@ -6,8 +6,9 @@ import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import {Profile} from "@/utils/types";
 import UserSettings from "@/components/app/userSettings/userSettings";
 import {useState} from "react";
+import {AnimatePresence} from "framer-motion";
 
-export default function MainHeader({profile}: {profile: Profile}) {
+export default function MainHeader({profile, refreshProfile}: {profile: Profile, refreshProfile: () => void}) {
     const [isUserSettingsModalOpen, setIsUserSettingsModalOpen] = useState(false);
 
     return (
@@ -42,9 +43,11 @@ export default function MainHeader({profile}: {profile: Profile}) {
                 </button>
             </div>
 
-            {isUserSettingsModalOpen && (
-                <UserSettings setModal={setIsUserSettingsModalOpen} profile={profile}></UserSettings>
-            )}
+            <AnimatePresence mode="wait">
+                {isUserSettingsModalOpen && (
+                    <UserSettings setModal={setIsUserSettingsModalOpen} profile={profile} refreshProfile={refreshProfile}></UserSettings>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
