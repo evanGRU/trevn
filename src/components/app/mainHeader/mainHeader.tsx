@@ -3,10 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
-import {signout} from "@/utils/auth";
 import {Profile} from "@/utils/types";
+import UserSettings from "@/components/app/userSettings/userSettings";
+import {useState} from "react";
+import {AnimatePresence} from "framer-motion";
 
-export default function MainHeader({profile}: {profile: Profile}) {
+export default function MainHeader({profile, refreshProfile}: {profile: Profile, refreshProfile: () => void}) {
+    const [isUserSettingsModalOpen, setIsUserSettingsModalOpen] = useState(false);
 
     return (
         <div className={styles.mainHeader}>
@@ -29,6 +32,7 @@ export default function MainHeader({profile}: {profile: Profile}) {
                 <button
                     type={"button"}
                     className={`glassButtonGlobal ${styles.glassIconButton}`}
+                    onClick={() => setIsUserSettingsModalOpen(true)}
                 >
                     <Image
                         src="/icons/gear.svg"
@@ -37,20 +41,13 @@ export default function MainHeader({profile}: {profile: Profile}) {
                         height={24}
                     />
                 </button>
-
-                <button
-                    type={"button"}
-                    className={`glassButtonGlobal ${styles.glassIconButton}`}
-                    onClick={() => signout()}
-                >
-                    <Image
-                        src="/icons/signout.svg"
-                        alt="Signout icon"
-                        width={24}
-                        height={24}
-                    />
-                </button>
             </div>
+
+            <AnimatePresence mode="wait">
+                {isUserSettingsModalOpen && (
+                    <UserSettings setModal={setIsUserSettingsModalOpen} profile={profile} refreshProfile={refreshProfile}></UserSettings>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

@@ -79,6 +79,8 @@ ul {
 
 
 
+// global classnames
+
 .glassButtonGlobal {
   color: #fff;
   background: rgba(255, 255, 255, 0.3);
@@ -112,4 +114,18 @@ ul {
 .errorMessage {
   color: #E94B42;
   font-size: var(--text-12);
+  height: 16px;
+}
+
+.fullBackground {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 10000;
 }

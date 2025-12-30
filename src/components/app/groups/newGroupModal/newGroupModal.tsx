@@ -80,7 +80,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
         }
 
         try {
-            const res = await fetch('/api/groups/new', {
+            const res = await fetch('/api/groups', {
                 method: 'POST',
                 body: formData,
             });
@@ -93,7 +93,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
             setModal(false);
             await refreshGroups();
             successToast('Ton groupe a été créé avec succès !');
-        } catch (err: any) {
+        } catch (err) {
             errorToast("Une erreur est survenue.");
             setIsDisabled(false);
         } finally {
@@ -165,8 +165,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
             await refreshGroups();
             setModal(false);
             successToast('Tu as bien rejoint le groupe !');
-        } catch (err: any) {
-            console.error(err.message);
+        } catch (err) {
             errorToast("Une erreur s'est produite.");
         } finally {
             setIsLoading(false);
@@ -174,7 +173,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
     };
 
     return !isAvatarsPresetsLoading && (
-        <ModalWrapper setModal={setModal} closeIconPosition={{top: "326px", right: "270px"}}>
+        <ModalWrapper setModal={setModal} closeIconTopPosition={"336px"}>
             <div className={styles.createGroupContainer}>
                 <div className={styles.formHeader}>
                     <h1>Créer un nouveau groupe</h1>
@@ -198,7 +197,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                                         />
                                     ) : (
                                         <Image
-                                            src="/icons/avatar.svg"
+                                            src="/icons/picture.svg"
                                             alt="Avatar icon"
                                             width={32}
                                             height={32}
@@ -239,23 +238,25 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                         </div>
                     </div>
 
-                    <DefaultField
-                        type={"text"}
-                        label={"Nom du groupe"}
-                        value={newGroupName}
-                        handleChange={(e) => handleChange("name", e.target.value)}
-                        isRequired={true}
-                        errorMessage={errorMessages?.name}
-                        maxLength={31}
-                    />
+                    <div className={styles.fieldAndButtonContainer}>
+                        <DefaultField
+                            type={"text"}
+                            label={"Nom du groupe"}
+                            value={newGroupName}
+                            handleChange={(e) => handleChange("name", e.target.value)}
+                            isRequired={true}
+                            errorMessage={errorMessages?.name}
+                            maxLength={30}
+                        />
 
-                    <div className={styles.submitButton}>
-                        <GlassButton
-                            type={"submit"}
-                            isDisabled={isLoading || isDisabled}
-                        >
-                            Créer mon groupe
-                        </GlassButton>
+                        <div className={styles.submitButton}>
+                            <GlassButton
+                                type={"submit"}
+                                isDisabled={isLoading || isDisabled}
+                            >
+                                Créer mon groupe
+                            </GlassButton>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -270,10 +271,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                         autoComplete="off"
                         autoCorrect="off"
                         onChange={() => {
-                            setErrorMessages(prev => ({
-                                ...prev,
-                                invitationCode: ""
-                            }));
+                            setErrorMessages({invitationCode: ""});
                         }}
                     />
 
@@ -285,7 +283,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                         Rejoindre
                     </button>
                 </form>
-                {errorMessages.invitationCode && <p className={"errorMessage"}>{errorMessages.invitationCode}</p>}
+                <p className={"errorMessage"}>{errorMessages.invitationCode}</p>
             </div>
         </ModalWrapper>
     )

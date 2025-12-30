@@ -8,14 +8,8 @@ export default async function GroupsPageLayout({children}: {children: React.Reac
 
     if (!user) redirect("/login");
 
-    const { data: profile } = await supabase
-        .from("profiles")
-        .select("id, username, avatar_url")
-        .eq("id", user.id)
-        .single();
-
     return (
-        <GroupsLayoutClient profile={profile}>
+        <GroupsLayoutClient>
             {children}
         </GroupsLayoutClient>
     );

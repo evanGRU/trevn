@@ -12,7 +12,7 @@
   --color-background: #141414;
   --color-surface: #181818;
   --color-background-secondary: #282828;
-  --color-background-secondary-hover: #1e1e1e;
+  --color-background-secondary-hover: #1c1c1c;
   --color-background-tertiary: #1D1D1D;
   --color-gray: #D9D9D9;
 
@@ -21,13 +21,17 @@
   --color-text-dark: #070707;
   --color-text-secondary: #B3B3B3;
   --color-text-red: #FF3C3C;
+  --color-text-yellow: #ffc83c;
 
-  --red: rgba(255, 60, 60, 0.2);
   --red-dark: rgba(43, 18, 18, 0.4);
   --red-border: rgba(255, 60, 60, 0.3);
-  --red-hover: rgba(255, 60, 60, 0.4);
-  --red-dark-hover: rgba(43, 18, 18, 0.6);
-  --red-hover-border: rgba(255, 60, 60, 0.5);
+  --red-dark-hover: rgba(43, 18, 18, 1);
+  --red-border-hover: rgba(255, 60, 60, 0.5);
+
+  --yellow-dark: rgba(43, 40, 18, 0.4);
+  --yellow-border: rgba(255, 200, 60, 0.3);
+  --yellow-dark-hover: rgba(43, 40, 18, 1);
+  --yellow-border-hover: rgba(255, 200, 60, 0.5);
 }
 
 /* 3. Spacing scale */

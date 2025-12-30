@@ -32,7 +32,7 @@ export default function AddGameModal({setModal, groupId, refreshGamesList}: NewG
         setIsLoading(true);
 
         try {
-            const res = await fetch('/api/games/new', {
+            const res = await fetch('/api/games', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ groupId, gameId: game.id }),
@@ -63,10 +63,7 @@ export default function AddGameModal({setModal, groupId, refreshGamesList}: NewG
     return (
         <ModalWrapper
             setModal={setModal}
-            closeIconPosition={{
-                top: "250px",
-                right: "270px"
-            }}
+            closeIconTopPosition={"250px"}
         >
             <div className={styles.searchGameField}>
                 <input

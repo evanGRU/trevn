@@ -1,0 +1,121 @@
+.userSettingsContainer {
+  background-color: var(--color-background);
+  height: 644px;
+  width: 1132px;
+  border: 1px solid var(--color-background-secondary);
+  border-radius: var(--radius-16);
+  display: flex;
+}
+
+.userSettingsNamesContainer {
+  width: 280px;
+  padding: var(--space-16);
+  height: 100%;
+  border-right: 1px solid var(--color-background-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+
+  h4 {
+    font-size: var(--text-12);
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--color-text-gray);
+    height: 36px;
+    background-color: var(--color-surface);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-12);
+    flex-shrink: 0;
+    border-radius: var(--radius-08);
+  }
+
+  .settingsNamesContainer {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    gap: var(--space-04);
+
+    .settingName {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      border-radius: var(--radius-04);
+      padding: 0 var(--space-08);
+      gap: var(--space-08);
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      p {
+        font-size: var(--text-16);
+      }
+
+      &:hover {
+        background-color: var(--color-background-secondary-hover);
+      }
+    }
+
+    .selectedSettingName {
+      background-color: var(--color-background-secondary);
+      &:hover {
+        background-color: var(--color-background-secondary);
+        cursor: default;
+      }
+    }
+  }
+
+  button {
+    height: 48px;
+    min-width: 0;
+    font-size: var(--text-14);
+    gap: var(--space-08);
+    text-transform: none;
+    flex-shrink: 0;
+  }
+}
+
+.userSettingsContentContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .userSettingsContentHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: var(--space-16) var(--space-24);
+    border-bottom: 1px solid var(--color-background-secondary);
+    flex-shrink: 0;
+
+    h1 {
+      font-size: var(--text-32);
+      line-height: var(--space-32);
+    }
+
+    button {
+      height: 100%;
+      aspect-ratio: 1/1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--color-background-secondary-hover);
+        border-radius: var(--space-08);
+      }
+    }
+  }
+
+  .userSettingsContent {
+    padding: var(--space-16) var(--space-24);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}

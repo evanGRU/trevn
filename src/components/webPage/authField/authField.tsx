@@ -1,58 +1,14 @@
 import styles from "./authField.module.scss";
 import {HiddenEyeIcon, VisibleEyeIcon} from "@/utils/svg";
 import {useState} from "react";
-import {ErrorCode} from "@/utils/types";
-
-type ErrorMessages = {
-    missingField?: string;
-    invalidFormat?: string;
-    emailDoesNotExist?: string;
-    weakPassword?: string;
-    maxCharacterLimit?: string;
-    minCharacterLimit?: string;
-};
-
-const fieldPrompts: Record<
-    "username" | "email" | "password",
-    {
-        label: string;
-        placeholder: string;
-        errors: ErrorMessages;
-    }
-> = {
-    username: {
-        label: "Nom d'utilisateur",
-        placeholder: "Entre ton nom d'utilisateur",
-        errors: {
-            missingField: "Nom d'utilisateur requis.",
-            maxCharacterLimit: "Le nom d'utilisateur ne peux pas dépasser 20 caractères.",
-            minCharacterLimit: "Le nom d'utilisateur requiert au moins 3 caractères."
-        }
-    },
-    email: {
-        label: "Email",
-        placeholder: "Entre ton email",
-        errors: {
-            missingField: "Email requis.",
-            invalidFormat: "Format d'email invalide.",
-            emailDoesNotExist: "Adresse e-mail inexistante."
-        }
-    },
-    password: {
-        label: "Mot de passe",
-        placeholder: "Entre ton mot de passe",
-        errors: {
-            missingField: "Mot de passe requis.",
-            weakPassword: "Le mot de passe doit contenir au moins 6 caractères.",
-        }
-    },
-};
+import {UserErrorCode, UserProps} from "@/utils/types";
+import {userPrompts} from "@/utils/prompts";
 
 interface AuthFieldProps {
-    fieldType: "username" | "email" | "password";
+    fieldType: UserProps;
     formValues: { username: string; email: string; password: string };
     handleChange: React.ChangeEventHandler<HTMLInputElement>;
-    errorCode?: ErrorCode;
+    errorCode?: UserErrorCode;
     maxLength?: number;
 }
 
@@ -61,7 +17,7 @@ export default function AuthField({fieldType, formValues, handleChange, errorCod
 
     return (
         <div className={styles.authField}>
-            <label htmlFor={fieldType}>{fieldPrompts[fieldType].label} <span>*</span></label>
+            <label htmlFor={fieldType}>{userPrompts[fieldType].label} <span>*</span></label>
             <div className={styles.fieldContainer}>
                 <input
                     id={fieldType}
@@ -70,7 +26,7 @@ export default function AuthField({fieldType, formValues, handleChange, errorCod
                     type={fieldType === "password" && isPasswordHidden ? "password" : (
                         fieldType === "email" ? "email" : "text"
                     )}
-                    placeholder={fieldPrompts[fieldType].placeholder}
+                    placeholder={userPrompts[fieldType].placeholder}
                     autoCorrect="off"
                     autoComplete={fieldType === "password" ? (
                         "new-password"
@@ -94,7 +50,7 @@ export default function AuthField({fieldType, formValues, handleChange, errorCod
                 )}
             </div>
             {errorCode && (
-                <p className={"errorMessage"}>{fieldPrompts[fieldType].errors[errorCode]}</p>
+                <p className={"errorMessage"}>{userPrompts[fieldType].errors[errorCode]}</p>
             )}
         </div>
     )
