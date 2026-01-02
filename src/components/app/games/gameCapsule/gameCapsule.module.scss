@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+  overflow: hidden;
 
   .mainImage {
     transition: all 0.3s ease;
@@ -19,6 +20,7 @@
   &:hover {
     .mainImage {
       opacity: 1;
+      transform: scale(1.05);
     }
     .bottomButtons {
       opacity: 1;
