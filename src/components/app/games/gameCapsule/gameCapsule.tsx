@@ -84,7 +84,8 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList,
             })
 
             if (!res.ok) {
-                errorToast("Erreur lors de la suppression du jeu.")
+                errorToast("Erreur lors de la suppression du jeu.");
+                return;
             }
 
             setIsDeleteModalOpen(false);

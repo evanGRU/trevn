@@ -27,7 +27,7 @@ export type Profile = {
     id?: string;
     new_email?: string;
     username?: string;
-    avatar_url?: string;
+    avatar: Avatar;
 } | null;
 
 export type Avatar = {
@@ -50,6 +50,12 @@ export type SettingTab = {
     iconPath: string;
     id: string;
 }
+
+export type UpdateUserPayload = {
+    username?: string;
+    email?: string;
+    password?: string;
+};
 
 // GroupDetailsPage
 export type Member = {

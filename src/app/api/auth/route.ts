@@ -36,11 +36,21 @@ export async function POST(req: Request) {
                 return NextResponse.json({ error: 'weakPassword' }, { status: 400 });
             }
 
+            const { data: defaultAvatar, error: defaultAvatarError } = await supabase
+                .from("avatars")
+                .select("id")
+                .eq("name", "default00.jpg")
+                .single();
+
+            if (defaultAvatarError) {
+                return NextResponse.json({ error: 'avatar_error' }, { status: 500 });
+            }
+
             const { error } = await supabase.auth.signUp({
                 email,
                 password,
                 options: {
-                    data: { username },
+                    data: { username, defaultAvatarId: defaultAvatar.id },
                     emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
                 },
             });

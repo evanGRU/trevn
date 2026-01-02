@@ -134,7 +134,7 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
                                 <div className={styles.accountPropsTexts}>
                                     <h4>Adresse e-mail</h4>
                                     {emailChangePending ? (
-                                        <div className={styles.newEmailContainer}>
+                                        <div className={styles.emailContainer}>
                                             <p className={styles.defaultValue}>{defaultAccountSettings.email}</p>
                                             <div className={styles.newEmailTag}>
                                                 <p>CHANGEMENT EN ATTENTE</p>

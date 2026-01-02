@@ -6,6 +6,7 @@ import AccountSettings from "@/components/app/userSettings/account/accountSettin
 import {motion} from "framer-motion";
 import {Profile, SettingTab} from "@/utils/types";
 import {signout} from "@/utils/auth";
+import AvatarSettings from "@/components/app/userSettings/avatar/avatarSettings";
 
 interface UserSettingsProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,9 +34,7 @@ export default function UserSettings({setModal, profile, refreshProfile}: UserSe
         account:
             <AccountSettings profile={profile} refreshProfile={refreshProfile}/>,
         avatar:
-            <div>
-                Composant Avatar à venir...
-            </div>
+            <AvatarSettings profile={profile} refreshProfile={refreshProfile}/>
     };
 
     const handleChangeTab = (setting: SettingTab) => {
