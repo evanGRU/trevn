@@ -23,15 +23,6 @@ export default function GroupsSidebar({groups, setModalState}: GroupsListProps) 
                     <div className={styles.groupsTitle}>
                         <h4>Tous tes groupes</h4>
                     </div>
-
-                    {/*<div className={styles.iconButton}>*/}
-                    {/*    <Image*/}
-                    {/*        src="/icons/order/orderDefault.svg"*/}
-                    {/*        alt="Icône tri"*/}
-                    {/*        width={18}*/}
-                    {/*        height={18}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
                 </div>
 
                 {groups.length > 0 && (

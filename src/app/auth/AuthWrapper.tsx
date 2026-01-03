@@ -2,7 +2,6 @@
 
 import styles from "./page.module.scss";
 import Image from "next/image";
-import AuthField from "@/components/webPage/authField/authField";
 import GlassButton from "@/components/general/glassButton/glassButton";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -13,6 +12,8 @@ import {useToasts} from "@/utils/useToasts";
 import ForgotPasswordModal from "@/components/webPage/forgotPasswordModal/forgotPasswordModal";
 import {isEmail} from "@/utils/globalFunctions";
 import {UserErrorCode} from "@/utils/types";
+import DefaultField from "@/components/general/defaultField/defaultField";
+import {userPrompts} from "@/utils/prompts";
 
 type Type = "login" | "signup";
 
@@ -197,27 +198,39 @@ export default function AuthForm({ type }: {type: Type}) {
                         </div>
 
                         <form onSubmit={handleSubmit}>
-                            {!isLogin && (
-                                <AuthField
-                                    fieldType="username"
-                                    formValues={formValues}
-                                    maxLength={21}
-                                    handleChange={(e) => handleChange("username", e.target.value)}
-                                    errorCode={errorCode.username}
+                            <div className={styles.fields}>
+                                {!isLogin && (
+                                    <DefaultField
+                                        type="username"
+                                        value={formValues["username"]}
+                                        handleChange={(e) => handleChange("username", e.target.value)}
+                                        errorMessage={errorCode.username && userPrompts["username"].errors[errorCode.username]}
+                                        label={userPrompts["username"].label}
+                                        placeholder={userPrompts["username"].placeholder}
+                                        isRequired={true}
+                                        maxLength={20}
+                                    />
+                                )}
+                                <DefaultField
+                                    type="email"
+                                    value={formValues["email"]}
+                                    handleChange={(e) => handleChange("email", e.target.value)}
+                                    errorMessage={errorCode.email && userPrompts["email"].errors[errorCode.email]}
+                                    label={userPrompts["email"].label}
+                                    placeholder={userPrompts["email"].placeholder}
+                                    isRequired={true}
                                 />
-                            )}
-                            <AuthField
-                                fieldType="email"
-                                formValues={formValues}
-                                handleChange={(e) => handleChange("email", e.target.value)}
-                                errorCode={errorCode.email}
-                            />
-                            <AuthField
-                                fieldType="password"
-                                formValues={formValues}
-                                handleChange={(e) => handleChange("password", e.target.value)}
-                                errorCode={errorCode.password}
-                            />
+                                <DefaultField
+                                    type="password"
+                                    value={formValues["password"]}
+                                    handleChange={(e) => handleChange("password", e.target.value)}
+                                    errorMessage={errorCode.password && userPrompts["password"].errors[errorCode.password]}
+                                    label={userPrompts["password"].label}
+                                    placeholder={userPrompts["password"].placeholder}
+                                    isRequired={true}
+                                    autoFocus={false}
+                                />
+                            </div>
                             {isLogin && (
                                 <div className={styles.loginUtils}>
                                     <label>

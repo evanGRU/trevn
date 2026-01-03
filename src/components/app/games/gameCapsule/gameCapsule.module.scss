@@ -1,4 +1,6 @@
 .gameCard {
+  width: 100%;
+  max-width: 220px;
   border-radius: var(--radius-08);
   position: relative;
   display: flex;
@@ -6,6 +8,7 @@
   justify-content: center;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
   overflow: hidden;
+  justify-self: center;
 
   .mainImage {
     transition: all 0.3s ease;
@@ -55,6 +58,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-12);
+  gap: var(--space-08);
 
   .glass {
     height: 36px;
@@ -72,6 +76,7 @@
     padding: 0;
     width: 36px;
     border-radius: var(--radius-full);
+    flex-shrink: 0;
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.4);
@@ -92,6 +97,9 @@
       font-weight: 400;
       transform: translateY(1px);
       line-height: var(--space-16);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }
