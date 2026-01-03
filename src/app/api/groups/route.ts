@@ -75,7 +75,6 @@ export async function POST(req: Request) {
     let avatarId: string | null = selectedAvatar ?? null;
 
     try {
-        // Create custom avatar
         if (imageFile) {
             const ext = imageFile.name.split('.').pop();
             const fileName = `${user.id}-${Date.now()}.${ext}`;
@@ -108,7 +107,10 @@ export async function POST(req: Request) {
             }
         );
 
-        if (error) throw error;
+        if (error) {
+            console.error(error);
+            return NextResponse.json({ error });
+        }
 
         return NextResponse.json({ success: true, groupId });
     } catch (err) {
