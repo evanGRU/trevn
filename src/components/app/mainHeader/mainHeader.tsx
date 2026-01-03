@@ -20,7 +20,7 @@ export default function MainHeader({profile, refreshProfile}: {profile: Profile,
             <div className={styles.profileContainer}>
                 <div className={styles.usernameContainer}>
                     <DbImage
-                        src={getPublicAvatarUrl("users", profile?.avatar_url)}
+                        src={getPublicAvatarUrl("users", profile?.avatar.name)}
                         alt={"User avatar"}
                         width={28}
                         height={28}

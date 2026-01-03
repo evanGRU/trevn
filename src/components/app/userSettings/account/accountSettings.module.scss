@@ -36,7 +36,7 @@
       color: var(--color-text-secondary);
     }
 
-    .newEmailContainer {
+    .emailContainer {
       display: flex;
       gap: var(--space-08);
 
@@ -90,14 +90,14 @@
     height: auto;
     text-transform: none;
     padding: var(--space-08) var(--space-24);
-    font-size: var(--text-14);
+    font-weight: 300;
   }
 }
 
 .deleteSection {
   p {
-    font-size: var(--text-12);
-    font-weight: 400;
+    font-size: var(--text-16);
+    font-weight: 300;
     margin-bottom: var(--space-12);
   }
 
@@ -111,6 +111,8 @@
     padding: 0 var(--space-16);
     cursor: pointer;
     transition: all 0.3s ease;
+    font-size: var(--16px);
+    font-weight: 600;
 
     &:hover {
       background-color: var(--red-dark-hover);

@@ -44,7 +44,7 @@
       transition: all 0.3s ease;
       color: var(--color-text);
       text-transform: uppercase;
-      font-size: var(--text-14);
+      font-size: var(--text-16);
       font-weight: 400;
       &:hover {
         background-color: var(--color-background-secondary-hover);
@@ -61,7 +61,7 @@
         width: 100%;
         padding: 0;
         height: 100%;
-        font-size: var(--text-14) !important;
+        font-size: var(--text-16) !important;
         font-weight: 400;
 
         &:hover {

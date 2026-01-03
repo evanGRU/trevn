@@ -29,7 +29,7 @@ export async function GET(req: Request) {
           members:groups_members!group_id (
             profiles ( 
               username,
-              avatar_url
+              avatar_id
             )
           )
         `)

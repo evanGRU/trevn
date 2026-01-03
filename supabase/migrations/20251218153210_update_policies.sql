@@ -1,4 +1,4 @@
-DROP policy "Users can read their memberships" ON "public"."groups_members";
+DROP policy IF EXISTS "Users can read their memberships" ON "public"."groups_members";
 
 CREATE policy "Users can view members of their groups"
 ON "public"."groups_members"

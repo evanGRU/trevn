@@ -36,11 +36,30 @@ export async function POST(req: Request) {
                 return NextResponse.json({ error: 'weakPassword' }, { status: 400 });
             }
 
+            const { data: defaultAvatar, error: defaultAvatarError } = await supabase
+                .from("avatars")
+                .select("id")
+                .ilike("name", "default00.jpg")
+                .maybeSingle();
+
+            if (defaultAvatarError) {
+                console.error(defaultAvatarError);
+                return NextResponse.json({ error: 'avatar_error' }, { status: 500 });
+            }
+
+            if (!defaultAvatar) {
+                console.error('Default avatar not found!');
+                return NextResponse.json({ error: 'avatar_not_found' }, { status: 500 });
+            }
+
             const { error } = await supabase.auth.signUp({
                 email,
                 password,
                 options: {
-                    data: { username },
+                    data: {
+                        username,
+                        defaultAvatarId: defaultAvatar.id
+                    },
                     emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
                 },
             });
