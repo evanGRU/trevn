@@ -71,6 +71,7 @@
       border-right: 1px solid var(--color-background-secondary);
       position: relative;
       font-weight: 200;
+      color: var(--color-text-secondary);
 
       &:before {
         background: rgba(255, 255, 255, 1);
@@ -101,6 +102,7 @@
     .selectedMenu {
       cursor: default;
       font-weight: 400;
+      color: var(--color-text);
       &:before {
         background: rgba(255, 255, 255, 1);
         content: "";

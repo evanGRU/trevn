@@ -1,4 +1,7 @@
 // Auth
+
+export type AuthModes = "login" | "signup";
+
 export type UserErrorCode =
     | "missingField"
     | "invalidFormat"
@@ -22,6 +25,11 @@ export type UserErrorMessages = {
 };
 
 // MainPage
+export type ProfileDefault = {
+    id?: string;
+    username?: string;
+} | null;
+
 export type Profile = {
     email?: string | undefined;
     id?: string;
@@ -59,14 +67,19 @@ export type UpdateUserPayload = {
 
 // GroupDetailsPage
 export type Member = {
+    id: string;
     username: string;
-    avatar_url: string;
+    avatar: Avatar;
+    roles: "owner" | "";
 }
 
 export type GroupDetails = {
     avatar: Avatar;
+    created_by: string
     description: string;
     id: string;
+    invite_code: string;
+    members: Member[];
     name: string;
 } | null;
 

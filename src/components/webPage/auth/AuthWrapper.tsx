@@ -6,16 +6,14 @@ import GlassButton from "@/components/general/glassButton/glassButton";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {TickIcon} from "@/utils/svg";
-import {useRouter} from "next/navigation";
-import {useEffect, useState} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import React, {useEffect, useState} from "react";
 import {useToasts} from "@/utils/useToasts";
 import ForgotPasswordModal from "@/components/webPage/forgotPasswordModal/forgotPasswordModal";
 import {isEmail} from "@/utils/globalFunctions";
-import {UserErrorCode} from "@/utils/types";
+import {AuthModes, UserErrorCode} from "@/utils/types";
 import DefaultField from "@/components/general/defaultField/defaultField";
 import {userPrompts} from "@/utils/prompts";
-
-type Type = "login" | "signup";
 
 interface FormValues {
     username: string;
@@ -23,7 +21,7 @@ interface FormValues {
     password: string;
 }
 
-export default function AuthForm({ type }: {type: Type}) {
+export default function AuthForm({ type }: {type: AuthModes}) {
     const router = useRouter();
     const isLogin = type === "login";
     const {successToast, errorToast} = useToasts();
@@ -35,6 +33,9 @@ export default function AuthForm({ type }: {type: Type}) {
     const [errorCode, setErrorCode] = useState<{ [key: string]: UserErrorCode }>({});
     const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
+
+    const searchParams = useSearchParams();
+    const redirect = searchParams.get('redirect');
 
     const validateForm = () => {
         const errors: { [key: string]: UserErrorCode } = {};
@@ -104,9 +105,9 @@ export default function AuthForm({ type }: {type: Type}) {
             }
 
             if (isLogin) {
-                router.push('/groups');
+                router.push(`${redirect ?? "/groups"}`);
             } else {
-                router.push('/login');
+                router.push(`/login${redirect ? `?redirect=${redirect}` : ''}`);
                 successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser ton inscription.");
             }
         } catch (err) {
@@ -262,7 +263,7 @@ export default function AuthForm({ type }: {type: Type}) {
                                     ? "Vous n'avez pas encore de compte?"
                                     : "Vous avez déjà un compte?"}
                             </p>
-                            <a href={isLogin ? "/signup" : "/login"}>
+                            <a href={isLogin ? `/signup${redirect ? `?redirect=${redirect}` : ''}` : `/login${redirect ? `?redirect=${redirect}` : ''}`}>
                                 {isLogin ? "Inscrivez-vous" : "Connectez-vous"}
                             </a>
                         </div>

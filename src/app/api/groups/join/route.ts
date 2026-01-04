@@ -26,6 +26,27 @@ export async function POST(req: Request) {
         );
     }
 
+    const { data: membership, error: memberError } = await supabase
+        .from("groups_members")
+        .select("id")
+        .eq("group_id", group.id)
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+    if (memberError) {
+        return NextResponse.json(
+            { error: memberError.message },
+            { status: 500 }
+        );
+    }
+
+    if (membership) {
+        return NextResponse.json(
+            { error: "already_member" },
+            { status: 409 }
+        );
+    }
+
     const { error: joinError } = await supabase
         .from("groups_members")
         .insert({

@@ -10,6 +10,7 @@ import {useDebounce} from "@/utils/useDebounce";
 import GameCapsule from "@/components/app/games/gameCapsule/gameCapsule";
 import { fetcher } from "@/utils/globalFunctions";
 import {AnimatePresence} from "framer-motion";
+import Loader from "@/components/general/loader/loader";
 
 export type GamesListHandle = {
     enableScroll: () => void;
@@ -69,31 +70,30 @@ export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue, membe
 
 
             <div ref={gamesRef} className={styles.gamesContentContainer}>
-                {isLoading && (
-                    <div className={styles.loader}>
-                        <p>Chargement...</p>
-                    </div>
-                )}
-                {filteredGames.length > 0 ? (
-                    <div className={styles.gameCardContainer}>
-                        <AnimatePresence initial={false} mode="popLayout">
-                            {filteredGames?.map((game: GameCapsuleData) => (
-                                <GameCapsule
-                                    key={`game-card-${game.id}`}
-                                    game={game}
-                                    groupId={groupId}
-                                    refreshGamesList={refreshGamesList}
-                                    gamesList={filteredGames}
-                                    members={members}
-                                />
-                            ))}
-                        </AnimatePresence>
+                {isLoading ? (
+                    <Loader/>
+                ) : (
+                    filteredGames.length > 0 ? (
+                        <div className={styles.gameCardContainer}>
+                            <AnimatePresence initial={false} mode="popLayout">
+                                {filteredGames?.map((game: GameCapsuleData) => (
+                                    <GameCapsule
+                                        key={`game-card-${game.id}`}
+                                        game={game}
+                                        groupId={groupId}
+                                        refreshGamesList={refreshGamesList}
+                                        gamesList={filteredGames}
+                                        members={members}
+                                    />
+                                ))}
+                            </AnimatePresence>
 
-                    </div>
-                ) : (search && (
-                        <div className={styles.noResults}>
-                            <p>Aucun résultat trouvé pour &#34;{search}&#34;.</p>
                         </div>
+                    ) : (search && (
+                            <div className={styles.noResults}>
+                                <p>Aucun résultat trouvé pour &#34;{search}&#34;.</p>
+                            </div>
+                        )
                     )
                 )}
             </div>

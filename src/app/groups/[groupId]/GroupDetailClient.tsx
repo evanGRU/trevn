@@ -1,7 +1,7 @@
 "use client";
 
 import {useParams} from "next/navigation";
-import {SelectedMenu} from "@/utils/types";
+import {ProfileDefault, SelectedMenu} from "@/utils/types";
 import styles from "./page.module.scss";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
@@ -9,9 +9,10 @@ import useSWR from "swr";
 import {useState} from "react";
 import {GamesList} from "@/components/app/games/gamesList/gamesList";
 import {useGamesScroll} from "@/utils/GamesScrollContext";
+import {MembersList} from "@/components/app/members/membersList";
+import Loader from "@/components/general/loader/loader";
 
-
-export default function GroupDetailsClient() {
+export default function GroupDetailsClient({profile} : {profile: ProfileDefault}) {
     const { groupId } = useParams();
     const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>("games")
     const gamesListRef = useGamesScroll();
@@ -20,7 +21,11 @@ export default function GroupDetailsClient() {
         groupId ? `/api/groups/detail?groupId=${groupId}` : null,
         (url) => fetcher(url, "Impossible de récupérer les infos de ce groupe. Essaye de rafraîchir la page.")
     );
-    const members = group?.members;
+
+    const { data: members, isLoading: membersLoading, mutate: refreshMembers } = useSWR(
+        groupId ? `/api/groups/members?groupId=${groupId}` : null,
+        (url) => fetcher(url, "Impossible de récupérer les infos sur les membres de ce groupe. Essaye de rafraîchir la page.")
+    );
 
     const getSelectedContent = () => {
         switch (selectedMenu) {
@@ -32,13 +37,20 @@ export default function GroupDetailsClient() {
                         members={members}
                     />);
             case "members":
-                return <h2>Membres</h2>;
+                return (
+                    <MembersList
+                        members={members}
+                        profile={profile}
+                        refreshMembers={refreshMembers}
+                        group={group}
+                    />
+                );
             case "settings":
                 return <h2>Paramètres</h2>;
         }
     }
 
-    return !isLoading && (
+    return !isLoading && !membersLoading ? (
         <>
             <div className={styles.groupDetailsSection}>
                 <div className={styles.groupDetailsContainer}>
@@ -84,5 +96,7 @@ export default function GroupDetailsClient() {
                 {getSelectedContent()}
             </div>
         </>
+    ) : (
+        <Loader/>
     );
 }
