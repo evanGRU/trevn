@@ -10,6 +10,7 @@ import {useState} from "react";
 import {GamesList} from "@/components/app/games/gamesList/gamesList";
 import {useGamesScroll} from "@/utils/GamesScrollContext";
 import {MembersList} from "@/components/app/members/membersList";
+import Loader from "@/components/general/loader/loader";
 
 export default function GroupDetailsClient({profile} : {profile: ProfileDefault}) {
     const { groupId } = useParams();
@@ -49,7 +50,7 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
         }
     }
 
-    return !isLoading && !membersLoading && (
+    return !isLoading && !membersLoading ? (
         <>
             <div className={styles.groupDetailsSection}>
                 <div className={styles.groupDetailsContainer}>
@@ -95,5 +96,7 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
                 {getSelectedContent()}
             </div>
         </>
+    ) : (
+        <Loader/>
     );
 }

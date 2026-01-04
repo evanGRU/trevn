@@ -12,6 +12,7 @@ import {fetcher, smoothScroll} from "@/utils/globalFunctions";
 import {GamesListHandle} from "@/components/app/games/gamesList/gamesList";
 import { GamesScrollContext } from "@/utils/GamesScrollContext";
 import {AnimatePresence} from "framer-motion";
+import Loader from "@/components/general/loader/loader";
 
 export default function GroupsPageLayoutClient({children}: {children: React.ReactNode}) {
     const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState<boolean>(false);
@@ -85,5 +86,7 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
                 )}
             </AnimatePresence>
         </div>
-    ) : (<p>Chargement...</p>);
+    ) : (
+        <Loader/>
+    );
 }
