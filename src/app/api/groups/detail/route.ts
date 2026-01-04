@@ -21,16 +21,12 @@ export async function GET(req: Request) {
           id,
           name,
           description,
+          invite_code,
+          created_by,
           avatar:avatars!avatar_id (
             id,
             name,
             type
-          ),
-          members:groups_members!group_id (
-            profiles ( 
-              username,
-              avatar_id
-            )
           )
         `)
         .eq('id', groupId)

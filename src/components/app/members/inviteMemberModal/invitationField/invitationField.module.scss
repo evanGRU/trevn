@@ -1,0 +1,58 @@
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  cursor: pointer;
+  padding: 0;
+  background-color: var(--color-background-secondary-hover);
+  border-radius: var(--radius-08);
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+
+  .text {
+    background-color: transparent;
+    padding: var(--space-04) var(--space-08);
+    display: flex;
+    align-items: center;
+    color: var(--color-text);
+    height: 100%;
+    width: 100%;
+  }
+
+  .copyButton {
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    height: 100%;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  &:hover {
+    border-color: var(--color-gray);
+  }
+}
+
+.copied {
+  border-color: var(--select-hover-blue);
+
+  &:hover {
+    border-color: var(--select-hover-blue);
+  }
+
+  .copyButton {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+
