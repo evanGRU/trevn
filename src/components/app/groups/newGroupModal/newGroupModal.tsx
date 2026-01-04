@@ -158,8 +158,14 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
             const data = await res.json();
 
             if (!res.ok) {
-                setErrorMessages(prev => ({ ...prev, invitationCode: data.error }));
-                return;
+                switch (data.error){
+                    case "already_member":
+                        setErrorMessages(prev => ({ ...prev, invitationCode: "Tu fais déjà parti de ce groupe." }));
+                        return;
+                    default:
+                        setErrorMessages(prev => ({ ...prev, invitationCode: data.error }));
+                        return;
+                }
             }
 
             await refreshGroups();

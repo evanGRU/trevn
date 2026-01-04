@@ -1,0 +1,135 @@
+.invitePage {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("/backgrounds/authBackground.jpg") ;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  user-select: none;
+  gap: 10px;
+}
+
+.inviteContainer {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-40);
+  backdrop-filter: blur(10px);
+  padding: var(--space-48);
+  width: 524px;
+  height: auto;
+
+  .headerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-24);
+    margin-bottom: var(--space-24);
+
+    a {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      height: var(--space-48);
+      font-size: var(--text-48);
+      line-height: var(--space-48);
+    }
+  }
+
+  .groupContainer {
+    display: flex;
+    flex-direction: column;
+
+    p{
+      color: var(--color-text-secondary);
+    }
+
+    .groupCardContainer{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: var(--space-08);
+      border-radius: var(--radius-08);
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: var(--space-04);
+      height: 72px;
+      color: var(--color-text);
+
+      img {
+        height: 100%;
+        width: auto;
+        aspect-ratio: 1/1;
+        border-radius: var(--space-04);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+
+      h3 {
+        font-family: var(--font-heading), sans-serif;
+        font-size: var(--text-32);
+        transform: translateY(1px);
+      }
+    }
+  }
+
+  .formQuestionContainer {
+    width: 100%;
+    margin-top: var(--space-20);
+
+    h2 {
+      font-size: var(--text-24);
+      text-align: center;
+    }
+
+    .buttonsContainer {
+      display: flex;
+      align-items: center;
+      gap: var(--space-08);
+      margin-top: var(--space-04);
+
+      .cancelButton {
+        width: 100%;
+        flex: 1;
+        height: 42px;
+        border-radius: var(--radius-40);
+        border: none;
+        background-color: var(--color-surface);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--color-text);
+        text-transform: uppercase;
+        font-size: var(--text-16);
+        font-weight: 400;
+        &:hover {
+          background-color: var(--color-background-secondary-hover);
+        }
+      }
+
+      .submitButton {
+        width: 100%;
+        flex: 1;
+        height: 42px;
+
+        button {
+          min-width: 0;
+          width: 100%;
+          padding: 0;
+          height: 100%;
+          font-size: var(--text-16) !important;
+          font-weight: 400;
+
+          &:hover {
+            transform: translateY(0);
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  }
+}

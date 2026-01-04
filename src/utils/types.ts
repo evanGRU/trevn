@@ -1,4 +1,7 @@
 // Auth
+
+export type AuthModes = "login" | "signup";
+
 export type UserErrorCode =
     | "missingField"
     | "invalidFormat"
