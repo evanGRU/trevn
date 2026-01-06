@@ -2,10 +2,10 @@ import styles from "./membersList.module.scss";
 import GlassButton from "@/components/general/glassButton/glassButton";
 import {forwardRef, useImperativeHandle, useRef, useState} from "react";
 import {GroupDetails, Member, ProfileDefault} from "@/utils/types";
-import {MemberCard} from "@/components/app/members/memberCard/memberCard";
+import {MemberCard} from "@/components/app/groupMenu/members/memberCard/memberCard";
 import {useToasts} from "@/utils/useToasts";
 import {KeyedMutator} from "swr";
-import InviteMemberModal from "@/components/app/members/inviteMemberModal/inviteMemberModal";
+import InviteMemberModal from "@/components/app/groupMenu/members/inviteMemberModal/inviteMemberModal";
 import {AnimatePresence} from "framer-motion";
 
 export type GamesListHandle = {

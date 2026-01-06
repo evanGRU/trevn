@@ -7,9 +7,9 @@ import {DbImage} from "@/components/general/dbImage/dbImage";
 import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
 import useSWR from "swr";
 import {useState} from "react";
-import {GamesList} from "@/components/app/games/gamesList/gamesList";
+import {GamesList} from "@/components/app/groupMenu/games/gamesList";
 import {useGamesScroll} from "@/utils/GamesScrollContext";
-import {MembersList} from "@/components/app/members/membersList";
+import {MembersList} from "@/components/app/groupMenu/members/membersList";
 import Loader from "@/components/general/loader/loader";
 
 export default function GroupDetailsClient({profile} : {profile: ProfileDefault}) {

@@ -1,7 +1,7 @@
-import styles from "./optionsModal.module.scss";
+import styles from "./optionsModalWrapper.module.scss";
 import {motion} from "framer-motion";
 
-export const OptionsModal = ({children}: {children: React.ReactNode}) => {
+export const OptionsModalWrapper = ({children}: {children: React.ReactNode}) => {
     return (
         <motion.div
             layout

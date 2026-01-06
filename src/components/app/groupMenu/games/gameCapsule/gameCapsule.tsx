@@ -6,7 +6,7 @@ import {ParamValue} from "next/dist/server/request/params";
 import {useState} from "react";
 import Link from "next/link";
 import {useToasts} from "@/utils/useToasts";
-import LikeCounterIcon from "@/components/app/games/likeCounterIcon/likeCounterIcon";
+import LikeCounterIcon from "@/components/app/groupMenu/games/likeCounterIcon/likeCounterIcon";
 import DeleteModal from "@/components/general/deleteModal/deleteModal";
 import {AnimatePresence, motion} from "framer-motion";
 
