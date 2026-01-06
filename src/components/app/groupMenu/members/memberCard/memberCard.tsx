@@ -5,8 +5,8 @@ import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import {Member, ProfileDefault} from "@/utils/types";
 import {AnimatePresence} from "framer-motion";
-import {OptionsButton} from "@/components/app/optionsModal/optionsButton/optionsButton";
-import {OptionsModal} from "@/components/app/optionsModal/optionsModal";
+import {OptionsButton} from "@/components/general/options/optionsButton/optionsButton";
+import {OptionsModalWrapper} from "@/components/general/options/optionsModalWrapper/optionsModalWrapper";
 
 interface MemberCardProps {
     member: Member;
@@ -90,13 +90,13 @@ export const MemberCard = ({member, userHaveRights, handleKick, profile}: Member
                     </div>
                     <AnimatePresence>
                         {areOptionsOpen && (
-                            <OptionsModal>
+                            <OptionsModalWrapper>
                                 {optionsProps.map((option) => (
                                     <OptionsButton key={option.name} isWarningButton={option.isWarningButton} handleClick={option.handleClick}>
                                         {option.text}
                                     </OptionsButton>
                                 ))}
-                            </OptionsModal>
+                            </OptionsModalWrapper>
                         )}
                     </AnimatePresence>
                 </div>

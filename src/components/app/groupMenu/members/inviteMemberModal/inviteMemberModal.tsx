@@ -1,7 +1,7 @@
 import styles from "./inviteMemberModal.module.scss";
 import React from "react";
 import ModalWrapper from "@/components/general/modalWrapper/modalWrapper";
-import InvitationField from "@/components/app/members/inviteMemberModal/invitationField/invitationField";
+import InvitationField from "@/components/app/groupMenu/members/inviteMemberModal/invitationField/invitationField";
 
 interface InviteMemberModalProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;

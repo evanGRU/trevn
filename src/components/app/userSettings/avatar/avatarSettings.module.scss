@@ -154,12 +154,8 @@
         }
 
         .selectedAvatar {
-          border-color: var(--select-hover-blue);
+          border-color: var(--color-gray);
           cursor: default;
-
-          &:hover {
-            border-color: var(--select-hover-blue);
-          }
 
           img {
             opacity: 1;

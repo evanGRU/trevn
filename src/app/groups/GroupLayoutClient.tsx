@@ -9,7 +9,7 @@ import NewGroupModal from "@/components/app/groups/newGroupModal/newGroupModal";
 import useSWR from "swr";
 import MainHeader from "@/components/app/mainHeader/mainHeader";
 import {fetcher, smoothScroll} from "@/utils/globalFunctions";
-import {GamesListHandle} from "@/components/app/games/gamesList/gamesList";
+import {GamesListHandle} from "@/components/app/groupMenu/games/gamesList";
 import { GamesScrollContext } from "@/utils/GamesScrollContext";
 import {AnimatePresence} from "framer-motion";
 import Loader from "@/components/general/loader/loader";
