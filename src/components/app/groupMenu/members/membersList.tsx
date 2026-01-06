@@ -7,6 +7,7 @@ import {useToasts} from "@/utils/useToasts";
 import {KeyedMutator} from "swr";
 import InviteMemberModal from "@/components/app/groupMenu/members/inviteMemberModal/inviteMemberModal";
 import {AnimatePresence} from "framer-motion";
+import MenuHeader from "@/components/app/groupMenu/menuHeader/menuHeader";
 
 export type GamesListHandle = {
     enableScroll: () => void;
@@ -75,15 +76,11 @@ export const MembersList = forwardRef<GamesListHandle, MembersListProps>(({
 
     return (
         <>
-            <div className={styles.headerContainer}>
-                <h2>Liste des membres - {members.length}</h2>
-
-                <div className={styles.headerButtonsContainer}>
-                    <GlassButton type={"button"} handleClick={() => setIsInviteMemberModalOpen(true)}>Inviter un
-                        ami</GlassButton>
-                </div>
-            </div>
-
+            <MenuHeader title={`Liste des membres - ${members.length}`}>
+                <GlassButton type={"button"} handleClick={() => setIsInviteMemberModalOpen(true)}>
+                    Inviter un ami
+                </GlassButton>
+            </MenuHeader>
 
             <div ref={membersRef} className={styles.membersContainer}>
                 {members.map((member) => (

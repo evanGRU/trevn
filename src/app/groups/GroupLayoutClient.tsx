@@ -10,7 +10,7 @@ import useSWR from "swr";
 import MainHeader from "@/components/app/mainHeader/mainHeader";
 import {fetcher, smoothScroll} from "@/utils/globalFunctions";
 import {GamesListHandle} from "@/components/app/groupMenu/games/gamesList";
-import { GamesScrollContext } from "@/utils/GamesScrollContext";
+import { MenuScrollContext } from "@/utils/MenuScrollContext";
 import {AnimatePresence} from "framer-motion";
 import Loader from "@/components/general/loader/loader";
 
@@ -18,7 +18,7 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
     const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState<boolean>(false);
 
     const containerRef = useRef<HTMLElement>(null);
-    const gamesListRef = useRef<GamesListHandle>(null);
+    const menuRef = useRef<GamesListHandle>(null);
     const isScrollingRef = useRef(false);
     const atBottomRef = useRef(false);
 
@@ -39,9 +39,9 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
             isScrollingRef.current = false;
 
             if (atBottomRef.current) {
-                gamesListRef.current?.enableScroll();
+                menuRef.current?.enableScroll();
             } else {
-                gamesListRef.current?.disableScroll();
+                menuRef.current?.disableScroll();
             }
         });
     }, []);
@@ -60,7 +60,7 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
                     groups={groupsList ?? []}
                     setModalState={setIsNewGroupModalOpen}
                 />
-                <GamesScrollContext.Provider value={gamesListRef}>
+                <MenuScrollContext.Provider value={menuRef}>
                     <main ref={containerRef} className={`mainContainer ${styles.mainContentContainer}`} onScroll={handleScroll}>
                         {groupsList?.length === 0 ? (
                             <div className={styles.noGroupsContainer}>
@@ -74,7 +74,7 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
                             </div>
                         ) : children}
                     </main>
-                </GamesScrollContext.Provider>
+                </MenuScrollContext.Provider>
             </div>
 
             <AnimatePresence mode="wait">

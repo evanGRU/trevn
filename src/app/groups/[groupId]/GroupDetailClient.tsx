@@ -8,14 +8,15 @@ import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
 import useSWR from "swr";
 import {useState} from "react";
 import {GamesList} from "@/components/app/groupMenu/games/gamesList";
-import {useGamesScroll} from "@/utils/GamesScrollContext";
+import {useMenuScroll} from "@/utils/MenuScrollContext";
 import {MembersList} from "@/components/app/groupMenu/members/membersList";
 import Loader from "@/components/general/loader/loader";
+import {GroupSettings} from "@/components/app/groupMenu/settings/groupSettings";
 
 export default function GroupDetailsClient({profile} : {profile: ProfileDefault}) {
     const { groupId } = useParams();
     const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>("games")
-    const gamesListRef = useGamesScroll();
+    const mainScrollRef = useMenuScroll();
 
     const { data: group, isLoading, mutate: refreshGroup } = useSWR(
         groupId ? `/api/groups/detail?groupId=${groupId}` : null,
@@ -27,18 +28,19 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
         (url) => fetcher(url, "Impossible de récupérer les infos sur les membres de ce groupe. Essaye de rafraîchir la page.")
     );
 
-    const getSelectedContent = () => {
+    const getSelectedMenuContent = () => {
         switch (selectedMenu) {
             case "games":
                 return (
                     <GamesList
-                        ref={gamesListRef}
+                        ref={mainScrollRef}
                         groupId={groupId}
                         members={members}
                     />);
             case "members":
                 return (
                     <MembersList
+                        ref={mainScrollRef}
                         members={members}
                         profile={profile}
                         refreshMembers={refreshMembers}
@@ -46,7 +48,13 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
                     />
                 );
             case "settings":
-                return <h2>Paramètres</h2>;
+                return (
+                    <GroupSettings
+                        ref={mainScrollRef}
+                        group={group}
+                        refreshGroup={refreshGroup}
+                    />
+                );
         }
     }
 
@@ -93,7 +101,7 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
             </nav>
 
             <div className={styles.groupSelectedContent}>
-                {getSelectedContent()}
+                {getSelectedMenuContent()}
             </div>
         </>
     ) : (

@@ -11,6 +11,7 @@ import GameCapsule from "@/components/app/groupMenu/games/gameCapsule/gameCapsul
 import { fetcher } from "@/utils/globalFunctions";
 import {AnimatePresence} from "framer-motion";
 import Loader from "@/components/general/loader/loader";
+import MenuHeader from "@/components/app/groupMenu/menuHeader/menuHeader";
 
 export type GamesListHandle = {
     enableScroll: () => void;
@@ -59,15 +60,10 @@ export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue, membe
 
     return (
         <>
-            <div className={styles.headerContainer}>
-                <h2>Liste des jeux</h2>
-
-                <div className={styles.headerButtonsContainer}>
-                    <GlassButton type={"button"} handleClick={() => setIsAddGameModalOpen(true)}>Ajouter un jeu</GlassButton>
-                    <SearchField search={search} setSearch={setSearch}/>
-                </div>
-            </div>
-
+            <MenuHeader title={"Liste des jeux"}>
+                <GlassButton type={"button"} handleClick={() => setIsAddGameModalOpen(true)}>Ajouter un jeu</GlassButton>
+                <SearchField search={search} setSearch={setSearch}/>
+            </MenuHeader>
 
             <div ref={gamesRef} className={styles.gamesContentContainer}>
                 {isLoading ? (
@@ -87,7 +83,6 @@ export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue, membe
                                     />
                                 ))}
                             </AnimatePresence>
-
                         </div>
                     ) : (search && (
                             <div className={styles.noResults}>
