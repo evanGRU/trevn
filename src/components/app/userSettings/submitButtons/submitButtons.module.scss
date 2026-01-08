@@ -1,4 +1,4 @@
-.userSettingsSubmitButtons {
+.submitButtonsContainer {
   display: flex;
   justify-content: center;
   height: 64px;
@@ -32,5 +32,23 @@
         text-decoration: underline;
       }
     }
+  }
+}
+
+.withBackground {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: var(--space-24);
+  height: auto;
+
+  div {
+    z-index: 9999;
+    align-items: center;
+    height: 72px;
+    background-color: var(--color-background);
+    width: max-content;
+    padding: var(--space-36);
+    border-radius: var(--radius-40);
+    border: 1px solid var(--color-gray);
   }
 }

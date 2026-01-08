@@ -87,6 +87,8 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
             </AnimatePresence>
         </div>
     ) : (
-        <Loader/>
+        <div className={styles.loaderContainer}>
+            <Loader/>
+        </div>
     );
 }
