@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import {createSupabaseServerClient} from "@/utils/supabase/server";
+import {assertGroupRule} from "@/utils/helpers/assertGroupRules";
 
 type Body = {
     groupId: string
@@ -11,7 +12,7 @@ export async function DELETE(req: Request) {
 
     const {data: { user }} = await supabase.auth.getUser()
     if (!user) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
     }
 
     const { groupId, gameId }: Body = await req.json()
@@ -31,7 +32,17 @@ export async function DELETE(req: Request) {
     }
 
     if (!memberCheck) {
-        return NextResponse.json({ error: 'Not a member of this group' }, { status: 403 });
+        return NextResponse.json({ error: 'not_member' }, { status: 403 });
+    }
+
+    const ruleCheck = await assertGroupRule(
+        supabase,
+        groupId,
+        "delete_games"
+    );
+
+    if (!ruleCheck.ok) {
+        return ruleCheck.response;
     }
 
     const { error: deleteError } = await supabase

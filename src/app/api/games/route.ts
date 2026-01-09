@@ -1,5 +1,6 @@
 import {createSupabaseServerClient} from "@/utils/supabase/server";
 import {NextResponse} from "next/server";
+import {assertGroupRule} from "@/utils/helpers/assertGroupRules";
 
 const steamLibraryImages = (appId: number) => [
     // Best quality first
@@ -79,6 +80,16 @@ export async function POST(req: Request) {
 
         if (!groupId || !gameId) {
             return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+        }
+
+        const ruleCheck = await assertGroupRule(
+            supabase,
+            groupId,
+            "add_games"
+        );
+
+        if (!ruleCheck.ok) {
+            return ruleCheck.response;
         }
 
         const { error } = await supabase

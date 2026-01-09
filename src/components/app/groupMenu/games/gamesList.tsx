@@ -3,14 +3,15 @@ import GlassButton from "@/components/general/glassButton/glassButton";
 import SearchField from "@/components/general/searchField/searchField";
 import {forwardRef, useImperativeHandle, useMemo, useRef, useState} from "react";
 import AddGameModal from "@/components/app/groupMenu/games/addGameModal/addGameModal";
-import {GameCapsuleData, Member} from "@/utils/types";
+import {GameCapsuleData, GroupDetails, Member} from "@/utils/types";
 import useSWR from "swr";
-import {ParamValue} from "next/dist/server/request/params";
-import {useDebounce} from "@/utils/useDebounce";
+import {useDebounce} from "@/utils/helpers/useDebounce";
 import GameCapsule from "@/components/app/groupMenu/games/gameCapsule/gameCapsule";
 import { fetcher } from "@/utils/globalFunctions";
 import {AnimatePresence} from "framer-motion";
 import Loader from "@/components/general/loader/loader";
+import MenuHeader from "@/components/app/groupMenu/menuHeader/menuHeader";
+import {useRules} from "@/utils/helpers/useRules";
 
 export type GamesListHandle = {
     enableScroll: () => void;
@@ -18,14 +19,21 @@ export type GamesListHandle = {
     isAtTop: () => boolean;
 };
 
-export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue, members: Member[]}>(({groupId, members}, ref) => {
+interface GamesListProps {
+    group: GroupDetails;
+    members: Member[];
+    userHaveRights: boolean;
+}
+
+export const GamesList = forwardRef<GamesListHandle, GamesListProps>(({group, members, userHaveRights}, ref) => {
     const [isAddGameModalOpen, setIsAddGameModalOpen] = useState(false);
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search, 500);
     const gamesRef = useRef<HTMLDivElement>(null);
+    const {canAddGamesRule, canDeleteGamesRule, canLikeGamesRule} = useRules(group);
 
     const { data: gamesList, isLoading, mutate: refreshGamesList } = useSWR(
-        groupId ? `/api/games?groupId=${groupId}` : null,
+        group?.id ? `/api/games?groupId=${group.id}` : null,
         (url) => fetcher(url, "Impossible de récupérer la liste des jeux. Essaye de rafraîchir la page.")
     );
 
@@ -59,15 +67,12 @@ export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue, membe
 
     return (
         <>
-            <div className={styles.headerContainer}>
-                <h2>Liste des jeux</h2>
-
-                <div className={styles.headerButtonsContainer}>
+            <MenuHeader title={"Liste des jeux"}>
+                {(userHaveRights || canAddGamesRule) &&
                     <GlassButton type={"button"} handleClick={() => setIsAddGameModalOpen(true)}>Ajouter un jeu</GlassButton>
-                    <SearchField search={search} setSearch={setSearch}/>
-                </div>
-            </div>
-
+                }
+                <SearchField search={search} setSearch={setSearch}/>
+            </MenuHeader>
 
             <div ref={gamesRef} className={styles.gamesContentContainer}>
                 {isLoading ? (
@@ -80,14 +85,15 @@ export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue, membe
                                     <GameCapsule
                                         key={`game-card-${game.id}`}
                                         game={game}
-                                        groupId={groupId}
+                                        group={group}
                                         refreshGamesList={refreshGamesList}
                                         gamesList={filteredGames}
                                         members={members}
+                                        canDelete={userHaveRights || canDeleteGamesRule}
+                                        canLike={canLikeGamesRule}
                                     />
                                 ))}
                             </AnimatePresence>
-
                         </div>
                     ) : (search && (
                             <div className={styles.noResults}>
@@ -102,7 +108,7 @@ export const GamesList = forwardRef<GamesListHandle, {groupId: ParamValue, membe
                 {isAddGameModalOpen && (
                     <AddGameModal
                         setModal={setIsAddGameModalOpen}
-                        groupId={groupId}
+                        groupId={group?.id}
                         refreshGamesList={refreshGamesList}
                     />
                 )}

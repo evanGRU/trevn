@@ -4,7 +4,7 @@ import DefaultField from "@/components/general/defaultField/defaultField";
 import {useEffect, useState} from "react";
 import GlassButton from "@/components/general/glassButton/glassButton";
 import {nanoid} from "nanoid";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 import useSWR, {KeyedMutator} from "swr";
 import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
 import {Avatar, Group} from "@/utils/types";

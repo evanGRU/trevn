@@ -6,7 +6,7 @@ import {Profile, UserProps} from "@/utils/types";
 import EditUserModal from "@/components/app/userSettings/account/editModal/editUserModal";
 import SubmitButtons from "@/components/app/userSettings/submitButtons/submitButtons";
 import {AnimatePresence} from "framer-motion";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 import Image from "next/image";
 import DeleteModal from "@/components/general/deleteModal/deleteModal";
 

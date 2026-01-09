@@ -18,7 +18,7 @@ h1, h2, h3, h4, p {
   margin: 0;
 }
 
-input {
+input, textarea {
   font-size: var(--text-16);
   font-family: var(--font-body), sans-serif;
 }
@@ -128,4 +128,17 @@ ul {
   left: 0;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 10000;
+}
+
+
+.groupSettingSubtitle {
+  font-size: var(--text-16);
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  line-height: var(--space-16);
+}
+
+.boldText {
+  font-weight: 600;
+  color: var(--color-text);
 }

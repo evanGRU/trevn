@@ -20,6 +20,11 @@
   }
 }
 
+.warningMessageContainer {
+  margin-bottom: var(--space-24);
+  color: var(--color-text-secondary);
+}
+
 
 .invitationCodeContainer {
   display: flex;

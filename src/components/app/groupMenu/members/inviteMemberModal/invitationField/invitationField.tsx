@@ -1,7 +1,7 @@
 import styles from "./invitationField.module.scss";
 import React, {useEffect, useRef, useState} from "react";
 import Image from "next/image";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 
 interface InvitationFieldProps {
     text: string | undefined;
@@ -15,20 +15,17 @@ export default function InvitationField({text, type}: InvitationFieldProps) {
 
     const handleCopy = async (text: string | undefined) => {
         if (!text) return;
+        if (timeoutRef.current) return;
         try {
             await navigator.clipboard.writeText(text);
 
             setCopied(true);
             successToast(type === "code" ? "Code copié !" : "Lien copié !");
 
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
-
             timeoutRef.current = setTimeout(() => {
                 setCopied(false);
                 timeoutRef.current = null;
-            }, 2000);
+            }, 1500);
         } catch {
             errorToast("Impossible de copier");
         }

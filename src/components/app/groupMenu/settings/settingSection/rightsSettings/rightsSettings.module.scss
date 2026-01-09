@@ -1,0 +1,46 @@
+.rightsSettingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  width: 100%;
+  flex: 1;
+  min-width: 372px;
+
+  .rightsSettingsRules {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-08);
+
+    .ruleContainer {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .rule {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-24);
+      }
+
+      .subRuleContainer {
+        margin-top: 2px;
+        opacity: 0.2;
+        .subRuleTitle {
+          display: flex;
+          gap: var(--space-08);
+          padding-left: var(--space-12);
+
+          img {
+            transform: translateY(-5px);
+          }
+
+          p {
+            color: var(--color-text-secondary);
+            font-weight: 300;
+          }
+        }
+      }
+    }
+  }
+}

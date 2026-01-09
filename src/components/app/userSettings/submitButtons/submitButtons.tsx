@@ -7,12 +7,13 @@ interface SubmitButtonsProps {
     displayButtons: boolean;
     handleReset: React.MouseEventHandler<HTMLButtonElement>;
     handleSubmit: (newPassword?: string) => void;
+    withBackground?: boolean;
 }
 
-export default function SubmitButtons({displayButtons, handleReset, handleSubmit}: SubmitButtonsProps) {
+export default function SubmitButtons({displayButtons, handleReset, handleSubmit, withBackground = false}: SubmitButtonsProps) {
 
     return (
-        <div className={styles.userSettingsSubmitButtons}>
+        <div className={`${styles.submitButtonsContainer} ${withBackground ? styles.withBackground : ""}`}>
             <AnimatePresence mode={"wait"}>
                 {displayButtons && (
                     <motion.div

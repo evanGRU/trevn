@@ -41,3 +41,23 @@ export const userPrompts: Record<
         editTitle: "Modifier le mot de passe"
     },
 };
+
+
+export const groupRulesPrompts: Record<
+    string,
+    {
+        title: string;
+        subruleTitle?: string;
+    }
+> = {
+    add_games: {
+        title: "Autoriser les membres à ajouter des jeux au groupe.",
+    },
+    delete_games: {
+        title: "Autoriser les membres à supprimer des jeux du groupe.",
+        subruleTitle: "Limiter la suppression au propriétaire et aux modérateurs."
+    },
+    like_games: {
+        title: "Activer les likes de groupe.",
+    }
+}

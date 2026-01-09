@@ -2,12 +2,12 @@ import styles from "./addGameModal.module.scss";
 import ModalWrapper from "@/components/general/modalWrapper/modalWrapper";
 import Image from "next/image";
 import {useState} from "react";
-import {useDebounce} from "@/utils/useDebounce";
+import {useDebounce} from "@/utils/helpers/useDebounce";
 import useSWR, {KeyedMutator} from "swr";
 import {GameResult} from "@/utils/types";
 import {ParamValue} from "next/dist/server/request/params";
 import {fetcher} from "@/utils/globalFunctions";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 
 interface NewGroupModalProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,6 +44,9 @@ export default function AddGameModal({setModal, groupId, refreshGamesList}: NewG
                 switch (data.error) {
                     case 'game_already_added':
                         errorToast('Ce jeu a déjà été ajouté à ce groupe.')
+                        break
+                    case 'cant_add_games':
+                        errorToast('Tu n\'as pas la permission d\'ajouter un jeu dans ce groupe.')
                         break
                     default:
                         errorToast('Impossible d’ajouter le jeu.')

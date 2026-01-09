@@ -1,0 +1,186 @@
+.detailsSettingContainer {
+  width: 100%;
+  display: flex;
+  gap: var(--space-48);
+  flex-wrap: wrap;
+
+  .detailsTextContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-48);
+    width: 100%;
+    flex: 1;
+    min-width: 372px;
+
+    .inputContainer {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+
+      .input {
+        background-color: var(--color-background);
+        border: 1px solid var(--color-background-secondary);
+        border-radius: var(--radius-08);
+        height: 42px;
+        padding: 0 var(--space-12);
+        color: var(--color-text);
+
+        &:focus {
+          border: solid 1px var(--color-gray);
+          outline: none;
+        }
+      }
+
+      .textArea {
+        height: 120px !important;
+        resize: none;
+        padding: var(--space-08) var(--space-12);
+        overflow: auto
+      }
+    }
+  }
+
+  .avatarContainer {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    min-width: 372px;
+
+    .avatarContent {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+
+      .mainAvatarContainer {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: var(--space-08);
+
+        .mainAvatar {
+          height: 112px;
+          width: 112px;
+          aspect-ratio: 1/1;
+          padding: var(--space-04);
+          border-radius: var(--radius-08);
+          background-color: var(--color-surface);
+          border: 1px solid var(--color-background-secondary);
+
+          img {
+            height: 100%;
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: var(--radius-04);
+            border: 1px solid var(--color-background-secondary);
+            object-fit: cover;
+          }
+        }
+
+        button {
+          min-width: 0;
+          flex-shrink: 0;
+          height: 36px;
+          position: relative;
+          border-radius: var(--radius-40);
+          overflow: hidden;
+          cursor: pointer;
+          padding: 0;
+
+          label {
+            height: 100%;
+            width: 100%;
+            padding: 0 var(--space-24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-08);
+            text-transform: none;
+            font-size: var(--text-14);
+            cursor: pointer;
+            font-weight: 500;
+          }
+
+          input {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            display: none;
+          }
+        }
+      }
+    }
+
+    .avatarsPresets {
+      p {
+        font-weight: 500;
+      }
+
+      .avatarsContainer {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--space-08);
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-background-secondary);
+        border-radius: var(--space-08);
+
+        img {
+          border-radius: var(--space-04);
+          border: 1px solid var(--color-background-secondary);
+          cursor: pointer;
+          opacity: 0.4;
+          transition: all 0.3s ease;
+
+          &:hover {
+            border: 1px solid var(--color-gray);
+            opacity: 1;
+          }
+        }
+
+        .selectedAvatar {
+          border-color: var(--color-gray);
+          cursor: default;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+
+.inputDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.avatarsDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+
+  img {
+    cursor: not-allowed !important;
+
+    &:hover {
+      border-color: var(--color-background-secondary) !important;
+      cursor: not-allowed !important;
+      opacity: 0.4 !important;
+    }
+  }
+
+  .selectedAvatar {
+    &:hover {
+      border-color: var(--color-gray) !important;
+      opacity: 1 !important;
+    }
+  }
+}
+
+
+.buttonDisabled {
+  &:hover {
+    cursor: not-allowed !important;
+  }
+}

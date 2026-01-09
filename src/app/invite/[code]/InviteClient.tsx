@@ -5,7 +5,7 @@ import styles from "./page.module.scss";
 import {AnimatePresence, motion} from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 import React, {useEffect, useState} from "react";
 import {Group} from "@/utils/types";
 import {DbImage} from "@/components/general/dbImage/dbImage";

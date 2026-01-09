@@ -3,10 +3,11 @@ import GlassButton from "@/components/general/glassButton/glassButton";
 import {forwardRef, useImperativeHandle, useRef, useState} from "react";
 import {GroupDetails, Member, ProfileDefault} from "@/utils/types";
 import {MemberCard} from "@/components/app/groupMenu/members/memberCard/memberCard";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 import {KeyedMutator} from "swr";
 import InviteMemberModal from "@/components/app/groupMenu/members/inviteMemberModal/inviteMemberModal";
 import {AnimatePresence} from "framer-motion";
+import MenuHeader from "@/components/app/groupMenu/menuHeader/menuHeader";
 
 export type GamesListHandle = {
     enableScroll: () => void;
@@ -19,17 +20,18 @@ interface MembersListProps {
     profile: ProfileDefault;
     refreshMembers: KeyedMutator<Member[]>;
     group: GroupDetails;
+    userHaveRights: boolean;
 }
 
 export const MembersList = forwardRef<GamesListHandle, MembersListProps>(({
                                                                               members,
                                                                               profile,
                                                                               refreshMembers,
-                                                                              group
+                                                                              group,
+                                                                              userHaveRights
                                                                           }, ref) => {
     const [isInviteMemberModalOpen, setIsInviteMemberModalOpen] = useState(false);
     const membersRef = useRef<HTMLDivElement>(null);
-    const userHaveRights = members.find((member) => member.id === profile?.id)?.roles === "owner";
     const {successToast, errorToast} = useToasts();
 
     useImperativeHandle(ref, () => ({
@@ -61,7 +63,7 @@ export const MembersList = forwardRef<GamesListHandle, MembersListProps>(({
             })
 
             if (!res.ok) {
-                errorToast("Erreur lors de la suppression du jeu.");
+                errorToast("Erreur lors de l'exclusion de l'utilisateur.");
                 return;
             }
 
@@ -75,15 +77,13 @@ export const MembersList = forwardRef<GamesListHandle, MembersListProps>(({
 
     return (
         <>
-            <div className={styles.headerContainer}>
-                <h2>Liste des membres - {members.length}</h2>
-
-                <div className={styles.headerButtonsContainer}>
-                    <GlassButton type={"button"} handleClick={() => setIsInviteMemberModalOpen(true)}>Inviter un
-                        ami</GlassButton>
-                </div>
-            </div>
-
+            <MenuHeader title={`Liste des membres - ${members.length}`}>
+                {(userHaveRights || group?.access_mode !== "closed") && (
+                    <GlassButton type={"button"} handleClick={() => setIsInviteMemberModalOpen(true)}>
+                        Inviter un ami
+                    </GlassButton>
+                )}
+            </MenuHeader>
 
             <div ref={membersRef} className={styles.membersContainer}>
                 {members.map((member) => (
@@ -102,6 +102,7 @@ export const MembersList = forwardRef<GamesListHandle, MembersListProps>(({
                     <InviteMemberModal
                         setModal={setIsInviteMemberModalOpen}
                         invitationCode={group?.invite_code}
+                        groupIsClosed={group?.access_mode === "closed"}
                     />
                 )}
             </AnimatePresence>

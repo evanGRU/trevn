@@ -13,32 +13,19 @@ export async function GET(req: Request) {
         );
     }
 
-    const { data: group, error: groupError } = await supabase
-        .from("groups")
-        .select("created_by")
-        .eq("id", groupId)
-        .single();
-
-    if (groupError) {
-        console.error(groupError);
-        return NextResponse.json(
-            { error: groupError.message },
-            { status: 500 }
-        );
-    }
-
     const { data, error } = await supabase
         .from("groups_members")
         .select(`
-          user:profiles!user_id (
-            id,
-            username,
-            avatar:avatars!avatar_id (
-              id,
-              name,
-              type
+            role,
+            user:profiles!user_id (
+                id,
+                username,
+                avatar:avatars!avatar_id (
+                  id,
+                  name,
+                  type
+                )
             )
-          )
         `)
         .eq("group_id", groupId);
 
@@ -52,7 +39,7 @@ export async function GET(req: Request) {
 
     const members = (data).map((user: any) => ({
         ...user.user,
-        roles: group.created_by === user.user.id ? "owner" : ""
+        role: user.role
     }));
 
     return NextResponse.json(members);
