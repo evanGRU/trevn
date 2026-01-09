@@ -6,7 +6,7 @@ import {UserErrorCode, UserProps} from "@/utils/types";
 import {userPrompts} from "@/utils/prompts";
 import GlassButton from "@/components/general/glassButton/glassButton";
 import {createClient} from "@/utils/supabase/client";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 
 interface EditUserModalProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>

@@ -8,7 +8,7 @@ import Link from "next/link";
 import {TickIcon} from "@/utils/svg";
 import {useRouter, useSearchParams} from "next/navigation";
 import React, {useEffect, useState} from "react";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 import ForgotPasswordModal from "@/components/webPage/forgotPasswordModal/forgotPasswordModal";
 import {isEmail} from "@/utils/globalFunctions";
 import {AuthModes, UserErrorCode} from "@/utils/types";

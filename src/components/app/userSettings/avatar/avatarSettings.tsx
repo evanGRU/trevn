@@ -7,7 +7,7 @@ import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
 import Image from "next/image";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 import useSWR from "swr";
 import {AnimatePresence, motion} from "framer-motion";
 

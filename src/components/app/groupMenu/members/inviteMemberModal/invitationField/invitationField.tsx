@@ -1,7 +1,7 @@
 import styles from "./invitationField.module.scss";
 import React, {useEffect, useRef, useState} from "react";
 import Image from "next/image";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 
 interface InvitationFieldProps {
     text: string | undefined;
