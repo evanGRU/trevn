@@ -50,7 +50,7 @@ export default function RightsSettings({groupSettingsForm, setGroupSettingsForm,
                             />
                         </div>
 
-                        {rule.code === "delete_games" && (
+                        {/*{rule.code === "delete_games" && (
                             <div className={styles.subRuleContainer}>
                                 <div className={styles.rule}>
                                     <div className={styles.subRuleTitle}>
@@ -70,7 +70,7 @@ export default function RightsSettings({groupSettingsForm, setGroupSettingsForm,
                                     />
                                 </div>
                             </div>
-                        )}
+                        )}*/}
                     </div>
                 ))}
             </div>

@@ -63,7 +63,7 @@ export const MembersList = forwardRef<GamesListHandle, MembersListProps>(({
             })
 
             if (!res.ok) {
-                errorToast("Erreur lors d'exclusion de l'utilisateur.");
+                errorToast("Erreur lors de l'exclusion de l'utilisateur.");
                 return;
             }
 

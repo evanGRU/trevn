@@ -14,9 +14,6 @@ export async function PUT(req: Request) {
         return NextResponse.json({ error: "invalid_payload" }, { status: 400 });
     }
 
-    console.log(groupId, rules);
-
-
     const { data: membership } = await supabase
         .from("groups_members")
         .select("role")
