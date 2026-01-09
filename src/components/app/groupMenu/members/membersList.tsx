@@ -78,9 +78,11 @@ export const MembersList = forwardRef<GamesListHandle, MembersListProps>(({
     return (
         <>
             <MenuHeader title={`Liste des membres - ${members.length}`}>
-                <GlassButton type={"button"} handleClick={() => setIsInviteMemberModalOpen(true)}>
-                    Inviter un ami
-                </GlassButton>
+                {(userHaveRights || group?.access_mode !== "closed") && (
+                    <GlassButton type={"button"} handleClick={() => setIsInviteMemberModalOpen(true)}>
+                        Inviter un ami
+                    </GlassButton>
+                )}
             </MenuHeader>
 
             <div ref={membersRef} className={styles.membersContainer}>
@@ -100,6 +102,7 @@ export const MembersList = forwardRef<GamesListHandle, MembersListProps>(({
                     <InviteMemberModal
                         setModal={setIsInviteMemberModalOpen}
                         invitationCode={group?.invite_code}
+                        groupIsClosed={group?.access_mode === "closed"}
                     />
                 )}
             </AnimatePresence>
