@@ -65,7 +65,7 @@ export const MemberCard = ({member, userHaveRights, handleKick, profile}: Member
 
                 <div className={styles.textContainer}>
                     <p>{member.username}</p>
-                    {member.roles === "owner" && (
+                    {member.role === "owner" && (
                         <Image
                             src={"/icons/owner.svg"}
                             alt={"Owner Icon"}

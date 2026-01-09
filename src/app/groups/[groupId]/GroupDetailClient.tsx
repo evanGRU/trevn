@@ -1,7 +1,7 @@
 "use client";
 
 import {useParams} from "next/navigation";
-import {ProfileDefault, SelectedMenu} from "@/utils/types";
+import {Member, ProfileDefault, SelectedMenu} from "@/utils/types";
 import styles from "./page.module.scss";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
@@ -27,6 +27,7 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
         groupId ? `/api/groups/members?groupId=${groupId}` : null,
         (url) => fetcher(url, "Impossible de récupérer les infos sur les membres de ce groupe. Essaye de rafraîchir la page.")
     );
+    const userHaveRights = members?.find((member: Member) => member.id === profile?.id)?.role === "owner";
 
     const getSelectedMenuContent = () => {
         switch (selectedMenu) {
@@ -34,8 +35,9 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
                 return (
                     <GamesList
                         ref={mainScrollRef}
-                        groupId={groupId}
+                        group={group}
                         members={members}
+                        userHaveRights={userHaveRights}
                     />);
             case "members":
                 return (
@@ -45,6 +47,7 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
                         profile={profile}
                         refreshMembers={refreshMembers}
                         group={group}
+                        userHaveRights={userHaveRights}
                     />
                 );
             case "settings":
@@ -53,6 +56,7 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
                         ref={mainScrollRef}
                         group={group}
                         refreshGroup={refreshGroup}
+                        userHaveRights={userHaveRights}
                     />
                 );
         }

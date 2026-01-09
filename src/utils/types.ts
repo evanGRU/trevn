@@ -70,18 +70,34 @@ export type Member = {
     id: string;
     username: string;
     avatar: Avatar;
-    roles: "owner" | "";
+    role: "owner" | "moderator" | "member";
+}
+
+export type Rule = {
+    id: string;
+    code: string;
+    value: boolean;
 }
 
 export type GroupDetails = {
     avatar: Avatar;
-    created_by: string
+    owner_id: string
     description: string;
     id: string;
     invite_code: string;
     members: Member[];
     name: string;
+    rules: Rule[];
+    access_mode: string;
 } | null;
+
+export type GroupDetailsForm = {
+    avatar: Avatar | undefined;
+    description: string | undefined;
+    name: string | undefined;
+    rules: Rule[] | undefined;
+    access_mode: string | undefined;
+};
 
 export type SelectedMenu = "games" | "members" | "settings";
 

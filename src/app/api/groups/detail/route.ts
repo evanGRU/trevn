@@ -22,11 +22,15 @@ export async function GET(req: Request) {
           name,
           description,
           invite_code,
-          created_by,
+          owner_id,
+          access_mode,
           avatar:avatars!avatar_id (
             id,
             name,
             type
+          ),
+          rules:groups_rules (
+            id, code, value
           )
         `)
         .eq('id', groupId)
