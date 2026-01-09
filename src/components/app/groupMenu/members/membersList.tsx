@@ -3,7 +3,7 @@ import GlassButton from "@/components/general/glassButton/glassButton";
 import {forwardRef, useImperativeHandle, useRef, useState} from "react";
 import {GroupDetails, Member, ProfileDefault} from "@/utils/types";
 import {MemberCard} from "@/components/app/groupMenu/members/memberCard/memberCard";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 import {KeyedMutator} from "swr";
 import InviteMemberModal from "@/components/app/groupMenu/members/inviteMemberModal/inviteMemberModal";
 import {AnimatePresence} from "framer-motion";
@@ -20,17 +20,18 @@ interface MembersListProps {
     profile: ProfileDefault;
     refreshMembers: KeyedMutator<Member[]>;
     group: GroupDetails;
+    userHaveRights: boolean;
 }
 
 export const MembersList = forwardRef<GamesListHandle, MembersListProps>(({
                                                                               members,
                                                                               profile,
                                                                               refreshMembers,
-                                                                              group
+                                                                              group,
+                                                                              userHaveRights
                                                                           }, ref) => {
     const [isInviteMemberModalOpen, setIsInviteMemberModalOpen] = useState(false);
     const membersRef = useRef<HTMLDivElement>(null);
-    const userHaveRights = members.find((member) => member.id === profile?.id)?.roles === "owner";
     const {successToast, errorToast} = useToasts();
 
     useImperativeHandle(ref, () => ({
@@ -62,7 +63,7 @@ export const MembersList = forwardRef<GamesListHandle, MembersListProps>(({
             })
 
             if (!res.ok) {
-                errorToast("Erreur lors de la suppression du jeu.");
+                errorToast("Erreur lors d'exclusion de l'utilisateur.");
                 return;
             }
 

@@ -1,5 +1,6 @@
 import {createClient} from "@/utils/supabase/client";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
+import {Rule} from "@/utils/types";
 const supabase = createClient();
 
 export const capitalize = (s: string) => s[0].toUpperCase() + s.slice(1);
@@ -55,3 +56,9 @@ export const fetcher = async (url: string, errorMessage: string) => {
     }
     return res.json();
 }
+
+export const getChangedRules = (current: Rule[], defaults: Rule[]) => {
+    const defaultMap = new Map(defaults.map(r => [r.id, r.value]));
+
+    return current.filter(r => defaultMap.get(r.id) !== r.value);
+};

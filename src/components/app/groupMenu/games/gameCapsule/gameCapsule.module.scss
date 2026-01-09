@@ -14,10 +14,14 @@
     transition: all 0.3s ease;
     height: 100%;
     width: 100%;
-    opacity: 0.2;
+    opacity: 0.4;
     object-fit: contain;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-08);
+  }
+
+  .fullOpacity{
+    opacity: 1;
   }
 
   &:hover {
@@ -77,11 +81,16 @@
     width: 36px;
     border-radius: var(--radius-full);
     flex-shrink: 0;
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.5);
       box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    &:active {
+      transform: scale(0.9);
     }
   }
 

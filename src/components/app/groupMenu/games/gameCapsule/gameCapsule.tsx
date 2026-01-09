@@ -1,24 +1,25 @@
 import styles from "./gameCapsule.module.scss";
-import {GameCapsuleData, Member} from "@/utils/types";
+import {GameCapsuleData, GroupDetails, Member} from "@/utils/types";
 import Image from "next/image";
 import {KeyedMutator} from "swr";
-import {ParamValue} from "next/dist/server/request/params";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Link from "next/link";
-import {useToasts} from "@/utils/useToasts";
+import {useToasts} from "@/utils/helpers/useToasts";
 import LikeCounterIcon from "@/components/app/groupMenu/games/likeCounterIcon/likeCounterIcon";
 import DeleteModal from "@/components/general/deleteModal/deleteModal";
 import {AnimatePresence, motion} from "framer-motion";
 
 interface GameCapsuleProps {
     game: GameCapsuleData;
-    groupId: ParamValue;
+    group: GroupDetails;
     refreshGamesList: KeyedMutator<GameCapsuleData[]>;
     gamesList: GameCapsuleData[];
     members: Member[];
+    canDelete: boolean;
+    canLike: boolean;
 }
 
-export default function GameCapsule({game, groupId, refreshGamesList, gamesList, members}: GameCapsuleProps) {
+export default function GameCapsule({game, group, refreshGamesList, gamesList, members, canDelete, canLike}: GameCapsuleProps) {
     const [isLoading, setIsLoading] = useState(false);
     const {errorToast, successToast} = useToasts();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -46,13 +47,23 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList,
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    groupId,
+                    groupId: group?.id,
                     gameId: game.id,
                 }),
             })
 
+            const data = await res.json();
+
             if (!res.ok) {
-                errorToast("Erreur lors de l'ajout ou de la suppression du like.")
+                switch (data.error) {
+                    case 'cant_like_games':
+                        errorToast('Les likes ont été bloqués dans ce groupe.')
+                        break
+                    default:
+                        errorToast("Erreur lors de l'ajout ou de la suppression du like.")
+                }
+                await refreshGamesList(previousGames, false);
+                return;
             }
 
             await refreshGamesList();
@@ -78,13 +89,22 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList,
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    groupId,
+                    groupId: group?.id,
                     gameId: game.id,
                 }),
             })
 
+            const data = await res.json();
+
             if (!res.ok) {
-                errorToast("Erreur lors de la suppression du jeu.");
+                switch (data.error) {
+                    case 'cant_delete_games':
+                        errorToast('Tu n\'as pas la permission de supprimer un jeu de ce groupe.')
+                        break
+                    default:
+                        errorToast("Erreur lors de la suppression du jeu.");
+                }
+                await refreshGamesList(previousGames, false);
                 return;
             }
 
@@ -115,30 +135,35 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList,
                     alt={game.name}
                     height={900}
                     width={600}
-                    className={styles.mainImage}
+                    className={`${styles.mainImage} ${canLike ? "" : styles.fullOpacity}`}
                 />
 
                 <div className={styles.gameCardInterface}>
                     <div className={styles.topButtons}>
-                        <button
-                            type={"button"}
-                            disabled={isLoading}
-                            className={`${styles.glass} ${styles.glassButton}`}
-                            onClick={toggleLike}
-                        >
-                            <Image
-                                src={`/icons/${game.is_liked ? "likeFill" : "likeEmpty"}.svg`}
-                                alt={"Like Icon"}
-                                height={20}
-                                width={20}
-                            />
-                        </button>
+                        {canLike && (
+                            <>
+                                <button
+                                    type={"button"}
+                                    disabled={isLoading}
+                                    className={`${styles.glass} ${styles.glassButton}`}
+                                    onClick={toggleLike}
+                                >
+                                    <Image
+                                        src={`/icons/${game.is_liked ? "likeFill" : "likeEmpty"}.svg`}
+                                        alt={"Like Icon"}
+                                        height={20}
+                                        width={20}
+                                    />
+                                </button>
 
-                        <div className={`${styles.glass} ${styles.glassCounter}`}>
-                            <h4>{game.likes_count > 1 ? game.likes_count + " likes" : game.likes_count + " like"}</h4>
-                            <LikeCounterIcon likes={game.likes_count} totalMembers={members.length}/>
-                        </div>
+                                <div className={`${styles.glass} ${styles.glassCounter}`}>
+                                    <h4>{game.likes_count > 1 ? game.likes_count + " likes" : game.likes_count + " like"}</h4>
+                                    <LikeCounterIcon likes={game.likes_count} totalMembers={members.length}/>
+                                </div>
+                            </>
+                    )}
                     </div>
+
 
                     <div className={styles.bottomButtons}>
                         <Link
@@ -148,19 +173,21 @@ export default function GameCapsule({game, groupId, refreshGamesList, gamesList,
                         >
                             Page steam
                         </Link>
-                        <button
-                            type={"button"}
-                            className={`${styles.glass} ${styles.glassDeleteButton}`}
-                            onClick={() => setIsDeleteModalOpen(true)}
-                            disabled={isLoading}
-                        >
-                            <Image
-                                src={`/icons/trash.svg`}
-                                alt={"Trash Icon"}
-                                height={20}
-                                width={20}
-                            />
-                        </button>
+                        {canDelete && (
+                            <button
+                                type={"button"}
+                                className={`${styles.glass} ${styles.glassDeleteButton}`}
+                                onClick={() => setIsDeleteModalOpen(true)}
+                                disabled={isLoading}
+                            >
+                                <Image
+                                    src={`/icons/trash.svg`}
+                                    alt={"Trash Icon"}
+                                    height={20}
+                                    width={20}
+                                />
+                            </button>
+                        )}
                     </div>
                 </div>
             </motion.div>
