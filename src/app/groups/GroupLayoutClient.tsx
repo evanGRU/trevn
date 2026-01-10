@@ -40,6 +40,10 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
             case "group_not_found":
                 errorToast("Il semblerait que ce groupe n'existe pas.");
                 break;
+            case "cant_access":
+                errorToast("Tu ne fais pas partie de ce groupe.");
+                router.replace("/groups");
+                break;
         }
 
         router.replace("/groups");

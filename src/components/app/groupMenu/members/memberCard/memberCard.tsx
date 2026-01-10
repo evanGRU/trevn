@@ -53,7 +53,7 @@ export const MemberCard = ({member, userHaveRights, handleKick, profile}: Member
     }, [areOptionsOpen]);
 
     return (
-        <div className={styles.memberCard}>
+        <div className={`${styles.memberCard} ${profile?.id === member.id ? styles.ownMemberCard : ""}`}>
             <div className={styles.userDetailsContainer}>
                 <DbImage
                     src={getPublicAvatarUrl(member.avatar.type, member.avatar.name)}

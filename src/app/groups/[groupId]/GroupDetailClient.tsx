@@ -1,12 +1,11 @@
 "use client";
 
 import {useParams, useRouter, useSearchParams} from "next/navigation";
-import {GroupDetails, Member, Profile, ProfileDefault, SelectedMenu} from "@/utils/types";
+import {GroupDetails, Member, ProfileDefault, SelectedMenu} from "@/utils/types";
 import styles from "./page.module.scss";
 import {DbImage} from "@/components/general/dbImage/dbImage";
-import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
-import useSWR from "swr";
-import {useEffect, useState} from "react";
+import {getPublicAvatarUrl} from "@/utils/globalFunctions";
+import React, {useEffect, useState} from "react";
 import {GamesList} from "@/components/app/groupMenu/games/gamesList";
 import {useMenuScroll} from "@/utils/MenuScrollContext";
 import {MembersList} from "@/components/app/groupMenu/members/membersList";

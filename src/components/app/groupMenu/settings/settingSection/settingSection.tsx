@@ -30,20 +30,21 @@ export default function SettingSection({children, title, code, isSectionOpen, se
                 />
             </div>
 
-            <AnimatePresence initial={false}>
-                {isSectionOpen && (
-                    <motion.div
-                        className={`${styles.settingContent} ${isSectionOpen ? styles.settingContentOpen : ""}`}
-                        initial={{ height: 0, opacity: 0, paddingTop: 0, paddingBottom: 0}}
-                        animate={{ height: "auto", opacity: 1, paddingTop: "var(--space-24)", paddingBottom: "var(--space-32)" }}
-                        exit={{ height: 0, opacity: 0, paddingTop: 0, paddingBottom: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        style={{ overflow: "hidden" }}
-                    >
-                        {children}
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <motion.div
+                layout
+                initial={false}
+                animate={isSectionOpen ? "open" : "closed"}
+                variants={{
+                    open: { height: "auto", opacity: 1 },
+                    closed: { height: 0, opacity: 0 },
+                }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                style={{ overflow: "hidden" }}
+            >
+                <div className={styles.settingContent}>
+                    {children}
+                </div>
+            </motion.div>
         </div>
     );
 }

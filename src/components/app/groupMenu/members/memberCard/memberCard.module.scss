@@ -7,6 +7,7 @@
   justify-content: space-between;
   padding: var(--space-12);
   width: 100%;
+  transition: background-color 0.3s ease;
 
   .userDetailsContainer {
     display: flex;
@@ -57,7 +58,6 @@
         transition: all 0.3s ease;
 
         &:hover {
-          background-color: var(--color-background-secondary-hover);
           border-color: var(--color-gray);
         }
       }
@@ -68,4 +68,12 @@
       }
     }
   }
+
+  &:hover {
+    background-color: var(--color-background-tertiary);
+  }
+}
+
+.ownMemberCard {
+  border: 1px solid var(--color-gray);
 }

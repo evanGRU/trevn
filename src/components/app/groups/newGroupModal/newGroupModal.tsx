@@ -163,7 +163,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
             if (!res.ok) {
                 switch (data.error){
                     case "already_member":
-                        setErrorMessages(prev => ({ ...prev, invitationCode: "Tu fais déjà parti de ce groupe." }));
+                        setErrorMessages(prev => ({ ...prev, invitationCode: "Tu fais déjà partie de ce groupe." }));
                         return;
                     default:
                         setErrorMessages(prev => ({ ...prev, invitationCode: data.error }));
@@ -196,7 +196,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                             <button
                                 type={"button"}
                                 className={`${styles.avatarPreviewButton} ${previewUrl ? styles.avatarPreviewButtonFull : ""} ${errorMessages.avatar ? styles.requiredError : ""}`}>
-                                <label htmlFor="avatarInput">
+                                <label htmlFor="newAvatarInput">
                                     {previewUrl ? (
                                         <DbImage
                                             src={previewUrl}
@@ -214,7 +214,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                                     )}
                                 </label>
                                 <input
-                                    id="avatarInput"
+                                    id="newAvatarInput"
                                     type="file"
                                     accept="image/*"
                                     onChange={handleFileSelect}

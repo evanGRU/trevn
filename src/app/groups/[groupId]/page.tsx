@@ -24,6 +24,22 @@ export default async function GroupsDetailPage({ params }: { params: { groupId: 
         redirect("/groups?toast=group_not_found");
     }
 
+    const { data: membership, error: membershipError } = await supabase
+        .from("groups_members")
+        .select("id")
+        .eq("group_id", group.id)
+        .eq("user_id", user?.id)
+        .maybeSingle();
+
+    if (membershipError) {
+        console.error("Membership fetch error:", membershipError);
+        notFound();
+    }
+
+    if (!membership) {
+        redirect("/groups?toast=cant_access");
+    }
+
     const { data: profile } = await supabase
         .from('profiles')
         .select("id, username")
