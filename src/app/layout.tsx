@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     description: "La plateforme pour organiser vos soirées gaming, proposer des jeux et voter entre potes",
     icons: {
         icon: '/favicon.svg',
+        shortcut: "/favicon.ico",
     },
 };
 
