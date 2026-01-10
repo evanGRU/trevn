@@ -1,5 +1,4 @@
 import {createClient} from "@/utils/supabase/client";
-import {useToasts} from "@/utils/helpers/useToasts";
 import {Rule} from "@/utils/types";
 const supabase = createClient();
 
@@ -46,16 +45,14 @@ export const smoothScroll = (el: HTMLElement, direction: "top" | "bottom", onCom
     requestAnimationFrame(animate);
 };
 
-export const fetcher = async (url: string, errorMessage: string) => {
-    const {errorToast} = useToasts();
-
-    const res = await fetch(url)
-    if (!res.ok) {
-        errorToast(errorMessage);
-        return;
-    }
-    return res.json();
-}
+export const fetcher = (url: string) => {
+    return fetch(url).then((res) => {
+        if (!res.ok) {
+            throw new Error("fetch_failed");
+        }
+        return res.json();
+    });
+};
 
 export const getChangedRules = (current: Rule[], defaults: Rule[]) => {
     const defaultMap = new Map(defaults.map(r => [r.id, r.value]));

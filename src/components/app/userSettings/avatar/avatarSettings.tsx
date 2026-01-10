@@ -1,6 +1,6 @@
 import styles from "./avatarSettings.module.scss";
 import React, {useState} from "react";
-import {Avatar, Profile} from "@/utils/types";
+import {Avatar, Member, Profile} from "@/utils/types";
 import SubmitButtons from "@/components/app/userSettings/submitButtons/submitButtons";
 import SettingsSectionWrapper from "@/components/app/userSettings/settingsSectionWrapper/settingsSectionWrapper";
 import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
@@ -10,6 +10,7 @@ import Image from "next/image";
 import {useToasts} from "@/utils/helpers/useToasts";
 import useSWR from "swr";
 import {AnimatePresence, motion} from "framer-motion";
+import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
 
 interface AvatarSettingsProps {
     profile: Profile;
@@ -25,10 +26,13 @@ export default function AvatarSettings({profile, refreshProfile}: AvatarSettings
 
     const {successToast, errorToast} = useToasts();
 
-    const { data: userAvatars, isLoading: isUserAvatarsLoading, mutate: refreshUserAvatarsList } = useSWR(
-        '/api/user/avatars',
-        (url) => fetcher(url, "Impossible de charger vos avatars récents")
-    );
+    const {
+        data: userAvatars,
+        isLoading: areUserAvatarsLoading,
+        mutate: refreshUserAvatarsList,
+    } = useSWRWithError<Avatar[]>('/api/user/avatars', {
+        errorMessage: "Une erreur s'est produite en essayant de charger vos avatars récents.",
+    });
     const userAvatarsFiltered = userAvatars?.filter((avatar: Avatar) => avatar.id !== profile?.avatar.id);
 
     const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,7 +126,7 @@ export default function AvatarSettings({profile, refreshProfile}: AvatarSettings
         }
     }
 
-    return !isUserAvatarsLoading && (
+    return !areUserAvatarsLoading && (
         <>
             <div className={styles.settingsContainer}>
                 <SettingsSectionWrapper sectionTitle={"Changer d'avatar"}>

@@ -1,18 +1,21 @@
 "use client";
 
 import styles from "./page.module.scss";
-import {useCallback, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import Image from "next/image";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
 import GroupsSidebar from "@/components/app/groups/groupsSidebar/groupsSidebar";
 import NewGroupModal from "@/components/app/groups/newGroupModal/newGroupModal";
-import useSWR from "swr";
 import MainHeader from "@/components/app/mainHeader/mainHeader";
-import {fetcher, smoothScroll} from "@/utils/globalFunctions";
+import {smoothScroll} from "@/utils/globalFunctions";
 import {GamesListHandle} from "@/components/app/groupMenu/games/gamesList";
 import { MenuScrollContext } from "@/utils/MenuScrollContext";
 import {AnimatePresence} from "framer-motion";
 import Loader from "@/components/general/loader/loader";
+import {useRouter, useSearchParams} from "next/navigation";
+import {useToasts} from "@/utils/helpers/useToasts";
+import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
+import {Group, Profile} from "@/utils/types";
 
 export default function GroupsPageLayoutClient({children}: {children: React.ReactNode}) {
     const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState<boolean>(false);
@@ -22,10 +25,33 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
     const isScrollingRef = useRef(false);
     const atBottomRef = useRef(false);
 
-    const { data: groupsList, mutate: refreshGroups } = useSWR(
-        '/api/groups',
-        (url) => fetcher(url, "Impossible de récupérer la liste des groupes. Essaye de rafraîchir la page.")
-    );
+    const searchParams = useSearchParams();
+    const { errorToast } = useToasts();
+    const router = useRouter();
+
+    useEffect(() => {
+        const toast = searchParams.get("toast");
+        if (!toast) return;
+
+        switch (toast) {
+            case "invalid_invite":
+                errorToast("Ton lien d’invitation est invalide ou a expiré.");
+                break;
+            case "group_not_found":
+                errorToast("Il semblerait que ce groupe n'existe pas.");
+                break;
+        }
+
+        router.replace("/groups");
+    }, [searchParams]);
+
+    const {
+        data: groupsList,
+        isLoading: groupsLoading,
+        mutate: refreshGroups,
+    } = useSWRWithError<Group[]>("/api/groups", {
+        errorMessage: "Impossible de récupérer la liste des groupes",
+    });
 
     const handleScroll = useCallback(() => {
         const parent = containerRef.current;
@@ -46,12 +72,15 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
         });
     }, []);
 
-    const { data: profile, isLoading, mutate: refreshProfile } = useSWR(
-        '/api/user',
-        (url) => fetcher(url, "Une erreur s'est produite en essayant de récuperer ton profil. Essaye de rafraîchir la page.")
-    );
+    const {
+        data: profile,
+        isLoading: profileLoading,
+        mutate: refreshProfile,
+    } = useSWRWithError<Profile>("/api/user", {
+        errorMessage: "Une erreur s'est produite en essayant de récupérer ton profil.",
+    });
 
-    return !isLoading ? (
+    return (!groupsLoading && !profileLoading && profile) ? (
         <div className={styles.mainPage}>
             <MainHeader profile={profile} refreshProfile={refreshProfile}/>
 

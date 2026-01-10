@@ -205,14 +205,19 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
                 {isDeleteModalOpen && (
                     <DeleteModal
                         setModal={setIsDeleteModalOpen}
-                        closeIconTopPosition={"236px"}
+                        closeIconTopPosition={"250px"}
                         handleDelete={handleDelete}
-                        title={"Es-tu sûr de vouloir supprimer ton compte ?"}
-                        paragraphe={"Attention : la suppression de ton compte supprimera toutes tes données.\n" +
-                            "Les groupes dont tu es l’unique membre seront fermés et tes likes supprimés, mais les jeux partagés dans d’autres groupes resteront disponibles pour les autres membres."}
                         withInput={true}
                         deleteLabel={'Si tu es certain de ta décision, saisis “SUPPRIMER” pour continuer.'}
-                    />
+                    >
+                        <h1>Supprimer ton compte</h1>
+                        <p>
+                            <span className="boldText">Attention : </span> la suppression de ton compte <span className="boldText">supprimera toutes tes données</span>.
+                            Les groupes dont tu es l’unique membre seront <span className="boldText">fermés et tes likes supprimés</span>, mais les jeux partagés dans d’autres groupes <span className="boldText">resteront disponibles pour les autres membres.</span>
+                        </p>
+
+                        <h4>Es-tu sûr de vouloir supprimer ton compte?</h4>
+                    </DeleteModal>
                 )}
             </AnimatePresence>
         </>
