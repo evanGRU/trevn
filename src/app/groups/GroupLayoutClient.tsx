@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./page.module.scss";
-import {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import Image from "next/image";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
 import GroupsSidebar from "@/components/app/groups/groupsSidebar/groupsSidebar";
@@ -12,13 +12,14 @@ import {GamesListHandle} from "@/components/app/groupMenu/games/gamesList";
 import { MenuScrollContext } from "@/utils/MenuScrollContext";
 import {AnimatePresence} from "framer-motion";
 import Loader from "@/components/general/loader/loader";
-import {useRouter, useSearchParams} from "next/navigation";
+import {useParams, useRouter, useSearchParams} from "next/navigation";
 import {useToasts} from "@/utils/helpers/useToasts";
 import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
 import {Group, Profile} from "@/utils/types";
 
 export default function GroupsPageLayoutClient({children}: {children: React.ReactNode}) {
     const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState<boolean>(false);
+    const { groupId } = useParams();
 
     const containerRef = useRef<HTMLElement>(null);
     const menuRef = useRef<GamesListHandle>(null);
@@ -49,14 +50,6 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
         }
     }, [searchParams]);
 
-    const {
-        data: groupsList,
-        isLoading: groupsLoading,
-        mutate: refreshGroups,
-    } = useSWRWithError<Group[]>("/api/groups", {
-        errorMessage: "Impossible de récupérer la liste des groupes",
-    });
-
     const handleScroll = useCallback(() => {
         const parent = containerRef.current;
         if (!parent || isScrollingRef.current) return;
@@ -77,12 +70,27 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
     }, []);
 
     const {
+        data: groupsList,
+        isLoading: groupsLoading,
+        mutate: refreshGroups,
+    } = useSWRWithError<Group[]>("/api/groups", {
+        errorMessage: "Impossible de récupérer la liste des groupes",
+    });
+
+    const {
         data: profile,
         isLoading: profileLoading,
         mutate: refreshProfile,
     } = useSWRWithError<Profile>("/api/user", {
         errorMessage: "Une erreur s'est produite en essayant de récupérer ton profil.",
     });
+
+    // const {
+    //     data: gamesWithLikes,
+    //     isLoading: gamesWithLikesLoading,
+    // } = useSWRWithError<GameCapsuleData[]>("/api/games/leaderboard", {
+    //     errorMessage: "Une erreur s'est produite en essayant de récupérer le classement des jeux les plus likés.",
+    // });
 
     return (!groupsLoading && !profileLoading && profile) ? (
         <div className={styles.mainPage}>
@@ -95,7 +103,7 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
                 />
                 <MenuScrollContext.Provider value={menuRef}>
                     <main ref={containerRef} className={`mainContainer ${styles.mainContentContainer}`} onScroll={handleScroll}>
-                        {groupsList?.length === 0 ? (
+                        {groupsList?.length === 0 && (
                             <div className={styles.noGroupsContainer}>
                                 <h1>C’est un peu vide ici…</h1>
                                 <p>Crée ton premier groupe !</p>
@@ -105,7 +113,16 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
                                     Nouveau groupe
                                 </DefaultButton>
                             </div>
-                        ) : children}
+                        )}
+
+                        {groupsList && groupsList.length > 0 && (
+                            groupId ? (children) : (
+                                <div className={styles.noGroupsContainer}>
+                                    <h1>Bienvenue sur Trevn {profile.username} !</h1>
+                                    <p>Retrouve ici, prochainement, le classement des jeux les plus likés par les utilisateurs et bien plus encore...</p>
+                                </div>
+                            )
+                        )}
                     </main>
                 </MenuScrollContext.Provider>
             </div>
