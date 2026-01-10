@@ -13,14 +13,17 @@ import Loader from "@/components/general/loader/loader";
 import {GroupSettings} from "@/components/app/groupMenu/settings/groupSettings";
 import {useToasts} from "@/utils/helpers/useToasts";
 import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
+import DeleteModal from "@/components/general/deleteModal/deleteModal";
+import {AnimatePresence} from "framer-motion";
 
 export default function GroupDetailsClient({profile} : {profile: ProfileDefault}) {
     const { groupId } = useParams();
     const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>("games")
     const mainScrollRef = useMenuScroll();
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const {successToast, errorToast} = useToasts();
 
     const searchParams = useSearchParams();
-    const { successToast } = useToasts();
     const router = useRouter();
 
     useEffect(() => {
@@ -90,6 +93,73 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
         }
     }
 
+    const handleLeaveGroup = async () => {
+        try {
+            const res = await fetch('/api/groups/leave', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    groupId: group?.id,
+                }),
+            })
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                switch (data.error) {
+                    case 'not_member':
+                        errorToast('Tu ne fais pas partie de ce groupe.')
+                        break
+                    default:
+                        errorToast("Une erreur est survenue au moment de quitter ce groupe.");
+                }
+                return;
+            }
+
+            setIsDeleteModalOpen(false);
+            successToast(`Tu as quitté le groupe ${group?.name}.`)
+            router.replace("/groups");
+        } catch (err) {
+            console.error(err);
+            errorToast('Une erreur est survenue.');
+        }
+    }
+
+    const handleDelete = async () => {
+        try {
+            const res = await fetch('/api/groups/delete', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    groupId: group?.id,
+                }),
+            })
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                switch (data.error) {
+                    case 'group_not_found':
+                        errorToast('Tu ne peux pas supprimer ce groupe car il n\'existe pas.')
+                        break
+                    case 'not_owner':
+                        errorToast('Tu n\'as pas les droits pour supprimer ce groupe.')
+                        break
+                    default:
+                        errorToast("Une erreur est survenue au moment de supprimer ce groupe.");
+                }
+                return;
+            }
+
+            setIsDeleteModalOpen(false);
+            successToast(`Ton groupe ${group?.name} a bien été supprimé.`)
+            router.replace("/groups");
+        } catch (err) {
+            console.error(err);
+            errorToast('Une erreur est survenue.');
+        }
+    }
+
     return (!groupIsLoading && !membersAreLoading) ? (
         <>
             <div className={styles.groupDetailsSection}>
@@ -111,23 +181,32 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
 
             <nav className={styles.groupNavbarSection}>
                 <ul>
+                    <div className={styles.selectButtons}>
+                        <li
+                            onClick={() => setSelectedMenu("games")}
+                            className={`${selectedMenu === "games" ? styles.selectedMenu : ""}`}
+                        >
+                            Jeux
+                        </li>
+                        <li
+                            onClick={() => setSelectedMenu("members")}
+                            className={`${selectedMenu === "members" ? styles.selectedMenu : ""}`}
+                        >
+                            Membres
+                        </li>
+                        <li
+                            onClick={() => setSelectedMenu("settings")}
+                            className={`${selectedMenu === "settings" ? styles.selectedMenu : ""}`}
+                        >
+                            Paramètres
+                        </li>
+                    </div>
+
                     <li
-                        onClick={() => setSelectedMenu("games")}
-                        className={`${selectedMenu === "games" ? styles.selectedMenu : ""}`}
+                        onClick={() => setIsDeleteModalOpen(true)}
+                        className={styles.leaveButton}
                     >
-                        Jeux
-                    </li>
-                    <li
-                        onClick={() => setSelectedMenu("members")}
-                        className={`${selectedMenu === "members" ? styles.selectedMenu : ""}`}
-                    >
-                        Membres
-                    </li>
-                    <li
-                        onClick={() => setSelectedMenu("settings")}
-                        className={`${selectedMenu === "settings" ? styles.selectedMenu : ""}`}
-                    >
-                        Paramètres
+                        {userHaveRights ? "Supprimer le groupe" : "Quitter le groupe" }
                     </li>
                 </ul>
             </nav>
@@ -135,6 +214,42 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
             <div className={styles.groupSelectedContent}>
                 {getSelectedMenuContent()}
             </div>
+
+            <AnimatePresence mode={"wait"}>
+                {isDeleteModalOpen && (
+                    <DeleteModal
+                        setModal={setIsDeleteModalOpen}
+                        closeIconTopPosition={userHaveRights ? "240px" : "164px"}
+                        handleDelete={userHaveRights ? handleDelete : handleLeaveGroup}
+                        withInput={userHaveRights}
+                        deleteLabel={'Si tu es certain de ta décision, saisis “SUPPRIMER” pour continuer.'}
+                        leaveButtonText={userHaveRights ? "Supprimer le groupe" : "Quitter le groupe"}
+                    >
+                        {userHaveRights ? (
+                            <>
+                                <h1>Supprimer un groupe</h1>
+                                <p>
+                                    <span className="boldText">Attention : </span>
+                                    supprimer ce groupe entraînera la <span className="boldText"> suppression définitive </span> de tous les jeux, des likes et
+                                    de l’ensemble des données associées. Le groupe disparaîtra immédiatement pour tous les membres.
+                                    <span className="boldText"> Aucune récupération ne sera possible.</span>
+                                </p>
+
+                                <h4>Es-tu sûr de vouloir supprimer ce groupe?</h4>
+                            </>
+                        ) : (
+                            <>
+                                <h1>Quitter un groupe</h1>
+                                <p>
+                                    Quitter ce groupe te fera perdre immédiatement l’accès à son contenu.
+                                    Les jeux que tu as ajouté resteront mais tes likes seront supprimés.
+                                    Pour revenir dans le groupe tu devras être réinvité par un membre.
+                                </p>
+                            </>
+                        )}
+                    </DeleteModal>
+                )}
+            </AnimatePresence>
         </>
     ) : (
         <Loader/>

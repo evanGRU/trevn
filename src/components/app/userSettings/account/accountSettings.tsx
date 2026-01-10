@@ -209,6 +209,7 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
                         handleDelete={handleDelete}
                         withInput={true}
                         deleteLabel={'Si tu es certain de ta décision, saisis “SUPPRIMER” pour continuer.'}
+                        leaveButtonText={"Supprimer mon compte"}
                     >
                         <h1>Supprimer ton compte</h1>
                         <p>

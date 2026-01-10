@@ -36,17 +36,17 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
         switch (toast) {
             case "invalid_invite":
                 errorToast("Ton lien d’invitation est invalide ou a expiré.");
+                router.replace("/groups");
                 break;
             case "group_not_found":
                 errorToast("Il semblerait que ce groupe n'existe pas.");
+                router.replace("/groups");
                 break;
             case "cant_access":
                 errorToast("Tu ne fais pas partie de ce groupe.");
                 router.replace("/groups");
                 break;
         }
-
-        router.replace("/groups");
     }, [searchParams]);
 
     const {

@@ -198,10 +198,10 @@ export default function GameCapsule({game, group, refreshGamesList, gamesList, m
                         setModal={setIsDeleteModalOpen}
                         handleDelete={handleDelete}
                         closeIconTopPosition={"128px"}
+                        leaveButtonText={"Supprimer de la liste"}
                     >
-                        <h1>Supprimer un jeu</h1>
+                        <h1>Supprimer un jeu de la liste</h1>
                         <p>En faisant cela, toutes les personnes ayant liké ce jeu devront le refaire si celui-ci est ajouté à nouveau.</p>
-                        <h4>Es-tu sûr de vouloir supprimer ce jeu?</h4>
                     </DeleteModal>
                 )}
             </AnimatePresence>

@@ -10,9 +10,10 @@ interface DeleteGameModalProps {
     closeIconTopPosition: string;
     withInput?: boolean;
     deleteLabel?: string;
+    leaveButtonText: string;
 }
 
-export default function DeleteModal({children, setModal, handleDelete, closeIconTopPosition, withInput = false, deleteLabel}: DeleteGameModalProps) {
+export default function DeleteModal({children, setModal, handleDelete, closeIconTopPosition, withInput = false, deleteLabel, leaveButtonText}: DeleteGameModalProps) {
     const [deleteValue, setDeleteValue] = useState('');
     const [disabled, setDisabled] = useState(!!withInput);
 
@@ -45,7 +46,7 @@ export default function DeleteModal({children, setModal, handleDelete, closeIcon
             )}
             <div className={styles.buttonContainer}>
                 <button type={"button"} onClick={handleDelete} disabled={disabled} className={`${disabled ? styles.disabled : ""}`}>
-                    Supprimer
+                    {leaveButtonText}
                 </button>
             </div>
         </ModalWrapper>
