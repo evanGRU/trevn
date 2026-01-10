@@ -3,16 +3,16 @@ import ModalWrapper from "@/components/general/modalWrapper/modalWrapper";
 import Image from "next/image";
 import {useState} from "react";
 import {useDebounce} from "@/utils/helpers/useDebounce";
-import useSWR, {KeyedMutator} from "swr";
-import {GameResult} from "@/utils/types";
+import {KeyedMutator} from "swr";
+import {GameCapsuleData, GameResult} from "@/utils/types";
 import {ParamValue} from "next/dist/server/request/params";
-import {fetcher} from "@/utils/globalFunctions";
 import {useToasts} from "@/utils/helpers/useToasts";
+import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
 
 interface NewGroupModalProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
     groupId: ParamValue;
-    refreshGamesList: KeyedMutator<GameResult[]>;
+    refreshGamesList: KeyedMutator<GameCapsuleData[]>;
 }
 
 export default function AddGameModal({setModal, groupId, refreshGamesList}: NewGroupModalProps) {
@@ -21,10 +21,9 @@ export default function AddGameModal({setModal, groupId, refreshGamesList}: NewG
     const {errorToast} = useToasts();
     const [isLoading, setIsLoading] = useState(false);
 
-    const { data, error, isValidating } = useSWR(
-        debouncedQuery && debouncedQuery.trim().length > 1 ? `/api/games/search?q=${encodeURIComponent(debouncedQuery)}` : null,
-        (url) => fetcher(url, "Une erreur s'est produite, veuillez réessayer.")
-    );
+    const {data, isValidating, error} = useSWRWithError<GameResult[]>(`/api/games/search?q=${encodeURIComponent(debouncedQuery)}`, {
+        errorMessage: "Une erreur s'est produite en essayant d'ajouter un jeu à ce groupe.",
+    });
 
     const handleAddGame = async (game: GameResult) => {
         if (!groupId) return;

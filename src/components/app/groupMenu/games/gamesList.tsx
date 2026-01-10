@@ -4,14 +4,13 @@ import SearchField from "@/components/general/searchField/searchField";
 import {forwardRef, useImperativeHandle, useMemo, useRef, useState} from "react";
 import AddGameModal from "@/components/app/groupMenu/games/addGameModal/addGameModal";
 import {GameCapsuleData, GroupDetails, Member} from "@/utils/types";
-import useSWR from "swr";
 import {useDebounce} from "@/utils/helpers/useDebounce";
 import GameCapsule from "@/components/app/groupMenu/games/gameCapsule/gameCapsule";
-import { fetcher } from "@/utils/globalFunctions";
 import {AnimatePresence} from "framer-motion";
 import Loader from "@/components/general/loader/loader";
 import MenuHeader from "@/components/app/groupMenu/menuHeader/menuHeader";
 import {useRules} from "@/utils/helpers/useRules";
+import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
 
 export type GamesListHandle = {
     enableScroll: () => void;
@@ -32,10 +31,13 @@ export const GamesList = forwardRef<GamesListHandle, GamesListProps>(({group, me
     const gamesRef = useRef<HTMLDivElement>(null);
     const {canAddGamesRule, canDeleteGamesRule, canLikeGamesRule} = useRules(group);
 
-    const { data: gamesList, isLoading, mutate: refreshGamesList } = useSWR(
-        group?.id ? `/api/games?groupId=${group.id}` : null,
-        (url) => fetcher(url, "Impossible de récupérer la liste des jeux. Essaye de rafraîchir la page.")
-    );
+    const {
+        data: gamesList,
+        isLoading: gamesListIsLoading,
+        mutate: refreshGamesList
+    } = useSWRWithError<GameCapsuleData[]>(`/api/games?groupId=${group?.id}`, {
+        errorMessage: "Une erreur s'est produite en essayant de récupérer la liste des jeux de ce groupe.",
+    });
 
     const filteredGames = useMemo(() => {
         if (!gamesList) return [];
@@ -75,7 +77,7 @@ export const GamesList = forwardRef<GamesListHandle, GamesListProps>(({group, me
             </MenuHeader>
 
             <div ref={gamesRef} className={styles.gamesContentContainer}>
-                {isLoading ? (
+                {gamesListIsLoading ? (
                     <Loader/>
                 ) : (
                     filteredGames.length > 0 ? (

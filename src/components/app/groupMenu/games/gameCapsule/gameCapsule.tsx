@@ -2,7 +2,7 @@ import styles from "./gameCapsule.module.scss";
 import {GameCapsuleData, GroupDetails, Member} from "@/utils/types";
 import Image from "next/image";
 import {KeyedMutator} from "swr";
-import {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import Link from "next/link";
 import {useToasts} from "@/utils/helpers/useToasts";
 import LikeCounterIcon from "@/components/app/groupMenu/games/likeCounterIcon/likeCounterIcon";
@@ -197,10 +197,12 @@ export default function GameCapsule({game, group, refreshGamesList, gamesList, m
                     <DeleteModal
                         setModal={setIsDeleteModalOpen}
                         handleDelete={handleDelete}
-                        title={"Es-tu sûr de vouloir supprimer ce jeu ?"}
-                        paragraphe={"En faisant cela, toutes les personnes ayant liké ce jeu devront le refaire si celui-ci est ajouté à nouveau."}
-                        closeIconTopPosition={"150px"}
-                    />
+                        closeIconTopPosition={"128px"}
+                        leaveButtonText={"Supprimer de la liste"}
+                    >
+                        <h1>Supprimer un jeu de la liste</h1>
+                        <p>En faisant cela, toutes les personnes ayant liké ce jeu devront le refaire si celui-ci est ajouté à nouveau.</p>
+                    </DeleteModal>
                 )}
             </AnimatePresence>
         </>

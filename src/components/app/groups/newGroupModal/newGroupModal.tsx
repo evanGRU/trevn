@@ -5,11 +5,12 @@ import {useEffect, useState} from "react";
 import GlassButton from "@/components/general/glassButton/glassButton";
 import {nanoid} from "nanoid";
 import {useToasts} from "@/utils/helpers/useToasts";
-import useSWR, {KeyedMutator} from "swr";
-import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
+import {KeyedMutator} from "swr";
+import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import {Avatar, Group} from "@/utils/types";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import ModalWrapper from "@/components/general/modalWrapper/modalWrapper";
+import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
 
 interface NewGroupModalProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,14 +31,16 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
     const [errorMessages, setErrorMessages] = useState<{[key: string]: string}>({});
     const [isLoading, setIsLoading] = useState(false);
 
-    const { data: avatarsPresets, error: avatarPresetsError, isLoading: isAvatarsPresetsLoading } = useSWR(
-        '/api/avatars/presets',
-        (url) => fetcher(url, "Impossible de charger les presets d'avatars")
-    );
+    const {
+        data: avatarsPresets,
+        isLoading: areAvatarsPresetsLoading,
+        error: avatarPresetsError,
+    } = useSWRWithError<Avatar[]>('/api/avatars/presets', {
+        errorMessage: "Une erreur s'est produite en essayant de charger les presets d'avatars.",
+    });
 
     useEffect(() => {
         if (avatarPresetsError) {
-            errorToast("Une erreur s'est produite, veuillez réessayer.")
             setModal(false)
         }
     }, [avatarPresetsError]);
@@ -160,7 +163,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
             if (!res.ok) {
                 switch (data.error){
                     case "already_member":
-                        setErrorMessages(prev => ({ ...prev, invitationCode: "Tu fais déjà parti de ce groupe." }));
+                        setErrorMessages(prev => ({ ...prev, invitationCode: "Tu fais déjà partie de ce groupe." }));
                         return;
                     default:
                         setErrorMessages(prev => ({ ...prev, invitationCode: data.error }));
@@ -178,7 +181,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
         }
     };
 
-    return !isAvatarsPresetsLoading && (
+    return !areAvatarsPresetsLoading && (
         <ModalWrapper setModal={setModal} closeIconTopPosition={"336px"}>
             <div className={styles.createGroupContainer}>
                 <div className={styles.formHeader}>
@@ -193,7 +196,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                             <button
                                 type={"button"}
                                 className={`${styles.avatarPreviewButton} ${previewUrl ? styles.avatarPreviewButtonFull : ""} ${errorMessages.avatar ? styles.requiredError : ""}`}>
-                                <label htmlFor="avatarInput">
+                                <label htmlFor="newAvatarInput">
                                     {previewUrl ? (
                                         <DbImage
                                             src={previewUrl}
@@ -211,7 +214,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                                     )}
                                 </label>
                                 <input
-                                    id="avatarInput"
+                                    id="newAvatarInput"
                                     type="file"
                                     accept="image/*"
                                     onChange={handleFileSelect}

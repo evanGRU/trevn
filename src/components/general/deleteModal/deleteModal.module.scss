@@ -1,12 +1,29 @@
-.title {
-  font-family: var(--font-heading), sans-serif;
-  font-size: var(--text-32);
-  line-height: var(--space-32);
-}
+.texts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin-bottom: var(--space-12);
 
-.paragraphe {
-  margin: var(--space-12) 0 var(--space-24) 0;
-  color: var(--color-text-secondary);
+  h1 {
+    font-family: var(--font-heading), sans-serif;
+    font-size: var(--text-32);
+    line-height: var(--space-32);
+    text-align: center;
+  }
+
+  p {
+    color: var(--color-text-secondary);
+    text-align: justify;
+    line-height: var(--space-24);
+  }
+
+  h4 {
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--color-text-red);
+    font-size: var(--text-14);
+    margin-top: var(--space-24);
+  }
 }
 
 .buttonContainer {

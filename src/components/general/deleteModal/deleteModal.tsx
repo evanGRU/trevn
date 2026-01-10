@@ -4,16 +4,16 @@ import DefaultField from "@/components/general/defaultField/defaultField";
 import {useState} from "react";
 
 interface DeleteGameModalProps {
+    children: React.ReactNode;
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
     handleDelete: () => void;
-    title: string;
-    paragraphe: string;
     closeIconTopPosition: string;
     withInput?: boolean;
     deleteLabel?: string;
+    leaveButtonText: string;
 }
 
-export default function DeleteModal({setModal, handleDelete, title, paragraphe, closeIconTopPosition, withInput = false, deleteLabel}: DeleteGameModalProps) {
+export default function DeleteModal({children, setModal, handleDelete, closeIconTopPosition, withInput = false, deleteLabel, leaveButtonText}: DeleteGameModalProps) {
     const [deleteValue, setDeleteValue] = useState('');
     const [disabled, setDisabled] = useState(!!withInput);
 
@@ -31,8 +31,9 @@ export default function DeleteModal({setModal, handleDelete, title, paragraphe, 
 
     return (
         <ModalWrapper setModal={setModal} closeIconTopPosition={closeIconTopPosition}>
-            <h1 className={styles.title}>{title}</h1>
-            <p className={styles.paragraphe}>{paragraphe}</p>
+            <div className={styles.texts}>
+                {children}
+            </div>
 
             {withInput && (
                 <DefaultField
@@ -45,7 +46,7 @@ export default function DeleteModal({setModal, handleDelete, title, paragraphe, 
             )}
             <div className={styles.buttonContainer}>
                 <button type={"button"} onClick={handleDelete} disabled={disabled} className={`${disabled ? styles.disabled : ""}`}>
-                    Supprimer
+                    {leaveButtonText}
                 </button>
             </div>
         </ModalWrapper>
