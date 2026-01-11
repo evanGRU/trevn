@@ -1,5 +1,11 @@
 import AuthForm from "@/components/webPage/auth/AuthWrapper";
+import {Suspense} from "react";
 
 export default function LoginPage() {
-    return <AuthForm type="login" />;
+
+    return (
+        <Suspense fallback={null}>
+            <AuthForm type="login" />
+        </Suspense>
+    );
 }
