@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(request: NextRequest) {
+    const pathname = request.nextUrl.pathname;
+
+    if (pathname.startsWith("/api")) {
+        return NextResponse.next();
+    }
+
     const response = NextResponse.next();
 
     const supabase = createServerClient(
@@ -23,8 +29,6 @@ export async function middleware(request: NextRequest) {
     );
 
     const { data } = await supabase.auth.getSession();
-
-    const pathname = request.nextUrl.pathname;
 
     const isPublicRoute =
         pathname === "/" ||
