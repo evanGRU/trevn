@@ -18,7 +18,7 @@ interface AvatarSettingsProps {
 
 export default function AvatarSettings({profile, refreshProfile}: AvatarSettingsProps) {
     const [displaySaveModal, setDisplaySaveModal] = useState(false);
-    const [isSubmiting, setIsSubmiting] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const defaultAvatarUrl = profile?.avatar.name;
     const [previewAvatarUrl, setPreviewAvatarUrl] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -54,7 +54,7 @@ export default function AvatarSettings({profile, refreshProfile}: AvatarSettings
     }
 
     const handleReset = () => {
-        if (!isSubmiting) return;
+        if (isSubmitting) return;
         setPreviewAvatarUrl(null);
         setImageFile(null);
         setSelectedAvatar(null);
@@ -63,8 +63,8 @@ export default function AvatarSettings({profile, refreshProfile}: AvatarSettings
 
     const handleSubmit = async () => {
         if (!imageFile && !selectedAvatar) return;
-        if (!isSubmiting) return;
-        setIsSubmiting(true);
+        if (isSubmitting) return;
+        setIsSubmitting(true);
 
         try {
             const formData = new FormData();
@@ -96,7 +96,7 @@ export default function AvatarSettings({profile, refreshProfile}: AvatarSettings
         } catch (err) {
             errorToast('Une erreur est survenue. Veuillez réessayer plus tard.');
         } finally {
-            setIsSubmiting(false);
+            setIsSubmitting(false);
         }
     }
 

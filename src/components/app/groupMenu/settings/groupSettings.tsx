@@ -28,7 +28,7 @@ export const GroupSettings = forwardRef<GamesListHandle, MembersListProps>(({gro
     const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
     const {successToast, errorToast} = useToasts();
     const [currentOption, setCurrentOption] = useState<string | null>(null);
-    const [isSubmiting, setIsSubmiting] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const defaultGroupSettingsForm = useMemo(() => ({
         avatar: group?.avatar,
@@ -57,8 +57,8 @@ export const GroupSettings = forwardRef<GamesListHandle, MembersListProps>(({gro
     }));
 
     const handleSubmit = () => {
-        if (!isSubmiting) return;
-        setIsSubmiting(true);
+        if (isSubmitting) return;
+        setIsSubmitting(true);
 
         if (currentOption === "rules") {
             handleUpdateRules();
@@ -141,7 +141,7 @@ export const GroupSettings = forwardRef<GamesListHandle, MembersListProps>(({gro
         } catch (err) {
             errorToast('Une erreur est survenue. Veuillez réessayer plus tard.');
         } finally {
-            setIsSubmiting(false);
+            setIsSubmitting(false);
         }
     };
 
@@ -180,13 +180,13 @@ export const GroupSettings = forwardRef<GamesListHandle, MembersListProps>(({gro
         } catch (err) {
             errorToast('Une erreur est survenue. Veuillez réessayer plus tard.');
         } finally {
-            setIsSubmiting(false);
+            setIsSubmitting(false);
         }
     }
 
 
     const handleReset = () => {
-        if (!isSubmiting) return;
+        if (isSubmitting) return;
         setGroupSettingsForm({...defaultGroupSettingsForm});
         setIsSaveModalOpen(false);
     }
