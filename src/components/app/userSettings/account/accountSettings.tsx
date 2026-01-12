@@ -28,7 +28,7 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [displaySaveModal, setDisplaySaveModal] = useState(false);
     const {errorToast, successToast} = useToasts();
-
+    const [isSubmiting, setIsSubmiting] = useState(false);
 
     const handleClick = (prop: UserProps) => {
         setIsEditModalOpen(true);
@@ -48,12 +48,15 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
     }
 
     const handleReset = () => {
+        if (!isSubmiting) return;
         setNewAccountSettings({...defaultAccountSettings});
         setPropToEdit(null);
         setDisplaySaveModal(false);
     }
 
     const handleSubmit = async (newPassword?: string) => {
+        if (!isSubmiting) return;
+        setIsSubmiting(true);
         try {
             const res = await fetch('/api/user', {
                 method: 'PUT',
@@ -95,6 +98,7 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
             errorToast('Une erreur est survenue. Veuillez réessayer plus tard.');
         } finally {
             setDisplaySaveModal(false);
+            setIsSubmiting(false);
         }
     }
 
