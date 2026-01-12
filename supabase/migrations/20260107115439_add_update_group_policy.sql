@@ -1,4 +1,4 @@
 create policy "group_owner_can_update"
 on public.groups
 for update
-using (owner_id = auth.uid());
+using (created_by = auth.uid());

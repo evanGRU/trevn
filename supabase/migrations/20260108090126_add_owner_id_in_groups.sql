@@ -125,3 +125,10 @@ end;
 $$;
 
 grant execute on function public.kick_group_member(text, uuid) to authenticated;
+
+DROP policy IF EXISTS "group_owner_can_update" ON "public"."groups";
+
+create policy "group_owner_can_update"
+on public.groups
+for update
+using (owner_id = auth.uid());
