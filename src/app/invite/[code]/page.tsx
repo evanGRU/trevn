@@ -3,7 +3,7 @@ import InvitePageClient from "@/app/invite/[code]/InviteClient";
 import {notFound, redirect} from "next/navigation";
 
 interface InvitePageProps {
-    params: { code: string };
+    params: Promise<{ code: string }>;
 }
 
 export default async function InvitePage({ params }: InvitePageProps) {
