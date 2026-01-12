@@ -1,14 +1,13 @@
 import styles from "./avatarSettings.module.scss";
 import React, {useState} from "react";
-import {Avatar, Member, Profile} from "@/utils/types";
+import {Avatar, Profile} from "@/utils/types";
 import SubmitButtons from "@/components/app/userSettings/submitButtons/submitButtons";
 import SettingsSectionWrapper from "@/components/app/userSettings/settingsSectionWrapper/settingsSectionWrapper";
-import {fetcher, getPublicAvatarUrl} from "@/utils/globalFunctions";
+import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
 import Image from "next/image";
 import {useToasts} from "@/utils/helpers/useToasts";
-import useSWR from "swr";
 import {AnimatePresence, motion} from "framer-motion";
 import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
 
@@ -19,6 +18,7 @@ interface AvatarSettingsProps {
 
 export default function AvatarSettings({profile, refreshProfile}: AvatarSettingsProps) {
     const [displaySaveModal, setDisplaySaveModal] = useState(false);
+    const [isSubmiting, setIsSubmiting] = useState(false);
     const defaultAvatarUrl = profile?.avatar.name;
     const [previewAvatarUrl, setPreviewAvatarUrl] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -54,6 +54,7 @@ export default function AvatarSettings({profile, refreshProfile}: AvatarSettings
     }
 
     const handleReset = () => {
+        if (!isSubmiting) return;
         setPreviewAvatarUrl(null);
         setImageFile(null);
         setSelectedAvatar(null);
@@ -62,6 +63,8 @@ export default function AvatarSettings({profile, refreshProfile}: AvatarSettings
 
     const handleSubmit = async () => {
         if (!imageFile && !selectedAvatar) return;
+        if (!isSubmiting) return;
+        setIsSubmiting(true);
 
         try {
             const formData = new FormData();
@@ -92,6 +95,8 @@ export default function AvatarSettings({profile, refreshProfile}: AvatarSettings
             }
         } catch (err) {
             errorToast('Une erreur est survenue. Veuillez réessayer plus tard.');
+        } finally {
+            setIsSubmiting(false);
         }
     }
 
