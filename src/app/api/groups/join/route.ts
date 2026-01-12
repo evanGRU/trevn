@@ -21,8 +21,15 @@ export async function POST(req: Request) {
 
     if (!group || groupError) {
         return Response.json(
-            { error: "Code invalide ou groupe introuvable." },
+            { error: "invalid_code" },
             { status: 400 }
+        );
+    }
+
+    if (group.access_mode === "closed") {
+        return Response.json(
+            { error: "group_close" },
+            { status: 401 }
         );
     }
 

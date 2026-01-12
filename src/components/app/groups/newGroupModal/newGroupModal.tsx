@@ -165,6 +165,12 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                     case "already_member":
                         setErrorMessages(prev => ({ ...prev, invitationCode: "Tu fais déjà partie de ce groupe." }));
                         return;
+                    case "invalid_code":
+                        setErrorMessages(prev => ({ ...prev, invitationCode: "Code invalide ou groupe introuvable." }));
+                        return;
+                    case "group_close":
+                        setErrorMessages(prev => ({ ...prev, invitationCode: "Ce groupe est fermé, tu ne peux pas le rejoindre." }));
+                        return;
                     default:
                         setErrorMessages(prev => ({ ...prev, invitationCode: data.error }));
                         return;
