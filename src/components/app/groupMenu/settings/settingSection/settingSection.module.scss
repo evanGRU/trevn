@@ -1,0 +1,46 @@
+.settingSection {
+  width: 100%;
+  max-width: 1000px;
+  min-width: 564px;
+  background-color: var(--color-background-dark);
+  border-radius: var(--radius-24);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-surface);
+  overflow: hidden;
+  min-height: 72px;
+
+  .settingHeader {
+    width: 100%;
+    height: 72px;
+    padding: var(--space-24);
+    background-color: var(--color-surface);
+    border-radius: var(--radius-24);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    h3 {
+      font-size: var(--text-20);
+      font-family: var(--font-body), sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    img {
+      transition: all 0.3s ease;
+    }
+  }
+
+  .settingContent {
+    display: flex;
+    padding: var(--space-24) var(--space-96) var(--space-32) var(--space-96);
+
+    h4 {
+      font-family: var(--font-heading), sans-serif;
+      font-size: var(--text-32);
+      line-height: var(--space-32);
+    }
+  }
+}

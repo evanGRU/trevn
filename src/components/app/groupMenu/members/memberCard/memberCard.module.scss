@@ -1,0 +1,79 @@
+.memberCard {
+  max-width: 288px;
+  border: 1px solid var(--color-background-secondary);
+  border-radius: var(--radius-10);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-12);
+  width: 100%;
+  transition: background-color 0.3s ease;
+
+  .userDetailsContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+
+    .pp {
+      aspect-ratio: 1/1;
+      height: 48px;
+      width: 48px;
+      border-radius: var(--radius-04);
+      border: 1px solid var(--color-background-secondary);
+    }
+
+    .textContainer {
+      display: flex;
+      gap: var(--space-04);
+
+      p {
+        font-family: var(--font-heading), sans-serif;
+        font-size: var(--text-24);
+        transform: translateY(1px);
+      }
+    }
+  }
+
+  .optionsGlobalContainer {
+    height: 100%;
+    position: relative;
+
+    .optionsButtonContainer {
+      height: 100%;
+      aspect-ratio: 1/1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .optionsButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 36px;
+        width: 36px;
+        border-radius: var(--radius-full);
+        border: 1px solid var(--color-background-secondary);
+        cursor: pointer;
+        background-color: var(--color-background);
+        transition: all 0.3s ease;
+
+        &:hover {
+          border-color: var(--color-gray);
+        }
+      }
+
+      .buttonOpen {
+        background-color: var(--color-background-secondary-hover);
+        border-color: var(--color-gray);
+      }
+    }
+  }
+
+  &:hover {
+    background-color: var(--color-background-tertiary);
+  }
+}
+
+.ownMemberCard {
+  border: 1px solid var(--color-gray);
+}

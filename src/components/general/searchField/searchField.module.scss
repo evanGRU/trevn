@@ -1,0 +1,54 @@
+.searchField {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: var(--color-surface);
+  height: 36px;
+  border-radius: var(--radius-08);
+  width: 224px;
+  border: 1px solid var(--color-background-secondary);
+  padding: 0 var(--space-16) 0 0;
+
+  input {
+    font-size: var(--text-12);
+    color: var(--color-text);
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    padding: 0 var(--space-12);
+
+    &:focus {
+      border: none;
+      outline: none;
+    }
+  }
+
+  .iconButton {
+    height: 100%;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    button {
+      height: 100%;
+      width: 100%;
+      border: none;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    img {
+      height: 16px;
+      width: 16px;
+    }
+  }
+}

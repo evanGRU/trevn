@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "qzqjxcvibvybvtqottnf.supabase.co",
+                hostname: "azwehrxsdsjbbphyolns.supabase.co",
                 pathname: "/storage/v1/object/public/**",
             },
             {
@@ -19,6 +19,22 @@ const nextConfig: NextConfig = {
                 port: "54321",
                 pathname: "/storage/v1/object/public/**",
             },
+            {
+                protocol: "https",
+                hostname: "cdn.cloudflare.steamstatic.com",
+            },
+            {
+                protocol: "https",
+                hostname: "steamcdn-a.akamaihd.net",
+            },
+            {
+                protocol: "https",
+                hostname: "shared.fastly.steamstatic.com",
+            },
+            {
+                protocol: "https",
+                hostname: "shared.akamai.steamstatic.com",
+            }
         ],
     },
 };

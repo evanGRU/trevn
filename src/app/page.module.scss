@@ -46,11 +46,9 @@
 
   .cardsContainer {
     display: grid;
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(auto-fit, minmax(300px, 1fr));
     grid-template-columns: repeat(3, 1fr);
-    width: fit-content;
     height: 100%;
-    max-width: 1224px;
   }
 }
 
@@ -80,16 +78,20 @@
     flex-direction: column;
     justify-content: center;
     gap: var(--space-32);
+
+    h2 {
+      font-size: var(--text-112);
+      line-height: var(--space-96);
+    }
   }
 }
 
 .partnerSection {
   height: fit-content;
-  padding: var(--space-12) var(--space-128);
+  padding: var(--space-12) var(--space-128) var(--space-24) var(--space-128);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1A1A1A;
 
   h3 {
     font-weight: 400;
