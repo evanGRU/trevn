@@ -47,6 +47,10 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
                 errorToast("Tu ne fais pas partie de ce groupe.");
                 router.replace("/groups");
                 break;
+            case "group_close":
+                errorToast("Ce groupe est fermé, tu ne peux pas le rejoindre.");
+                router.replace("/groups");
+                break;
         }
     }, [searchParams]);
 

@@ -80,8 +80,10 @@ export default function AccessSettings({groupSettingsForm, setGroupSettingsForm,
                         className={`
                             ${styles.accessModeCard} 
                             ${groupSettingsForm?.access_mode === "open" ? styles.accessModeCardActive : ""}
+                            ${isDisabled ? styles.accessModeCardDisabled : ""}
                         `}
                         onClick={() => handleUpdateAccessMode("open")}
+                        disabled={isDisabled}
                     >
                         <p className={styles.cardTitle}>Sur invitation</p>
                         <p className={styles.cardDescription}>Entrée libre avec lien ou code d’invitation.</p>
@@ -92,8 +94,10 @@ export default function AccessSettings({groupSettingsForm, setGroupSettingsForm,
                         className={`
                             ${styles.accessModeCard} 
                             ${groupSettingsForm?.access_mode === "closed" ? styles.accessModeCardActive : ""}
+                            ${isDisabled ? styles.accessModeCardDisabled : ""}
                         `}
                         onClick={() => handleUpdateAccessMode("closed")}
+                        disabled={isDisabled}
                     >
                         <p className={styles.cardTitle}>Fermé</p>
                         <p className={styles.cardDescription}>Aucun nouvel utilisateur ne peut rejoindre le groupe.</p>
@@ -128,7 +132,7 @@ export default function AccessSettings({groupSettingsForm, setGroupSettingsForm,
                     </div>
 
                     <div className={styles.regenButtonContainer}>
-                        <DefaultButton handleClick={() => handleRegenerateCode()}>Générer un nouveau code d&apos;invitation</DefaultButton>
+                        <DefaultButton handleClick={() => handleRegenerateCode()} disabled={isDisabled}>Générer un nouveau code d&apos;invitation</DefaultButton>
                     </div>
                 </div>
             </div>
