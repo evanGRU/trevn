@@ -1,0 +1,74 @@
+.editUserModalContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .modalTitle {
+    margin-bottom: var(--space-16);
+
+    h2 {
+      font-size: var(--text-36);
+      line-height: var(--space-36);
+      width: 100%;
+      text-align: center;
+    }
+
+    .infoMessage {
+      font-size: var(--text-14);
+      color: var(--color-text-secondary);
+      text-align: center;
+    }
+  }
+
+  .fieldsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-04);
+  }
+
+  .editUserButtonsContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-08);
+    margin-top: var(--space-04);
+
+    .cancelButton {
+      width: 100%;
+      flex: 1;
+      height: 42px;
+      border-radius: var(--radius-40);
+      border: none;
+      background-color: var(--color-surface);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--color-text);
+      text-transform: uppercase;
+      font-size: var(--text-16);
+      font-weight: 400;
+      &:hover {
+        background-color: var(--color-background-secondary-hover);
+      }
+    }
+
+    .submitButton {
+      width: 100%;
+      flex: 1;
+      height: 42px;
+
+      button {
+        min-width: 0;
+        width: 100%;
+        padding: 0;
+        height: 100%;
+        font-size: var(--text-16) !important;
+        font-weight: 400;
+
+        &:hover {
+          transform: translateY(0);
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}

@@ -1,54 +1,54 @@
 "use client";
 
 import styles from "./page.module.scss";
-import {useCallback, useRef, useState} from "react";
-import { createClient } from "@/utils/supabase/client";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import Image from "next/image";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
-import GroupsSidebar from "@/components/app/groupsSidebar/groupsSidebar";
-import NewGroupModal from "@/components/app/newGroupModal/newGroupModal";
-import useSWR from "swr";
-import { useToasts } from "@/utils/useToasts";
-import {Group, Profile} from "@/utils/types";
+import GroupsSidebar from "@/components/app/groups/groupsSidebar/groupsSidebar";
+import NewGroupModal from "@/components/app/groups/newGroupModal/newGroupModal";
 import MainHeader from "@/components/app/mainHeader/mainHeader";
 import {smoothScroll} from "@/utils/globalFunctions";
-import {GamesListHandle} from "@/components/app/gamesList/gamesList";
-import { GamesScrollContext } from "@/utils/GamesScrollContext";
+import {GamesListHandle} from "@/components/app/groupMenu/games/gamesList";
+import { MenuScrollContext } from "@/utils/MenuScrollContext";
+import {AnimatePresence} from "framer-motion";
+import Loader from "@/components/general/loader/loader";
+import {useParams, useRouter, useSearchParams} from "next/navigation";
+import {useToasts} from "@/utils/helpers/useToasts";
+import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
+import {Group, Profile} from "@/utils/types";
 
-export default function GroupsPageLayoutClient({profile, children}: { profile: Profile, children: React.ReactNode}) {
-    const supabase = createClient();
+export default function GroupsPageLayoutClient({children}: {children: React.ReactNode}) {
     const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState<boolean>(false);
-    const {errorToast} = useToasts();
+    const { groupId } = useParams();
 
     const containerRef = useRef<HTMLElement>(null);
-    const gamesListRef = useRef<GamesListHandle>(null);
+    const menuRef = useRef<GamesListHandle>(null);
     const isScrollingRef = useRef(false);
     const atBottomRef = useRef(false);
 
-    const fetchGroups = async (userId: string): Promise<Group[]> => {
-        const { data, error } = await supabase
-            .from("groups")
-            .select(`
-                id, name,
-                avatar:avatars!avatar_id(id, name, type),
-                groups_members!inner(user_id)
-            `)
-            .eq("groups_members.user_id", userId);
+    const searchParams = useSearchParams();
+    const { errorToast } = useToasts();
+    const router = useRouter();
 
-        if (error) {
-            errorToast('Une erreur a eu lieu lors de la récupération des groupes. Essayer de rafraîchir la page.');
-            throw error;
+    useEffect(() => {
+        const toast = searchParams.get("toast");
+        if (!toast) return;
+
+        switch (toast) {
+            case "invalid_invite":
+                errorToast("Ton lien d’invitation est invalide ou a expiré.");
+                router.replace("/groups");
+                break;
+            case "group_not_found":
+                errorToast("Il semblerait que ce groupe n'existe pas.");
+                router.replace("/groups");
+                break;
+            case "cant_access":
+                errorToast("Tu ne fais pas partie de ce groupe.");
+                router.replace("/groups");
+                break;
         }
-        return (data ?? []).map(g => ({
-            ...g,
-            avatar: Array.isArray(g.avatar) ? g.avatar[0] ?? null : g.avatar
-        }));
-    };
-
-    const { data: groupsList, mutate: refreshGroups } = useSWR<Group[]>(
-        profile?.id ? ["groups", profile.id] : null,
-        () => fetchGroups(profile!.id)
-    );
+    }, [searchParams]);
 
     const handleScroll = useCallback(() => {
         const parent = containerRef.current;
@@ -62,25 +62,48 @@ export default function GroupsPageLayoutClient({profile, children}: { profile: P
             isScrollingRef.current = false;
 
             if (atBottomRef.current) {
-                gamesListRef.current?.enableScroll();
+                menuRef.current?.enableScroll();
             } else {
-                gamesListRef.current?.disableScroll();
+                menuRef.current?.disableScroll();
             }
         });
     }, []);
 
-    return (
+    const {
+        data: groupsList,
+        isLoading: groupsLoading,
+        mutate: refreshGroups,
+    } = useSWRWithError<Group[]>("/api/groups", {
+        errorMessage: "Impossible de récupérer la liste des groupes",
+    });
+
+    const {
+        data: profile,
+        isLoading: profileLoading,
+        mutate: refreshProfile,
+    } = useSWRWithError<Profile>("/api/user", {
+        errorMessage: "Une erreur s'est produite en essayant de récupérer ton profil.",
+    });
+
+    // const {
+    //     data: gamesWithLikes,
+    //     isLoading: gamesWithLikesLoading,
+    // } = useSWRWithError<GameCapsuleData[]>("/api/games/leaderboard", {
+    //     errorMessage: "Une erreur s'est produite en essayant de récupérer le classement des jeux les plus likés.",
+    // });
+
+    return (!groupsLoading && !profileLoading && profile) ? (
         <div className={styles.mainPage}>
-            <MainHeader profile={profile}/>
+            <MainHeader profile={profile} refreshProfile={refreshProfile}/>
 
             <div className={styles.mainAppContainer}>
                 <GroupsSidebar
                     groups={groupsList ?? []}
                     setModalState={setIsNewGroupModalOpen}
                 />
-                <GamesScrollContext.Provider value={gamesListRef}>
+                <MenuScrollContext.Provider value={menuRef}>
                     <main ref={containerRef} className={`mainContainer ${styles.mainContentContainer}`} onScroll={handleScroll}>
-                        {groupsList?.length === 0 ? (
+                        {groupsList?.length === 0 && (
                             <div className={styles.noGroupsContainer}>
                                 <h1>C’est un peu vide ici…</h1>
                                 <p>Crée ton premier groupe !</p>
@@ -90,18 +113,32 @@ export default function GroupsPageLayoutClient({profile, children}: { profile: P
                                     Nouveau groupe
                                 </DefaultButton>
                             </div>
-                        ) : children}
+                        )}
+
+                        {groupsList && groupsList.length > 0 && (
+                            groupId ? (children) : (
+                                <div className={styles.noGroupsContainer}>
+                                    <h1>Bienvenue sur Trevn {profile.username} !</h1>
+                                    <p>Retrouve ici, prochainement, le classement des jeux les plus likés par les utilisateurs et bien plus encore...</p>
+                                </div>
+                            )
+                        )}
                     </main>
-                </GamesScrollContext.Provider>
+                </MenuScrollContext.Provider>
             </div>
 
-            {isNewGroupModalOpen && (
-                <NewGroupModal
-                    user={profile}
-                    setModal={setIsNewGroupModalOpen}
-                    refreshGroups={refreshGroups}
-                />
-            )}
+            <AnimatePresence mode="wait">
+                {isNewGroupModalOpen && (
+                    <NewGroupModal
+                        setModal={setIsNewGroupModalOpen}
+                        refreshGroups={refreshGroups}
+                    />
+                )}
+            </AnimatePresence>
+        </div>
+    ) : (
+        <div className={styles.loaderContainer}>
+            <Loader/>
         </div>
     );
 }

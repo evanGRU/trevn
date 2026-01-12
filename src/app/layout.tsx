@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     description: "La plateforme pour organiser vos soirées gaming, proposer des jeux et voter entre potes",
     icons: {
         icon: '/favicon.svg',
+        shortcut: "/favicon.ico",
     },
 };
 
@@ -30,7 +31,12 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
         <html lang="fr" className={`${poppins.variable} ${quinn.variable}`}>
             <body>
                 {children}
-                <Toaster position="top-center" />
+                <Toaster
+                    position="top-center"
+                    containerStyle={{
+                        zIndex: 9999999
+                    }}
+                />
             </body>
         </html>
     );

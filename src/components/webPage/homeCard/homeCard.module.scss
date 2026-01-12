@@ -1,6 +1,5 @@
 .card {
   height: 100%;
-  width: auto;
   aspect-ratio: 1/1;
   border-radius: var(--radius-16);
   display: flex;
@@ -11,8 +10,8 @@
   .cardIcon {
     background-color: #292728;
     border-radius: var(--radius-full);
-    width: 76px;
-    height: 76px;
+    width: 64px;
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,13 +26,14 @@
 
     h4 {
       font-weight: 500;
-      font-size: var(--text-36);
-      line-height: 40px;
+      font-size: var(--text-32);
+      line-height: var(--space-32);
     }
 
     p {
       font-weight: 300;
-      font-size: var(--text-18);
+      font-size: var(--text-16);
+      line-height: var(--space-20);
     }
   }
 }

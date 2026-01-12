@@ -121,6 +121,10 @@ create table if not exists public.groups_members (
     constraint groups_members_user_id_fkey
         foreign key (user_id)
         references auth.users(id)
+        on delete cascade,
+    constraint user_profile_fkey
+        foreign key (user_id)
+        references profiles(id)
         on delete cascade
 );
 

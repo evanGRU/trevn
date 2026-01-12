@@ -72,12 +72,12 @@ export default function WebPage() {
                 <Image
                     src={'/webPage/cardHover.svg'}
                     alt={"Logo Icon"}
-                    width={650}
+                    width={500}
                     height={10}
                 />
             </div>
             <div className={styles.contentContainer}>
-                <h2>Commence <br/>ton aventure <br/>maintenant</h2>
+                <h2>Crée ton <br/>premier groupe <br/>maintenant</h2>
                 <GlassButton type={"link"} linkHref={"/login"}>
                     Créer ton premier groupe
                 </GlassButton>

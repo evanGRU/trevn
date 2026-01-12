@@ -1,8 +1,41 @@
+// Auth
+
+export type AuthModes = "login" | "signup";
+
+export type UserErrorCode =
+    | "missingField"
+    | "invalidFormat"
+    | "emailDoesNotExist"
+    | "weakPassword"
+    | "maxCharacterLimit"
+    | "minCharacterLimit"
+    | "notTheSame"
+    | "samePassword"
+    | "";
+
+export type UserErrorMessages = {
+    missingField?: string;
+    invalidFormat?: string;
+    emailDoesNotExist?: string;
+    weakPassword?: string;
+    maxCharacterLimit?: string;
+    minCharacterLimit?: string;
+    notTheSame?: string;
+    samePassword?: string;
+};
+
 // MainPage
+export type ProfileDefault = {
+    id?: string;
+    username?: string;
+} | null;
+
 export type Profile = {
-    id: string;
-    username: string;
-    avatar_url: string | null;
+    email?: string | undefined;
+    id?: string;
+    new_email?: string;
+    username?: string;
+    avatar: Avatar;
 } | null;
 
 export type Avatar = {
@@ -17,18 +50,54 @@ export type Group = {
     name: string;
 } | null;
 
+// UserSettings
+export type UserProps = 'username' | 'email' | 'password';
+
+export type SettingTab = {
+    name: string;
+    iconPath: string;
+    id: string;
+}
+
+export type UpdateUserPayload = {
+    username?: string;
+    email?: string;
+    password?: string;
+};
 
 // GroupDetailsPage
-export type GroupMembers = {
-    user_id: string;
+export type Member = {
+    id: string;
+    username: string;
+    avatar: Avatar;
+    role: "owner" | "moderator" | "member";
+}
+
+export type Rule = {
+    id: string;
+    code: string;
+    value: boolean;
 }
 
 export type GroupDetails = {
     avatar: Avatar;
+    owner_id: string
     description: string;
     id: string;
+    invite_code: string;
+    members: Member[];
     name: string;
+    rules: Rule[];
+    access_mode: string;
 } | null;
+
+export type GroupDetailsForm = {
+    avatar: Avatar | undefined;
+    description: string | undefined;
+    name: string | undefined;
+    rules: Rule[] | undefined;
+    access_mode: string | undefined;
+};
 
 export type SelectedMenu = "games" | "members" | "settings";
 

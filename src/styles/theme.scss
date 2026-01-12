@@ -12,14 +12,30 @@
   --color-background: #141414;
   --color-surface: #181818;
   --color-background-secondary: #282828;
-  --color-background-secondary-hover: #1e1e1e;
+  --color-background-secondary-hover: #1c1c1c;
   --color-background-tertiary: #1D1D1D;
+  --color-background-dark: #121212;
   --color-gray: #D9D9D9;
 
   --color-text: #f5f5f5;
   --color-text-gray: #7F7F7F;
   --color-text-dark: #070707;
   --color-text-secondary: #B3B3B3;
+  --color-text-red: #FF3C3C;
+  --color-text-yellow: #ffc83c;
+  --color-text-green: #07DF7C;
+
+  --select-hover-blue: #3A94C7;
+
+  --red-dark: rgba(43, 18, 18, 0.4);
+  --red-border: rgba(255, 60, 60, 0.3);
+  --red-dark-hover: rgba(43, 18, 18, 1);
+  --red-border-hover: rgba(255, 60, 60, 0.5);
+
+  --yellow-dark: rgba(43, 40, 18, 0.4);
+  --yellow-border: rgba(255, 200, 60, 0.3);
+  --yellow-dark-hover: rgba(43, 40, 18, 1);
+  --yellow-border-hover: rgba(255, 200, 60, 0.5);
 }
 
 /* 3. Spacing scale */
@@ -27,6 +43,7 @@
   --space-04: 0.25rem; /* 04px */
   --space-08: 0.5rem;  /* 08px */
   --space-12: 0.75rem; /* 12px */
+  --space-14: 0.875rem;/* 14px */
   --space-16: 1rem;    /* 16px */
   --space-20: 1.25rem; /* 20px */
   --space-24: 1.5rem;  /* 24px */
@@ -48,6 +65,7 @@
   --text-18: 1.125rem;  /* 18px */
   --text-20: 1.25rem;   /* 20px */
   --text-24: 1.5rem;    /* 24px */
+  --text-28: 1.750rem;  /* 28px */
   --text-30: 1.875rem;  /* 30px */
   --text-32: 2rem;      /* 32px */
   --text-36: 2.25rem;   /* 36px */
@@ -55,6 +73,7 @@
   --text-48: 3rem;      /* 48px */
   --text-64: 4rem;      /* 64px */
   --text-88: 5.5rem;    /* 88px */
+  --text-112: 7rem;     /* 112px */
   --text-128: 8rem;     /* 128px */
 }
 
@@ -63,6 +82,7 @@
   --radius-04: 0.25rem;  /* 04px */
   --radius-08: 0.5rem;   /* 08px */
   --radius-10: 0.725rem; /* 10px */
+  --radius-12: 0.75rem;  /* 12px */
   --radius-16: 1rem;     /* 16px */
   --radius-20: 1.25rem;  /* 20px */
   --radius-24: 1.5rem;   /* 24px */

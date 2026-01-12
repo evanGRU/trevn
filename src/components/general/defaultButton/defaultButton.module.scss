@@ -16,8 +16,15 @@
   justify-content: center;
   gap: var(--space-08);
   line-height: var(--space-16);
+  flex-shrink: 0;
 
   &:hover {
     background: var(--color-background-secondary-hover);
   }
+}
+
+.disabled {
+  color: var(--color-text-gray);
+  background: var(--color-background-secondary-hover);
+  cursor: default;
 }

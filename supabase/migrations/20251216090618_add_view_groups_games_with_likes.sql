@@ -1,4 +1,6 @@
-create or replace view public.groups_games_with_likes as
+drop view if exists public.groups_games_with_likes;
+
+create view public.groups_games_with_likes as
 with likes_count as (
   select
     group_id,
@@ -17,6 +19,7 @@ user_likes as (
 select
     gg.group_id,
     gg.game_id,
+    gg.created_at,
     sa.name,
     coalesce(lc.count, 0) as likes_count,
     ul.game_id is not null as is_liked

@@ -1,5 +1,5 @@
 import {createClient} from "@/utils/supabase/client";
-
+import {Rule} from "@/utils/types";
 const supabase = createClient();
 
 export const capitalize = (s: string) => s[0].toUpperCase() + s.slice(1);
@@ -8,22 +8,7 @@ export const isEmail = (email: string) => {
     return /\S+@\S+\.\S+/.test(email);
 }
 
-export const doesEmailExist = async (email: string) => {
-    try {
-        const res = await fetch("/api/checkUser", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-        });
-        const data = await res.json();
-        return data.exists;
-    } catch (err) {
-        console.error(err);
-        return false;
-    }
-};
-
-export const getPublicAvatarUrl = (type: string | undefined, path: string | null | undefined ) => {
+export const getPublicAvatarUrl = (type: string | undefined, path: string | undefined) => {
     const { data } = supabase.storage
         .from(`avatars/${type ?? ""}`)
         .getPublicUrl(path ?? "default00.jpg");
@@ -58,4 +43,19 @@ export const smoothScroll = (el: HTMLElement, direction: "top" | "bottom", onCom
     }
 
     requestAnimationFrame(animate);
+};
+
+export const fetcher = (url: string) => {
+    return fetch(url).then((res) => {
+        if (!res.ok) {
+            throw new Error("fetch_failed");
+        }
+        return res.json();
+    });
+};
+
+export const getChangedRules = (current: Rule[], defaults: Rule[]) => {
+    const defaultMap = new Map(defaults.map(r => [r.id, r.value]));
+
+    return current.filter(r => defaultMap.get(r.id) !== r.value);
 };

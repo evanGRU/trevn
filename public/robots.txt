@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://trevn.app/sitemap.xml
