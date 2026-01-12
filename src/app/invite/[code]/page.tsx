@@ -17,7 +17,7 @@ export default async function InvitePage({ params }: InvitePageProps) {
 
     const { data: group, error: groupError } = await supabase
         .from("groups")
-        .select("id")
+        .select("id, access_mode")
         .eq("invite_code", invitationCode)
         .maybeSingle();
 
@@ -28,6 +28,10 @@ export default async function InvitePage({ params }: InvitePageProps) {
 
     if (!group) {
         redirect("/groups?toast=invalid_invite");
+    }
+
+    if (group.access_mode === "closed") {
+        redirect("/groups?toast=group_close");
     }
 
     const { data: membership, error: membershipError } = await supabase

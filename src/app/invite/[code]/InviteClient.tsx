@@ -50,7 +50,12 @@ export default function InvitePageClient() {
             const data = await res.json();
 
             if (!res.ok) {
-                errorToast(`Impossible de rejoindre le groupe ${group?.name}.`);
+                switch (data.error) {
+                    default:
+                        errorToast(`Impossible de rejoindre le groupe ${group?.name}.`);
+                        router.replace("/groups");
+                        break;
+                }
                 return;
             }
 
