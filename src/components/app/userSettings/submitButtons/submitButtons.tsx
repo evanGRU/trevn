@@ -8,9 +8,10 @@ interface SubmitButtonsProps {
     handleReset: React.MouseEventHandler<HTMLButtonElement>;
     handleSubmit: (newPassword?: string) => void;
     withBackground?: boolean;
+    isDisabled?: boolean;
 }
 
-export default function SubmitButtons({displayButtons, handleReset, handleSubmit, withBackground = false}: SubmitButtonsProps) {
+export default function SubmitButtons({displayButtons, handleReset, handleSubmit, withBackground = false, isDisabled = false}: SubmitButtonsProps) {
 
     return (
         <div className={`${styles.submitButtonsContainer} ${withBackground ? styles.withBackground : ""}`}>
@@ -26,6 +27,7 @@ export default function SubmitButtons({displayButtons, handleReset, handleSubmit
                             type={"button"}
                             className={styles.resetButton}
                             onClick={handleReset}
+                            disabled={isDisabled}
                         >
                             Réinitialiser les changements
                         </button>
@@ -33,6 +35,7 @@ export default function SubmitButtons({displayButtons, handleReset, handleSubmit
                         <GlassButton
                             type={"button"}
                             handleClick={() => handleSubmit()}
+                            isDisabled={isDisabled}
                         >
                             Sauvegarder les changements
                         </GlassButton>

@@ -251,6 +251,7 @@ export const GroupSettings = forwardRef<GamesListHandle, MembersListProps>(({gro
                         handleReset={handleReset}
                         handleSubmit={handleSubmit}
                         withBackground={true}
+                        isDisabled={isSubmitting}
                     />
                 </div>
             </div>

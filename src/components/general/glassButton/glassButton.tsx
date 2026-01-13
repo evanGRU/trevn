@@ -39,7 +39,15 @@ export default function GlassButton({children, type, linkHref = "", iconPath = "
                     {children}
                 </button>
             ) : (
-                <button onClick={handleClick} type={"button"} className={`glassButtonGlobal ${styles.glassBtn} ${styles.button}`}>
+                <button
+                    onClick={handleClick}
+                    type={"button"}
+                    className={`
+                        glassButtonGlobal 
+                        ${styles.glassBtn} 
+                        ${styles.button}
+                        ${isDisabled ? styles.disabled : ""}
+                    `}>
                     {children}
                 </button>
             )}
