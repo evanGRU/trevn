@@ -211,6 +211,7 @@ export default function AvatarSettings({profile, refreshProfile}: AvatarSettings
                 displayButtons={displaySaveModal}
                 handleReset={handleReset}
                 handleSubmit={handleSubmit}
+                isDisabled={isSubmitting}
             />
         </>
     );

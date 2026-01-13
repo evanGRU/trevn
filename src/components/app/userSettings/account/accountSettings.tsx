@@ -190,6 +190,7 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
                 displayButtons={displaySaveModal}
                 handleReset={handleReset}
                 handleSubmit={handleSubmit}
+                isDisabled={isSubmitting}
             />
 
             <AnimatePresence mode={"wait"}>
