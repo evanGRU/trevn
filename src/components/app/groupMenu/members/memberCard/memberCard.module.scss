@@ -20,6 +20,7 @@
       width: 48px;
       border-radius: var(--radius-04);
       border: 1px solid var(--color-background-secondary);
+      object-fit: cover;
     }
 
     .textContainer {
@@ -76,4 +77,8 @@
 
 .ownMemberCard {
   border: 1px solid var(--color-gray);
+
+  .pp {
+    border: 1px solid var(--color-gray) !important;
+  }
 }
