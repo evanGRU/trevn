@@ -13,11 +13,11 @@ export const metadata: Metadata = {
         title: 'Trevn',
         description:
             'La plateforme pour organiser vos soirées gaming, proposer des jeux et voter entre potes.',
-        url: 'https://trevn.app',
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
         siteName: 'Trevn',
         images: [
             {
-                url: 'https://trevn.app/og_image.png',
+                url: `${process.env.NEXT_PUBLIC_SITE_URL}/og_image.png`,
                 width: 1200,
                 height: 630,
                 alt: 'Trevn – Choisissez ensemble à quoi jouer ce soir',
