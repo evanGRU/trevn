@@ -45,7 +45,7 @@ export default function UserSettings({setModal, profile, refreshProfile}: UserSe
         setActiveTab(setting);
     }
 
-    const signout = async (router: AppRouterInstance) => {
+    const signout = async () => {
         await supabase.auth.signOut()
         router.replace('/login');
     }
@@ -79,7 +79,7 @@ export default function UserSettings({setModal, profile, refreshProfile}: UserSe
                             ))}
                         </div>
 
-                        <DefaultButton handleClick={() => signout(router)}>
+                        <DefaultButton handleClick={() => signout()}>
                             <Image
                                 src="/icons/signout.svg"
                                 alt="Signout icon"
