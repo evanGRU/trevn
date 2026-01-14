@@ -1,9 +1,18 @@
 import {createSupabaseServerClient} from "@/utils/supabase/server";
 import InvitePageClient from "@/app/invite/[code]/InviteClient";
 import {notFound, redirect} from "next/navigation";
+import type {Metadata} from "next";
 
 interface InvitePageProps {
     params: Promise<{ code: string }>;
+}
+
+export const metadata: Metadata = {
+    title: "Invitation - Trevn",
+    robots: {
+        index: false,
+        follow: false,
+    },
 }
 
 export default async function InvitePage({ params }: InvitePageProps) {
