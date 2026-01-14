@@ -105,6 +105,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
     };
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedAvatar(null);
         setErrorMessages((prev) => ({
             ...prev,
             avatar: ""
@@ -239,6 +240,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                                             height={48}
                                             className={`${styles.avatarPreset} ${selectedAvatar === avatar.id ? styles.selectedAvatar : ""}`}
                                             onClick={() => {
+                                                setImageFile(null);
                                                 setErrorMessages((prev) => ({
                                                     ...prev,
                                                     avatar: ""
