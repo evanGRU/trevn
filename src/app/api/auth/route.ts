@@ -60,7 +60,7 @@ export async function POST(req: Request) {
                         username,
                         defaultAvatarId: defaultAvatar.id
                     },
-                    emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+                    emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/confirmed`,
                 },
             });
 
@@ -71,6 +71,12 @@ export async function POST(req: Request) {
                     default:
                         return NextResponse.json({ error: 'unknown_error' }, { status: 500 });
                 }
+            }
+
+
+            const {error: signoutError} = await supabase.auth.signOut();
+            if (signoutError) {
+                return NextResponse.json({ error: 'signout_error' }, { status: 500 });
             }
 
             return NextResponse.json({ success: true });
