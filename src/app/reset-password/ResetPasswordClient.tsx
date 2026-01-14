@@ -16,7 +16,7 @@ interface FormValues {
     newPasswordConfirm: string;
 }
 
-export default function ResetPasswordPage() {
+export default function ResetPasswordPageClient() {
     const {errorToast, successToast} = useToasts();
     const router = useRouter();
 

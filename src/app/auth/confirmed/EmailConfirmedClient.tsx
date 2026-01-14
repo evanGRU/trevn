@@ -7,7 +7,7 @@ import {useRouter} from "next/navigation";
 import styles from "./page.module.scss";
 import MainModalHeader from "@/components/general/mainModalHeader/mainModalHeader";
 
-export default function EmailConfirmedPage() {
+export default function EmailConfirmedPageClient() {
     const router = useRouter();
 
     return (
