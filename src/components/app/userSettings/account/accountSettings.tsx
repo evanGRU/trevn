@@ -9,6 +9,7 @@ import {AnimatePresence} from "framer-motion";
 import {useToasts} from "@/utils/helpers/useToasts";
 import Image from "next/image";
 import DeleteModal from "@/components/general/deleteModal/deleteModal";
+import {useRouter} from "next/navigation";
 
 interface AccountSettingsProps {
     profile: Profile;
@@ -28,7 +29,8 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [displaySaveModal, setDisplaySaveModal] = useState(false);
     const {errorToast, successToast} = useToasts();
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter()
 
     const handleClick = (prop: UserProps) => {
         setIsEditModalOpen(true);
@@ -48,15 +50,15 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
     }
 
     const handleReset = () => {
-        if (isSubmitting) return;
+        if (isLoading) return;
         setNewAccountSettings({...defaultAccountSettings});
         setPropToEdit(null);
         setDisplaySaveModal(false);
     }
 
     const handleSubmit = async (newPassword?: string) => {
-        if (isSubmitting) return;
-        setIsSubmitting(true);
+        if (isLoading) return;
+        setIsLoading(true);
         try {
             const res = await fetch('/api/user', {
                 method: 'PUT',
@@ -98,11 +100,13 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
             errorToast('Une erreur est survenue. Veuillez réessayer plus tard.');
         } finally {
             setDisplaySaveModal(false);
-            setIsSubmitting(false);
+            setIsLoading(false);
         }
     }
 
     const handleDelete = async () => {
+        if (isLoading) return;
+        setIsLoading(true);
         try {
             const res = await fetch('/api/user/delete', {
                 method: 'DELETE',
@@ -114,10 +118,12 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
             }
 
             successToast(`Ton compte à bien été supprimé.`);
-            window.location.href = '/login';
+            router.replace('/login');
         } catch (err) {
             console.error(err);
             errorToast('Une erreur est survenue. Veuillez réessayer plus tard.');
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -190,7 +196,7 @@ export default function AccountSettings({profile, refreshProfile}: AccountSettin
                 displayButtons={displaySaveModal}
                 handleReset={handleReset}
                 handleSubmit={handleSubmit}
-                isDisabled={isSubmitting}
+                isDisabled={isLoading}
             />
 
             <AnimatePresence mode={"wait"}>

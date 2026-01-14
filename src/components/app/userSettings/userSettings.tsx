@@ -5,8 +5,10 @@ import Image from "next/image";
 import AccountSettings from "@/components/app/userSettings/account/accountSettings";
 import {motion} from "framer-motion";
 import {Profile, SettingTab} from "@/utils/types";
-import {signout} from "@/utils/auth";
 import AvatarSettings from "@/components/app/userSettings/avatar/avatarSettings";
+import {useRouter} from "next/navigation";
+import {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
+import {createClient} from "@/utils/supabase/client";
 
 interface UserSettingsProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +31,8 @@ const settingsTabs: SettingTab[] = [
 
 export default function UserSettings({setModal, profile, refreshProfile}: UserSettingsProps) {
     const [activeTab, setActiveTab] = useState(settingsTabs[0]);
+    const supabase = createClient();
+    const router = useRouter();
 
     const settingsComponents: Record<string, React.ReactNode> = {
         account:
@@ -39,6 +43,11 @@ export default function UserSettings({setModal, profile, refreshProfile}: UserSe
 
     const handleChangeTab = (setting: SettingTab) => {
         setActiveTab(setting);
+    }
+
+    const signout = async () => {
+        await supabase.auth.signOut()
+        router.replace('/login');
     }
 
     return (

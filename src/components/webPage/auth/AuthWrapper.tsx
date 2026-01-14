@@ -1,10 +1,8 @@
 "use client";
 
 import styles from "./page.module.scss";
-import Image from "next/image";
 import GlassButton from "@/components/general/glassButton/glassButton";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import {TickIcon} from "@/utils/svg";
 import {useRouter, useSearchParams} from "next/navigation";
 import React, {useEffect, useState} from "react";
@@ -14,6 +12,7 @@ import {isEmail} from "@/utils/globalFunctions";
 import {AuthModes, UserErrorCode} from "@/utils/types";
 import DefaultField from "@/components/general/defaultField/defaultField";
 import {userPrompts} from "@/utils/prompts";
+import MainModalHeader from "@/components/general/mainModalHeader/mainModalHeader";
 
 interface FormValues {
     username: string;
@@ -177,96 +176,87 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
+                    className={styles.formContainer}
                 >
-                    <div className={styles.formContainer}>
-                        <div className={styles.formHeader}>
-                            <Link href={"/"}>
-                                <Image
-                                    src="/logo/logotype_empty.svg"
-                                    alt="Logotype Trevn"
-                                    width={80}
-                                    height={50}
-                                />
-                            </Link>
-                            <div className={styles.formHeaderTexts}>
-                                <h1>{isLogin ? "Content de te revoir !" : "Bienvenue !"}</h1>
-                                <p>
-                                    {isLogin
-                                        ? "Connecte-toi pour accéder à tes groupes."
-                                        : "Crée ton compte pour commencer."}
-                                </p>
-                            </div>
+                    <div className={styles.formHeader}>
+                        <MainModalHeader hrefPath={"/"}>{"Accueil"}</MainModalHeader>
+                        <div className={styles.formHeaderTexts}>
+                            <h1>{isLogin ? "Content de te revoir !" : "Bienvenue !"}</h1>
+                            <p>{isLogin
+                                ? "Connecte-toi pour accéder à tes groupes."
+                                : "Crée ton compte pour commencer."}
+                            </p>
                         </div>
+                    </div>
 
-                        <form onSubmit={handleSubmit}>
-                            <div className={styles.fields}>
-                                {!isLogin && (
-                                    <DefaultField
-                                        type="username"
-                                        value={formValues["username"]}
-                                        handleChange={(e) => handleChange("username", e.target.value)}
-                                        errorMessage={errorCode.username && userPrompts["username"].errors[errorCode.username]}
-                                        label={userPrompts["username"].label}
-                                        placeholder={userPrompts["username"].placeholder}
-                                        isRequired={true}
-                                        maxLength={20}
-                                    />
-                                )}
+                    <form onSubmit={handleSubmit}>
+                        <div className={styles.fields}>
+                            {!isLogin && (
                                 <DefaultField
-                                    type="email"
-                                    value={formValues["email"]}
-                                    handleChange={(e) => handleChange("email", e.target.value)}
-                                    errorMessage={errorCode.email && userPrompts["email"].errors[errorCode.email]}
-                                    label={userPrompts["email"].label}
-                                    placeholder={userPrompts["email"].placeholder}
+                                    type="username"
+                                    value={formValues["username"]}
+                                    handleChange={(e) => handleChange("username", e.target.value)}
+                                    errorMessage={errorCode.username && userPrompts["username"].errors[errorCode.username]}
+                                    label={userPrompts["username"].label}
+                                    placeholder={userPrompts["username"].placeholder}
                                     isRequired={true}
+                                    maxLength={20}
                                 />
-                                <DefaultField
-                                    type="password"
-                                    value={formValues["password"]}
-                                    handleChange={(e) => handleChange("password", e.target.value)}
-                                    errorMessage={errorCode.password && userPrompts["password"].errors[errorCode.password]}
-                                    label={userPrompts["password"].label}
-                                    placeholder={userPrompts["password"].placeholder}
-                                    isRequired={true}
-                                    autoFocus={false}
-                                />
-                            </div>
-                            {isLogin && (
-                                <div className={styles.loginUtils}>
-                                    <label>
-                                        <input type="checkbox" />
-                                        <span className={styles.checkmark}>
+                            )}
+                            <DefaultField
+                                type="email"
+                                value={formValues["email"]}
+                                handleChange={(e) => handleChange("email", e.target.value)}
+                                errorMessage={errorCode.email && userPrompts["email"].errors[errorCode.email]}
+                                label={userPrompts["email"].label}
+                                placeholder={userPrompts["email"].placeholder}
+                                isRequired={true}
+                            />
+                            <DefaultField
+                                type="password"
+                                value={formValues["password"]}
+                                handleChange={(e) => handleChange("password", e.target.value)}
+                                errorMessage={errorCode.password && userPrompts["password"].errors[errorCode.password]}
+                                label={userPrompts["password"].label}
+                                placeholder={userPrompts["password"].placeholder}
+                                isRequired={true}
+                                autoFocus={false}
+                            />
+                        </div>
+                        {isLogin && (
+                            <div className={styles.loginUtils}>
+                                <label>
+                                    <input type="checkbox" />
+                                    <span className={styles.checkmark}>
                                             <TickIcon/>
                                         </span>
-                                        Se souvenir de moi
-                                    </label>
-                                    <button
-                                        type={"button"}
-                                        onClick={handleResetPassword}
-                                        className={styles.forgotButton}
-                                        disabled={isDisabled}
-                                    >
-                                        Mot de passe oublié
-                                    </button>
-                                </div>
-                            )}
+                                    Se souvenir de moi
+                                </label>
+                                <button
+                                    type={"button"}
+                                    onClick={handleResetPassword}
+                                    className={styles.forgotButton}
+                                    disabled={isDisabled}
+                                >
+                                    Mot de passe oublié
+                                </button>
+                            </div>
+                        )}
 
-                            <GlassButton type={"submit"} isDisabled={isDisabled}>
-                                {isLogin ? "Se connecter" : "S'inscrire"}
-                            </GlassButton>
-                        </form>
+                        <GlassButton type={"submit"} isDisabled={isDisabled}>
+                            {isLogin ? "Se connecter" : "S'inscrire"}
+                        </GlassButton>
+                    </form>
 
-                        <div className={styles.formFooter}>
-                            <p>
-                                {isLogin
-                                    ? "Vous n'avez pas encore de compte?"
-                                    : "Vous avez déjà un compte?"}
-                            </p>
-                            <a href={isLogin ? `/signup${redirect ? `?redirect=${redirect}` : ''}` : `/login${redirect ? `?redirect=${redirect}` : ''}`}>
-                                {isLogin ? "Inscrivez-vous" : "Connectez-vous"}
-                            </a>
-                        </div>
+                    <div className={styles.formFooter}>
+                        <p>
+                            {isLogin
+                                ? "Vous n'avez pas encore de compte?"
+                                : "Vous avez déjà un compte?"}
+                        </p>
+                        <a href={isLogin ? `/signup${redirect ? `?redirect=${redirect}` : ''}` : `/login${redirect ? `?redirect=${redirect}` : ''}`}>
+                            {isLogin ? "Inscrivez-vous" : "Connectez-vous"}
+                        </a>
                     </div>
                 </motion.div>
             </AnimatePresence>
