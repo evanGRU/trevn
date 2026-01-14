@@ -7,7 +7,6 @@ import {motion} from "framer-motion";
 import {Profile, SettingTab} from "@/utils/types";
 import AvatarSettings from "@/components/app/userSettings/avatar/avatarSettings";
 import {useRouter} from "next/navigation";
-import {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {createClient} from "@/utils/supabase/client";
 
 interface UserSettingsProps {
