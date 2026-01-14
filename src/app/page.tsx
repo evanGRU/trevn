@@ -2,19 +2,49 @@ import GlassButton from "@/components/general/glassButton/glassButton";
 import styles from "./page.module.scss";
 import HomeCard from "@/components/webPage/homeCard/homeCard";
 import Image from "next/image";
+import type {Metadata} from "next";
+import Script from "next/script";
+
+export const metadata: Metadata = {
+    title: "Trevn - Choisissez ensemble à quoi jouer ce soir",
+    description: "La plateforme pour organiser vos soirées gaming, proposer des jeux et voter entre potes.",
+
+    openGraph: {
+        title: 'Trevn',
+        description:
+            'La plateforme pour organiser vos soirées gaming, proposer des jeux et voter entre potes.',
+        url: 'https://trevn.app',
+        siteName: 'Trevn',
+        images: [
+            {
+                url: 'https://trevn.app/og_image.png',
+                width: 1200,
+                height: 630,
+                alt: 'Trevn – Choisissez ensemble à quoi jouer ce soir',
+            },
+        ],
+        locale: 'fr_FR',
+        type: 'website',
+    },
+};
 
 export default function WebPage() {
   return (
     <div className={styles.homePage}>
         <section className={styles.heroSection}>
-            <h1>TREVN</h1>
+            <div className={styles.heroVideoContainer}>
+                <iframe
+                    src="https://player.vimeo.com/video/1154389024?background=1&autoplay=1&loop=1&muted=1&autopause=0"
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    className={styles.heroVideo}
+                    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+                    title="BACKGROUND_VIDEO"
+                ></iframe>
 
-            <Image
-                src={'/webPage/arrowDown.svg'}
-                alt={"Logo Icon"}
-                width={100}
-                height={100}
-            />
+                <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive" />
+            </div>
         </section>
 
         <section className={styles.cardsSection}>
