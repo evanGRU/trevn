@@ -1,4 +1,8 @@
+@use '../styles/_breakpoints' as bp;
+
 .homePage {
+  width: 100%;
+  overflow: hidden;
   h2 {
     font-size: var(--text-128);
     line-height: 100px;
@@ -6,55 +10,152 @@
 }
 
 .heroSection {
-  background-color: var(--color-surface);
   height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 8vh;
+  position: relative;
+  overflow: hidden;
 
   .heroVideoContainer {
-    height: 100%;
-    width: 100%;
+    position: absolute;
+    width: 220vh;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    opacity: 0.6;
+
+    .heroImageContainer{
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+
+      @include bp.respondMobile() {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+
+      .heroImage {
+        opacity: 1;
+        transition: opacity 0.2s ease;
+
+        @include bp.respondMobile() {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .heroVideo {
+      width: 100%;
+      height: 130%;
+      transform: translateY(-20%);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+      background-size: contain;
+    }
   }
 
-  h1 {
-    font-size: var(--text-128);
+  .heroContentContainer {
+    position: relative;
+    z-index: 99999;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .heroTitleContainer {
+      height: 75%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-24);
+
+      .heroTitle {
+        background: var(--glass-background);
+        border: var(--glass-border);
+        border-radius: 200px;
+        backdrop-filter: var(--glass-backdrop);
+        padding: var(--space-64);
+        z-index: 2000;
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @include bp.respondMobile() {
+          padding: var(--space-16);
+          width: 300px;
+        }
+      }
+    }
+
+    .heroCTAContainer {
+      transform: translateY(2px);
+      width: 100%;
+      height: 25%;
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      background-image: url("/webPage/heroFrame2.png");
+      background-position: top;
+      background-size: cover;
+      background-repeat: no-repeat;
+      padding-bottom: var(--space-32);
+
+      a {
+        @include bp.respondMobile() {
+          font-size: var(--text-12);
+          min-width: 0;
+        }
+      }
+    }
+  }
+
+  .heroVideoContainerLoaded {
+    .heroImage {
+      opacity: 0 !important;
+    }
+    .heroVideo {
+      opacity: 1;
+    }
   }
 }
 
 .cardsSection {
-  height: 100vh;
-  padding: var(--space-64) var(--space-128);
+  padding: var(--space-128) var(--space-128);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10vh;
+  justify-content: center;
+  margin-bottom: 16vh;
+  gap: var(--space-64);
+  width: 100%;
 
-  .cardsTitleLogo {
-    height: 100%;
+  .cardSectionTitleContainer{
+    width: 100%;
     display: flex;
-    align-items: flex-end;
-    position: relative;
-    min-width: 200px;
-
+    justify-content: center;
     h2 {
-      position: absolute;
       top: 0;
-      width: 570px;
-    }
-
-    img {
-      min-width: 120px;
     }
   }
 
-
   .cardsContainer {
-    display: grid;
-    grid-template-rows: repeat(auto-fit, minmax(300px, 1fr));
-    grid-template-columns: repeat(3, 1fr);
-    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 }
 
@@ -64,6 +165,7 @@
   display: flex;
   padding: var(--space-64) var(--space-128);
   justify-content: space-between;
+  margin-bottom: 5vh;
 
   .motionContainer {
     height: 100%;
@@ -79,15 +181,25 @@
 
   .contentContainer {
     height: 100%;
-    width: 45%;
+    width: 48%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     gap: var(--space-32);
 
     h2 {
       font-size: var(--text-112);
       line-height: var(--space-96);
+      text-align: center;
+    }
+
+    a {
+      text-decoration: none;
+      button {
+        min-width: 0;
+        font-size: var(--text-20) !important;
+      }
     }
   }
 }
@@ -98,6 +210,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 8vh;
 
   h3 {
     font-weight: 400;
@@ -161,10 +274,10 @@
       }
 
       &:before {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: var(--glass-background);
+        border: var(--glass-border);
         border-radius: var(--radius-40);
-        backdrop-filter: blur(10px);
+        backdrop-filter: var(--glass-backdrop);
         content: "";
         display: block;
         height: 100%;
@@ -197,5 +310,32 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 200px;
+    color: var(--color-text);
+    font-weight: 300;
+
+    .linkButton {
+      text-decoration: none;
+      color: var(--color-text);
+      font-weight: 300;
+      position: relative;
+
+      &:before {
+        content: "";
+        width: 0;
+        height: 1px;
+        position: absolute;
+        bottom: 2px;
+        left: 0;
+        transition: width 0.1s ease;
+        background-color: var(--color-text);
+      }
+
+      &:hover {
+        &:before {
+          width: 100%;
+        }
+      }
+
+    }
   }
 }
