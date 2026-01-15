@@ -5,7 +5,7 @@ import type {Metadata} from "next";
 
 export const metadata: Metadata = {
     title: 'Trevn',
-    description: '',
+    description: undefined,
     robots: {
         index: false,
         follow: false,
