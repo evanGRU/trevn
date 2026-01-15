@@ -4,6 +4,8 @@ import GroupsLayoutClient from "@/app/groups/GroupLayoutClient";
 import type {Metadata} from "next";
 
 export const metadata: Metadata = {
+    title: 'Trevn',
+    description: '',
     robots: {
         index: false,
         follow: false,
