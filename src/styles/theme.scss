@@ -89,3 +89,13 @@
   --radius-40: 2.5rem;   /* 40px */
   --radius-full: 100%;   /* full */
 }
+
+/* 6. Glass UI */
+:root {
+  --glass-background: rgba(255, 255, 255, 0.05);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+  --glass-backdrop: blur(20px);
+
+  --glass-background-hover: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: 1px solid rgba(255, 255, 255, 0.3);
+}
