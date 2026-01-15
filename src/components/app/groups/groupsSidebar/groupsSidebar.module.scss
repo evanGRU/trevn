@@ -53,7 +53,7 @@
       align-items: center;
       gap: var(--space-08);
       border-radius: var(--radius-10);
-      background-color: var(--color-background-secondary);
+      background-color: var(--color-background-secondary-hover);
       padding: var(--space-04);
       border: 1px solid var(--color-background-secondary);
       cursor: pointer;
@@ -62,7 +62,7 @@
       color: var(--color-text);
 
       img {
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        border: var(--glass-border);
         border-radius: var(--radius-08);
         height: 48px;
         width: 48px;
@@ -78,14 +78,14 @@
       }
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        background-color: var(--glass-background-hover);
+        border: var(--glass-border-hover);
       }
     }
 
     .selectedGroup {
-      background-color: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      background-color: var(--glass-background-hover);
+      border: var(--glass-border-hover);
       cursor: default;
     }
   }

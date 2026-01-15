@@ -12,10 +12,10 @@
 }
 
 .formContainer {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--glass-background);
+  border: var(--glass-border);
+  backdrop-filter: var(--glass-backdrop);
   border-radius: var(--radius-40);
-  backdrop-filter: blur(10px);
   padding: var(--space-48);
   width: 524px;
   height: auto;
@@ -75,15 +75,16 @@
           appearance: none;
           width: 18px;
           height: 18px;
-          background: rgba(255, 255, 255, 0.3);
-          border: 1px solid rgba(255, 255, 255, 0.4);
+          background: var(--glass-background);
+          border: var(--glass-border);
+          backdrop-filter: var(--glass-backdrop);
           transition: all 0.3s;
           border-radius: var(--radius-04);
           cursor: pointer;
           margin: 0;
 
           &:checked {
-            background: rgba(255, 255, 255, 0.4);
+            background: var(--glass-background-hover);
           }
 
           &:checked + .checkmark svg {

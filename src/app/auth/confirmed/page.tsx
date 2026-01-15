@@ -1,5 +1,5 @@
 import type {Metadata} from "next";
-import EmailConfirmedPage from "@/app/auth/confirmed/EmailConfirmedClient";
+import EmailConfirmedPageClient from "@/app/auth/confirmed/EmailConfirmedClient";
 
 export const metadata: Metadata = {
     title: "Compte confirmé – Trevn",
@@ -9,6 +9,6 @@ export const metadata: Metadata = {
     },
 }
 
-export default async function LoginPage() {
-    return <EmailConfirmedPage></EmailConfirmedPage>;
+export default async function EmailConfirmedPage() {
+    return <EmailConfirmedPageClient></EmailConfirmedPageClient>;
 }

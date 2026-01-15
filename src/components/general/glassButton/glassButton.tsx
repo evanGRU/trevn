@@ -12,14 +12,15 @@ type GlassButtonProps = {
     iconPath?: string | null,
     handleClick?: React.MouseEventHandler<HTMLButtonElement>;
     isDisabled?: boolean;
+    target?: string;
 }
 
-export default function GlassButton({children, type, linkHref = "", iconPath = "", handleClick, isDisabled}: GlassButtonProps) {
+export default function GlassButton({children, type, linkHref = "", iconPath = "", handleClick, isDisabled, target}: GlassButtonProps) {
 
     return (
         <>
             {type === "link" ? (
-                <Link href={linkHref} className={`glassButtonGlobal ${styles.glassBtn}`}>
+                <Link href={linkHref} className={`glassButtonGlobal ${styles.glassBtn}`} target={target}>
                     {iconPath && (
                         <Image
                             src={iconPath}

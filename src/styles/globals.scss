@@ -83,15 +83,15 @@ ul {
 
 .glassButtonGlobal {
   color: #fff;
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
+  background: var(--glass-background);
+  border: var(--glass-border);
+  backdrop-filter: var(--glass-backdrop);
   transition: all 0.3s ease;
   cursor: pointer;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.4);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: var(--glass-background-hover);
+    border: var(--glass-border-hover);
   }
 }
 
