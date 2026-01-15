@@ -13,10 +13,10 @@
 }
 
 .confirmContainer {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--glass-background);
+  border: var(--glass-border);
+  backdrop-filter: var(--glass-backdrop);
   border-radius: var(--radius-40);
-  backdrop-filter: blur(10px);
   padding: var(--space-48);
   width: 524px;
   height: auto;

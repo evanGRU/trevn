@@ -1,5 +1,5 @@
 import type {Metadata} from "next";
-import ResetPasswordPage from "@/app/reset-password/ResetPasswordClient";
+import ResetPasswordPageClient from "@/app/reset-password/ResetPasswordClient";
 
 export const metadata: Metadata = {
     title: "Réinitialisation du mot de passe – Trevn",
@@ -9,6 +9,6 @@ export const metadata: Metadata = {
     },
 }
 
-export default async function LoginPage() {
-    return <ResetPasswordPage></ResetPasswordPage>;
+export default async function ResetPasswordPage() {
+    return <ResetPasswordPageClient></ResetPasswordPageClient>;
 }
