@@ -46,7 +46,7 @@ export default function UserSettings({setModal, profile, refreshProfile}: UserSe
 
     const signout = async () => {
         await supabase.auth.signOut()
-        router.replace('/login');
+        router.replace('/');
     }
 
     return (
