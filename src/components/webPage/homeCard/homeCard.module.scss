@@ -8,7 +8,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: var(--space-32);
-  background-color: var(--color-background);
+  background-color: var(--color-background-dark);
 
   .cardIcon {
     background-color: #292728;
@@ -35,8 +35,8 @@
 
     h4 {
       font-weight: 500;
-      font-size: var(--text-32);
-      line-height: var(--space-32);
+      font-size: var(--text-28);
+      line-height: var(--space-28);
     }
 
     p {
