@@ -48,6 +48,10 @@
         line-height: var(--space-20);
       }
     }
+    .groupDetailsContentSkeleton {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 

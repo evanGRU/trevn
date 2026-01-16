@@ -131,42 +131,49 @@ export default function WebPageClient() {
                 >
                     <motion.div variants={itemVariants}>
                         <HomeCard variant="background" cardPosition="one">
-                            <h4>Crée ton groupe</h4>
-                            <p>Ouvre un groupe dédié à vos soirées pour centraliser tous vos jeux.</p>
+                            <h4>Créé ton groupe</h4>
+                            <p>Ouvre ton propre groupe en lui choisissant son nom et son avatar.</p>
                         </HomeCard>
                     </motion.div>
 
                     <motion.div variants={itemVariants}>
                         <HomeCard variant="default" cardPosition="two">
                             <h4>Invite tes amis</h4>
-                            <p>Partage le lien et laisse tes potes rejoindre instantanément.</p>
+                            <p>Partage ton code de groupe ou ton lien d&apos;invitation et laisse tes amis te rejoindre.</p>
                         </HomeCard>
                     </motion.div>
 
                     <motion.div variants={itemVariants}>
                         <HomeCard variant="background" cardPosition="three">
                             <h4>Ajoute des jeux</h4>
-                            <p>Sélectionne les jeux qui vous plaisent et construisez votre liste.</p>
+                            <p>Sélectionnez les jeux qui vous plaisent et créez votre wishlist de groupe.</p>
                         </HomeCard>
                     </motion.div>
 
                     <motion.div variants={itemVariants}>
                         <HomeCard variant="default" cardPosition="four">
-                            <h4>Partage ton avis</h4>
-                            <p>Like tes jeux préférés afin d’aider le groupe à trancher.</p>
+                            <h4>Like tes préférés</h4>
+                            <p>Fait savoir à tes amis quels sont les jeux qui te plaisent le plus en les likant.</p>
                         </HomeCard>
                     </motion.div>
 
                     <motion.div variants={itemVariants}>
                         <HomeCard variant="background" cardPosition="five">
-                            <h4>Lance ta soirée</h4>
-                            <p>Découvrez les jeux les mieux notés et lancez la soirée sans prise de tête.</p>
+                            <h4>Amusez-vous</h4>
+                            <p>Choisissez un jeu parmis les jeux de votre liste et lancez votre partie !</p>
                         </HomeCard>
                     </motion.div>
                 </motion.div>
             </section>
 
             <section className={styles.partnerSection}>
+                <Image
+                    src="/webPage/webDecoration1.svg"
+                    alt="Web Decoration 01"
+                    width={1920}
+                    height={430}
+                    className={styles.decoration}
+                />
                 <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -244,13 +251,22 @@ export default function WebPageClient() {
             </section>
 
             <section className={styles.footerSection}>
-                <Image
-                    src={'/logo/logotype_empty.svg'}
-                    alt={"Logo Icon"}
-                    width={150}
-                    height={70}
-                />
-                <h2>Merci pour ton soutien</h2>
+                <div className={styles.decoration}></div>
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 1 }}
+                    className={styles.footerHeader}
+                >
+                    <Image
+                        src={'/logo/logotype_empty.svg'}
+                        alt={"Logo Icon"}
+                        width={150}
+                        height={70}
+                    />
+                    <h2>Merci pour ton soutien</h2>
+                </motion.div>
 
                 <div className={styles.footerContainer}>
                     <p>Evan Gruchot</p>
@@ -259,6 +275,7 @@ export default function WebPageClient() {
                         <p>Mentions légales</p>
                     </Link>
                 </div>
+
             </section>
         </div>
     );

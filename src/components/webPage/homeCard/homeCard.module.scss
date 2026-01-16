@@ -1,22 +1,29 @@
 .card {
-  height: 320px;
-  width: 320px;
+  height: 16vw;
+  width: 16vw;
+  min-width: 260px;
   aspect-ratio: 1/1;
   border-radius: var(--radius-16);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: var(--space-40);
-  background-color: var(--color-background);
+  padding: var(--space-32);
+  background-color: var(--color-background-dark);
 
   .cardIcon {
     background-color: #292728;
     border-radius: var(--radius-full);
-    width: 64px;
-    height: 64px;
+    width: 3vw;
+    height: 3vw;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+
+    img {
+      width: 1.5vw;
+      height: 1.5vw;
+    }
   }
 
   .cardTexts {
@@ -28,8 +35,8 @@
 
     h4 {
       font-weight: 500;
-      font-size: var(--text-32);
-      line-height: var(--space-32);
+      font-size: var(--text-28);
+      line-height: var(--space-28);
     }
 
     p {
