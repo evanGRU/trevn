@@ -167,6 +167,13 @@ export default function WebPageClient() {
             </section>
 
             <section className={styles.partnerSection}>
+                <Image
+                    src="/webPage/webDecoration1.svg"
+                    alt="Web Decoration 01"
+                    width={1920}
+                    height={430}
+                    className={styles.decoration}
+                />
                 <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -244,13 +251,22 @@ export default function WebPageClient() {
             </section>
 
             <section className={styles.footerSection}>
-                <Image
-                    src={'/logo/logotype_empty.svg'}
-                    alt={"Logo Icon"}
-                    width={150}
-                    height={70}
-                />
-                <h2>Merci pour ton soutien</h2>
+                <div className={styles.decoration}></div>
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 1 }}
+                    className={styles.footerHeader}
+                >
+                    <Image
+                        src={'/logo/logotype_empty.svg'}
+                        alt={"Logo Icon"}
+                        width={150}
+                        height={70}
+                    />
+                    <h2>Merci pour ton soutien</h2>
+                </motion.div>
 
                 <div className={styles.footerContainer}>
                     <p>Evan Gruchot</p>
@@ -259,6 +275,7 @@ export default function WebPageClient() {
                         <p>Mentions légales</p>
                     </Link>
                 </div>
+
             </section>
         </div>
     );
