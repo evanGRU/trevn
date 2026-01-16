@@ -70,7 +70,7 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
             } else {
                 menuRef.current?.disableScroll();
             }
-        });
+        }, 300);
     }, []);
 
     const {

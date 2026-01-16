@@ -5,7 +5,7 @@ import {GroupDetails, Member, ProfileDefault, SelectedMenu} from "@/utils/types"
 import styles from "./page.module.scss";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {GamesList} from "@/components/app/groupMenu/games/gamesList";
 import {useMenuScroll} from "@/utils/MenuScrollContext";
 import {MembersList} from "@/components/app/groupMenu/members/membersList";
@@ -25,6 +25,18 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
 
     const searchParams = useSearchParams();
     const router = useRouter();
+
+    const targetRef = useRef<HTMLDivElement | null>(null);
+    const scrollToTarget = () => {
+        if (!targetRef.current) return;
+
+        requestAnimationFrame(() => {
+            targetRef.current?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        });
+    };
 
     useEffect(() => {
         const toast = searchParams.get("toast");
@@ -195,7 +207,10 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
                             Membres
                         </li>
                         <li
-                            onClick={() => setSelectedMenu("settings")}
+                            onClick={() => {
+                                setSelectedMenu("settings");
+                                scrollToTarget();
+                            }}
                             className={`${selectedMenu === "settings" ? styles.selectedMenu : ""}`}
                         >
                             Paramètres
@@ -211,7 +226,7 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
                 </ul>
             </nav>
 
-            <div className={styles.groupSelectedContent}>
+            <div ref={targetRef} className={styles.groupSelectedContent}>
                 {getSelectedMenuContent()}
             </div>
 
