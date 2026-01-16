@@ -93,7 +93,7 @@ export const GamesList = forwardRef<GamesListHandle, GamesListProps>(({group, me
                 ) : (filteredGames.length > 0 ? (
                     <div className={styles.gameCardContainer}>
                         <AnimatePresence mode={"popLayout"}>
-                            {filteredGames?.map((game: GameCapsuleData, i) => (
+                            {filteredGames?.map((game: GameCapsuleData) => (
                                 <GameCapsule
                                     key={`game-card-${game.id}`}
                                     game={game}
@@ -103,7 +103,6 @@ export const GamesList = forwardRef<GamesListHandle, GamesListProps>(({group, me
                                     members={members}
                                     canDelete={userHaveRights || canDeleteGamesRule}
                                     canLike={canLikeGamesRule}
-                                    index={i}
                                 />
                             ))}
                         </AnimatePresence>
