@@ -5,16 +5,16 @@ import {GroupDetails, Member, ProfileDefault, SelectedMenu} from "@/utils/types"
 import styles from "./page.module.scss";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {GamesList} from "@/components/app/groupMenu/games/gamesList";
 import {useMenuScroll} from "@/utils/MenuScrollContext";
 import {MembersList} from "@/components/app/groupMenu/members/membersList";
-import Loader from "@/components/general/loader/loader";
 import {GroupSettings} from "@/components/app/groupMenu/settings/groupSettings";
 import {useToasts} from "@/utils/helpers/useToasts";
 import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
 import DeleteModal from "@/components/general/deleteModal/deleteModal";
 import {AnimatePresence} from "framer-motion";
+import {Skeleton} from "@mui/material";
 
 export default function GroupDetailsClient({profile} : {profile: ProfileDefault}) {
     const { groupId } = useParams();
@@ -25,18 +25,6 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
 
     const searchParams = useSearchParams();
     const router = useRouter();
-
-    const targetRef = useRef<HTMLDivElement | null>(null);
-    const scrollToTarget = () => {
-        if (!targetRef.current) return;
-
-        requestAnimationFrame(() => {
-            targetRef.current?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-            });
-        });
-    };
 
     useEffect(() => {
         const toast = searchParams.get("toast");
@@ -172,23 +160,33 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
         }
     }
 
-    return (!groupIsLoading && !membersAreLoading) ? (
+    return (
         <>
             <div className={styles.groupDetailsSection}>
-                <div className={styles.groupDetailsContainer}>
-                    <DbImage
-                        src={getPublicAvatarUrl(group?.avatar.type, group?.avatar.name)}
-                        alt={"Avatar group"}
-                        width={120}
-                        height={120}
-                    />
-                    <div className={styles.groupDetailsContent}>
-                        <h1>{group?.name}</h1>
-                        <p>
-                            {group?.description}
-                        </p>
+                {groupIsLoading || membersAreLoading ? (
+                    <div className={styles.groupDetailsContainer}>
+                        <Skeleton variant="rectangular" height={"122px"} width={"122px"} style={{borderRadius: "10px"}}/>
+                        <div className={styles.groupDetailsContentSkeleton}>
+                            <Skeleton variant="text" width={"200px"} height={"60px"}/>
+                            <Skeleton variant="text" width={"400px"}/>
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className={styles.groupDetailsContainer}>
+                        <DbImage
+                            src={getPublicAvatarUrl(group?.avatar.type, group?.avatar.name)}
+                            alt={"Avatar group"}
+                            width={120}
+                            height={120}
+                        />
+                        <div className={styles.groupDetailsContent}>
+                            <h1>{group?.name}</h1>
+                            <p>
+                                {group?.description}
+                            </p>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <nav className={styles.groupNavbarSection}>
@@ -207,10 +205,7 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
                             Membres
                         </li>
                         <li
-                            onClick={() => {
-                                setSelectedMenu("settings");
-                                scrollToTarget();
-                            }}
+                            onClick={() => setSelectedMenu("settings")}
                             className={`${selectedMenu === "settings" ? styles.selectedMenu : ""}`}
                         >
                             Paramètres
@@ -226,8 +221,8 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
                 </ul>
             </nav>
 
-            <div ref={targetRef} className={styles.groupSelectedContent}>
-                {getSelectedMenuContent()}
+            <div className={styles.groupSelectedContent}>
+                {!groupIsLoading && !membersAreLoading && getSelectedMenuContent()}
             </div>
 
             <AnimatePresence mode={"wait"}>
@@ -266,7 +261,5 @@ export default function GroupDetailsClient({profile} : {profile: ProfileDefault}
                 )}
             </AnimatePresence>
         </>
-    ) : (
-        <Loader/>
     );
 }
