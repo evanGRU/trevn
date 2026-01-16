@@ -101,7 +101,7 @@ export default function AddGameModal({setModal, groupId, refreshGamesList}: NewG
 
                 <ul className={styles.gameResultsListContainer}>
                     {!data && (isValidating && <p className={styles.textSecondary}>Recherche…</p>)}
-                    {(!isValidating && (data && data.length === 0 || !data && error)) && (
+                    {query && (!isValidating && (data && data.length === 0 || !data && error)) && (
                         <p className={styles.textSecondary}>Aucun résultat</p>
                     )}
                     {data?.map((game: GameResult) => (
