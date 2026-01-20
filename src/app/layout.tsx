@@ -4,6 +4,7 @@ import "../styles/globals.scss";
 import "../styles/theme.scss";
 import localFont from "next/font/local";
 import { Toaster } from 'react-hot-toast';
+import { Analytics } from '@vercel/analytics/react';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -36,6 +37,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
                         zIndex: 9999999
                     }}
                 />
+                {process.env.NEXT_PUBLIC_APP_ENV === 'production' && <Analytics />}
             </body>
         </html>
     );
