@@ -67,62 +67,60 @@ export default function InvitePageClient() {
     };
 
     return group && (
-        <>
-            <div className={styles.invitePage}>
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className={styles.inviteContainer}
-                    >
-                        <div className={styles.headerContainer}>
-                            <Link href={"/groups"}>
+        <div className={styles.invitePage}>
+            <AnimatePresence mode="wait">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className={styles.inviteContainer}
+                >
+                    <div className={styles.headerContainer}>
+                        <div className={styles.headerHeader}>
+                            <Link href={"/groups"} className={styles.backButton}>
+                                <Image
+                                    src="/icons/arrowUnfold.svg"
+                                    alt="Logotype Trevn"
+                                    width={12}
+                                    height={12}
+                                />
+                                <p>Ne pas rejoindre</p>
+                            </Link>
+
+                            <Link href={"/"} className={styles.homeButton}>
                                 <Image
                                     src="/logo/logotype_empty.svg"
                                     alt="Logotype Trevn"
-                                    width={80}
-                                    height={50}
+                                    width={24}
+                                    height={40}
                                 />
                             </Link>
-                            <div className={styles.headerTitle}>
-                                <h1>{"Invitation à un groupe"}</h1>
-                            </div>
                         </div>
-
-                        <div className={styles.groupContainer}>
-                            <p>Tu as été invité à rejoindre : </p>
-                            <div className={styles.groupCardContainer}>
-                                <DbImage
-                                    src={getPublicAvatarUrl(group?.avatar.type, group?.avatar.name)}
-                                    alt="Group avatar"
-                                    width={100}
-                                    height={100}
-                                />
-                                <h3>{group?.name}</h3>
-                            </div>
+                        <div className={styles.headerTitle}>
+                            <h1>{"Invitation à un groupe"}</h1>
                         </div>
+                    </div>
 
-                        <div className={styles.formQuestionContainer}>
-                            <h2>Veux-tu rejoindre le groupe ?</h2>
-
-                            <div className={styles.buttonsContainer}>
-                                <button
-                                    type={"button"}
-                                    className={styles.cancelButton}
-                                    onClick={() => router.replace('/groups')}
-                                >
-                                    Annuler
-                                </button>
-                                <span className={styles.submitButton}>
-                                        <GlassButton type={"button"} handleClick={() => handleJoinGroup()}>{"Accepter"}</GlassButton>
-                                    </span>
-                            </div>
+                    <div className={styles.groupContainer}>
+                        <p>Tu as été invité à rejoindre : </p>
+                        <div className={styles.groupCardContainer}>
+                            <DbImage
+                                src={getPublicAvatarUrl(group?.avatar.type, group?.avatar.name)}
+                                alt="Group avatar"
+                                width={100}
+                                height={100}
+                            />
+                            <h3>{group?.name}</h3>
                         </div>
-                    </motion.div>
-                </AnimatePresence>
-            </div>
-        </>
+                    </div>
+
+                    <div className={styles.formQuestionContainer}>
+                        <h2>Veux-tu rejoindre le groupe ?</h2>
+                        <GlassButton type={"button"} handleClick={() => handleJoinGroup()}>{"Accepter"}</GlassButton>
+                    </div>
+                </motion.div>
+            </AnimatePresence>
+        </div>
     );
 }

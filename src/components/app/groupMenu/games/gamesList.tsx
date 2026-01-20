@@ -7,10 +7,10 @@ import {GameCapsuleData, GroupDetails, Member} from "@/utils/types";
 import {useDebounce} from "@/utils/helpers/useDebounce";
 import GameCapsule from "@/components/app/groupMenu/games/gameCapsule/gameCapsule";
 import {AnimatePresence} from "framer-motion";
-import Loader from "@/components/general/loader/loader";
 import MenuHeader from "@/components/app/groupMenu/menuHeader/menuHeader";
 import {useRules} from "@/utils/helpers/useRules";
 import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
+import {Skeleton} from "@mui/material";
 
 export type GamesListHandle = {
     enableScroll: () => void;
@@ -78,32 +78,40 @@ export const GamesList = forwardRef<GamesListHandle, GamesListProps>(({group, me
 
             <div ref={gamesRef} className={styles.gamesContentContainer}>
                 {gamesListIsLoading ? (
-                    <Loader/>
-                ) : (
-                    filteredGames.length > 0 ? (
-                        <div className={styles.gameCardContainer}>
-                            <AnimatePresence initial={false} mode="popLayout">
-                                {filteredGames?.map((game: GameCapsuleData) => (
-                                    <GameCapsule
-                                        key={`game-card-${game.id}`}
-                                        game={game}
-                                        group={group}
-                                        refreshGamesList={refreshGamesList}
-                                        gamesList={filteredGames}
-                                        members={members}
-                                        canDelete={userHaveRights || canDeleteGamesRule}
-                                        canLike={canLikeGamesRule}
-                                    />
-                                ))}
-                            </AnimatePresence>
-                        </div>
-                    ) : (search && (
-                            <div className={styles.noResults}>
-                                <p>Aucun résultat trouvé pour &#34;{search}&#34;.</p>
-                            </div>
-                        )
-                    )
-                )}
+                    <div className={styles.gameCardContainer}>
+                        {Array.from({length: 9}).map((_, i) => (
+                            <Skeleton
+                                key={i}
+                                variant="rectangular"
+                                animation={false}
+                                width={"100%"}
+                                height={"18em"}
+                                style={{borderRadius: "20px"}}
+                            />
+                        ))}
+                    </div>
+                ) : (filteredGames.length > 0 ? (
+                    <div className={styles.gameCardContainer}>
+                        <AnimatePresence mode={"popLayout"}>
+                            {filteredGames?.map((game: GameCapsuleData) => (
+                                <GameCapsule
+                                    key={`game-card-${game.id}`}
+                                    game={game}
+                                    group={group}
+                                    refreshGamesList={refreshGamesList}
+                                    gamesList={filteredGames}
+                                    members={members}
+                                    canDelete={userHaveRights || canDeleteGamesRule}
+                                    canLike={canLikeGamesRule}
+                                />
+                            ))}
+                        </AnimatePresence>
+                    </div>
+                ) : (search && (
+                    <div className={styles.noResults}>
+                        <p>Aucun résultat trouvé pour &#34;{search}&#34;.</p>
+                    </div>
+                )))}
             </div>
 
             <AnimatePresence mode="wait">

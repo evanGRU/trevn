@@ -25,6 +25,8 @@
   --color-text-yellow: #ffc83c;
   --color-text-green: #07DF7C;
 
+  --color-white: #f5f5f5;
+
   --select-hover-blue: #3A94C7;
 
   --red-dark: rgba(43, 18, 18, 0.4);
@@ -47,6 +49,7 @@
   --space-16: 1rem;    /* 16px */
   --space-20: 1.25rem; /* 20px */
   --space-24: 1.5rem;  /* 24px */
+  --space-28: 1.750rem;/* 28px */
   --space-32: 2rem;    /* 32px */
   --space-36: 2.25rem; /* 36px */
   --space-40: 2.5rem;  /* 40px */
@@ -72,7 +75,7 @@
   --text-42: 2.625rem;  /* 46px */
   --text-48: 3rem;      /* 48px */
   --text-64: 4rem;      /* 64px */
-  --text-88: 5.5rem;    /* 88px */
+  --text-96: 6rem;      /* 88px */
   --text-112: 7rem;     /* 112px */
   --text-128: 8rem;     /* 128px */
 }
@@ -88,4 +91,14 @@
   --radius-24: 1.5rem;   /* 24px */
   --radius-40: 2.5rem;   /* 40px */
   --radius-full: 100%;   /* full */
+}
+
+/* 6. Glass UI */
+:root {
+  --glass-background: rgba(255, 255, 255, 0.05);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+  --glass-backdrop: blur(20px);
+
+  --glass-background-hover: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: 1px solid rgba(255, 255, 255, 0.3);
 }

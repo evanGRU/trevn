@@ -11,6 +11,7 @@ import {Avatar, Group} from "@/utils/types";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import ModalWrapper from "@/components/general/modalWrapper/modalWrapper";
 import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
+import {Skeleton} from "@mui/material";
 
 interface NewGroupModalProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -105,6 +106,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
     };
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedAvatar(null);
         setErrorMessages((prev) => ({
             ...prev,
             avatar: ""
@@ -187,7 +189,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
         }
     };
 
-    return !areAvatarsPresetsLoading && (
+    return (
         <ModalWrapper setModal={setModal} closeIconTopPosition={"336px"}>
             <div className={styles.createGroupContainer}>
                 <div className={styles.formHeader}>
@@ -230,7 +232,18 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                             <div className={styles.avatarsButtonsContainer}>
                                 <p>Si tu ne sais pas quoi mettre voici quelques idées, tu pourras toujours le modifier plus tard.</p>
                                 <div className={styles.avatarsSelectors}>
-                                    {avatarsPresets?.map((avatar: Avatar) => (
+                                    {areAvatarsPresetsLoading ? (
+                                        Array.from({length: 6}).map((_, i) => (
+                                            <Skeleton
+                                                key={i}
+                                                variant="rectangular"
+                                                animation={false}
+                                                width={"48px"}
+                                                height={"48px"}
+                                                style={{borderRadius: "4px"}}
+                                            />
+                                        ))
+                                    ) : (avatarsPresets?.map((avatar: Avatar) => (
                                         <DbImage
                                             key={avatar.id}
                                             src={getPublicAvatarUrl(avatar.type, avatar.name)}
@@ -239,6 +252,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                                             height={48}
                                             className={`${styles.avatarPreset} ${selectedAvatar === avatar.id ? styles.selectedAvatar : ""}`}
                                             onClick={() => {
+                                                setImageFile(null);
                                                 setErrorMessages((prev) => ({
                                                     ...prev,
                                                     avatar: ""
@@ -247,7 +261,9 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                                                 setPreviewUrl(getPublicAvatarUrl(avatar.type, avatar.name));
                                             }}
                                         />
-                                    ))}
+                                ))
+
+                                    )}
                                 </div>
                             </div>
                         </div>

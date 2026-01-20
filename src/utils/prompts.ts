@@ -61,3 +61,35 @@ export const groupRulesPrompts: Record<
         title: "Activer les likes de groupe.",
     }
 }
+
+export const resetPasswordPrompts: Record<
+    string,
+    {
+        label: string;
+        placeholder: string;
+        errors: UserErrorMessages;
+        editTitle: string;
+    }
+> = {
+    newPassword: {
+        label: "Nouveau mot de passe",
+        placeholder: "Entre ton nouveau mot de passe",
+        errors: {
+            missingField: "Nouveau mot de passe requis.",
+            maxCharacterLimit: "Le nom d'utilisateur ne peux pas dépasser 20 caractères.",
+            minCharacterLimit: "Le nom d'utilisateur requiert au moins 3 caractères."
+        },
+        editTitle: "Modifier le nom d'utilisateur"
+    },
+    newPasswordConfirm: {
+        label: "Confirmation du nouveau mot de passe",
+        placeholder: "Confirme ton nouveau mot de passe",
+        errors: {
+            missingField: "Confirmation du nouveau mot de passe requis.",
+            weakPassword: "Le mot de passe doit contenir au moins 6 caractères.",
+            samePassword: "Tu ne peux pas mettre le même mot de passe que tu avais.",
+            notTheSame: "Les deux mots de passe ne correspondent pas."
+        },
+        editTitle: "Modifier l'adresse e-mail"
+    },
+};

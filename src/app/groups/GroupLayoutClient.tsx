@@ -70,7 +70,7 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
             } else {
                 menuRef.current?.disableScroll();
             }
-        });
+        }, 400);
     }, []);
 
     const {
@@ -96,7 +96,7 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
     //     errorMessage: "Une erreur s'est produite en essayant de récupérer le classement des jeux les plus likés.",
     // });
 
-    return (!groupsLoading && !profileLoading && profile) ? (
+    return (!profileLoading && profile) ? (
         <div className={styles.mainPage}>
             <MainHeader profile={profile} refreshProfile={refreshProfile}/>
 
@@ -104,6 +104,7 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
                 <GroupsSidebar
                     groups={groupsList ?? []}
                     setModalState={setIsNewGroupModalOpen}
+                    isLoading={groupsLoading}
                 />
                 <MenuScrollContext.Provider value={menuRef}>
                     <main ref={containerRef} className={`mainContainer ${styles.mainContentContainer}`} onScroll={handleScroll}>

@@ -8,5 +8,5 @@ values
     ('groups', 'avatarPreset03.jpg'),
     ('groups', 'avatarPreset04.jpg'),
     ('groups', 'avatarPreset05.jpg'),
-    ('groups', 'avatarPreset06.jpg')
+    ('groups', 'avatarPreset06.jpg'),
     ('users', 'default00.jpg');

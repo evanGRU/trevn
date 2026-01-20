@@ -13,10 +13,10 @@
 }
 
 .inviteContainer {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--glass-background);
+  border: var(--glass-border);
+  backdrop-filter: var(--glass-backdrop);
   border-radius: var(--radius-40);
-  backdrop-filter: blur(10px);
   padding: var(--space-48);
   width: 524px;
   height: auto;
@@ -28,17 +28,80 @@
     gap: var(--space-24);
     margin-bottom: var(--space-24);
 
-    a {
-      height: 50px;
+    .headerHeader {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .backButton{
+        display: flex;
+        align-items: center;
+        color: var(--color-text-secondary);
+        text-transform: uppercase;
+        text-decoration: none;
+        font-size: var(--text-12);
+        position: relative;
+        transition: color 0.3s ease;
+        padding: 2px 0;
+
+        img {
+          transform: rotateZ(90deg);
+          height: 14px;
+          width: 14px;
+        }
+
+        p {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          z-index: 1000;
+          padding: 0 4px 0 2px;
+        }
+
+        &:before {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          height: 100%;
+          background-color: var(--color-background);
+          width: 0;
+          opacity: 0;
+          transition: width 0.3s ease, opacity 0.3s ease;
+        }
+
+        &:hover {
+          color: var(--color-text);
+          &:before {
+            width: 100%;
+            opacity: 1;
+          }
+        }
+      }
+
+      .homeButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          width: auto;
+          height: 24px;
+        }
+      }
+    }
+
+    .headerTitle {
       display: flex;
       align-items: center;
       justify-content: center;
-    }
 
-    h1 {
-      height: var(--space-48);
-      font-size: var(--text-48);
-      line-height: var(--space-48);
+      h1 {
+        font-size: var(--text-48);
+        line-height: var(--space-48);
+        text-align: center;
+      }
     }
   }
 
@@ -80,56 +143,21 @@
 
   .formQuestionContainer {
     width: 100%;
-    margin-top: var(--space-20);
+    margin-top: var(--space-32);
+    display: flex;
+    gap: var(--space-04);
+    justify-content: space-between;
+    align-items: center;
 
     h2 {
       font-size: var(--text-24);
       text-align: center;
     }
 
-    .buttonsContainer {
-      display: flex;
-      align-items: center;
-      gap: var(--space-08);
-      margin-top: var(--space-04);
-
-      .cancelButton {
-        width: 100%;
-        flex: 1;
-        height: 42px;
-        border-radius: var(--radius-40);
-        border: none;
-        background-color: var(--color-surface);
-        cursor: pointer;
-        transition: all 0.3s ease;
-        color: var(--color-text);
-        text-transform: uppercase;
-        font-size: var(--text-16);
-        font-weight: 400;
-        &:hover {
-          background-color: var(--color-background-secondary-hover);
-        }
-      }
-
-      .submitButton {
-        width: 100%;
-        flex: 1;
-        height: 42px;
-
-        button {
-          min-width: 0;
-          width: 100%;
-          padding: 0;
-          height: 100%;
-          font-size: var(--text-16) !important;
-          font-weight: 400;
-
-          &:hover {
-            transform: translateY(0);
-            box-shadow: none;
-          }
-        }
-      }
+    button[type=button] {
+      height: 32px;
+      font-size: var(--text-14) !important;
+      font-weight: 600;
     }
   }
 }

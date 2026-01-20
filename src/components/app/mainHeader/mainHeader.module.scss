@@ -31,6 +31,7 @@
         border: solid 1px var(--color-background-secondary);
         height: 28px;
         width: 28px;
+        object-fit: cover;
       }
 
       p {
@@ -48,12 +49,12 @@
       align-items: center;
       justify-content: center;
       border-radius: var(--radius-08);
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: var(--glass-background);
+      border: var(--glass-border);
 
       &:hover {
-        background: rgba(255, 255, 255, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        background: var(--glass-background-hover);
+        border: var(--glass-border-hover);
       }
     }
   }

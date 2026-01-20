@@ -35,6 +35,8 @@ export async function middleware(request: NextRequest) {
         pathname.startsWith("/login") ||
         pathname.startsWith("/signup") ||
         pathname.startsWith("/invite") ||
+        pathname.startsWith("/auth/confirmed") ||
+        pathname.startsWith("/reset-password") ||
         pathname.match(/^\/[^/]+$/) ||
         pathname.startsWith("/_next") ||
         pathname.startsWith("/favicon") ||
