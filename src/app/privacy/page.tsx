@@ -49,14 +49,30 @@ export default async function PrivacyPage() {
                         <li><p>- Contenus publiés (likes, images ajoutées)</p></li>
                     </ul>
                     <ul className={styles.list}>
-                        <p className={styles.listTitle}>2. Cookies et technologies similaires</p>
-                        <li><p>- Pour améliorer l’expérience utilisateur</p></li>
-                        <li><p>- Pour mesurer la fréquentation et l’utilisation du Service</p></li>
+                        <p className={styles.listTitle}>2. Technologies de mesure d’audience</p>
+                        <li>
+                            <p>- Utilisation d’outils de mesure d’audience sans cookies et sans suivi individuel</p>
+                        </li>
                     </ul>
-                    <p>Le Service ne collecte pas de données techniques sur les utilisateurs, sauf celles nécessaires au bon fonctionnement de l’application.</p>
+                    <p>
+                        Le Service ne collecte aucune donnée technique permettant
+                        l’identification personnelle des utilisateurs, en dehors des données
+                        strictement nécessaires à son fonctionnement et à des statistiques anonymes.
+                    </p>
                 </LegalSection>
 
-                <LegalSection number={4} title={"Finalités de la collecte"}>
+                <LegalSection number={4} title={"Mesure d’audience"}>
+                    <p>
+                        Le Service utilise Vercel Analytics afin de mesurer la fréquentation
+                        et d’améliorer l’expérience utilisateur.
+                    </p>
+                    <p>
+                        Vercel Analytics ne dépose aucun cookie et ne collecte aucune donnée personnelle identifiable. <br/>
+                        Les statistiques collectées sont anonymes et utilisées uniquement à des fins d’amélioration du Service.
+                    </p>
+                </LegalSection>
+
+                <LegalSection number={5} title={"Finalités de la collecte"}>
                     <ul className={styles.list}>
                         <p className={styles.listTitle}>Les données sont utilisées pour :</p>
                         <li><p>- Fournir et maintenir le Service</p></li>
@@ -67,7 +83,7 @@ export default async function PrivacyPage() {
                     </ul>
                 </LegalSection>
 
-                <LegalSection number={5} title={"Partage des données"}>
+                <LegalSection number={6} title={"Partage des données"}>
                     <p>
                         Trevn ne vend pas vos données. <br/>
                         Les données peuvent être partagées uniquement avec des prestataires techniques (ex. Vercel pour l’hébergement, services d’analytics) strictement pour le fonctionnement du Service. <br/>
@@ -75,11 +91,11 @@ export default async function PrivacyPage() {
                     </p>
                 </LegalSection>
 
-                <LegalSection number={6} title={"Durée de conservation"}>
+                <LegalSection number={7} title={"Durée de conservation"}>
                     <p>Les données de compte et les contenus publiés sont conservés tant que le compte existe.</p>
                 </LegalSection>
 
-                <LegalSection number={7} title={"Sécurité des données"}>
+                <LegalSection number={8} title={"Sécurité des données"}>
                     <ul className={styles.list}>
                         <p className={styles.listTitle}>Trevn met en place des mesures techniques et organisationnelles pour protéger vos données contre :</p>
                         <li><p>- La perte, l’altération ou la divulgation non autorisée</p></li>
@@ -88,7 +104,7 @@ export default async function PrivacyPage() {
                     <p>Remarque : aucune transmission de données sur Internet n’est totalement sécurisée, mais l’éditeur prend toutes les précautions raisonnables.</p>
                 </LegalSection>
 
-                <LegalSection number={8} title={"Sécurité des données"}>
+                <LegalSection number={9} title={"Droits des utilisateurs"}>
                     <ul className={styles.list}>
                         <p className={styles.listTitle}>Conformément au RGPD, vous pouvez :</p>
                         <li><p>- Accéder à vos données</p></li>
@@ -100,14 +116,14 @@ export default async function PrivacyPage() {
                     <p>Pour exercer ces droits, contactez : contact@trevn.app</p>
                 </LegalSection>
 
-                <LegalSection number={9} title={"Données des mineurs"}>
+                <LegalSection number={10} title={"Données des mineurs"}>
                     <p>
                         Le Service est réservé aux personnes âgées d’au moins 13 ans. <br/>
                         Les utilisateurs de moins de 16 ans doivent obtenir l’autorisation d’un parent ou tuteur pour utiliser le Service.
                     </p>
                 </LegalSection>
 
-                <LegalSection number={10} title={"Modifications de la Politique de confidentialité"}>
+                <LegalSection number={11} title={"Modifications de la Politique de confidentialité"}>
                     <p>
                         L’éditeur se réserve le droit de modifier cette Politique à tout moment. <br/>
                         Les utilisateurs seront informés de toute modification importante. <br/>
@@ -115,7 +131,7 @@ export default async function PrivacyPage() {
                     </p>
                 </LegalSection>
 
-                <LegalSection number={11} title={"Contact"}>
+                <LegalSection number={12} title={"Contact"}>
                     <p>Pour toute question relative à la protection de vos données : contact@trevn.app</p>
                 </LegalSection>
             </main>
