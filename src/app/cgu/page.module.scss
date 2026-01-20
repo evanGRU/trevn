@@ -1,0 +1,165 @@
+@use '../../styles/_breakpoints' as bp;
+
+.cguPage {
+  padding: var(--space-24);
+  display: flex;
+  flex-direction: column;
+
+  @include bp.respond(laptop) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+
+  .headerTitle {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+      font-family: var(--font-body), sans-serif;
+      text-align: center;
+      text-transform: none;
+      font-size: var(--text-42);
+      line-height: var(--text-42);
+      margin-top: var(--space-128);
+      display: flex;
+      margin-bottom: var(--space-24);
+    }
+
+    @include bp.respond(laptop) {
+      align-items: start;
+      margin-top: var(--space-128);
+
+      h1 {
+        text-align: left;
+        margin-top: var(--space-32);
+        font-size: var(--text-64);
+        line-height: var(--text-64);
+        margin-bottom: var(--space-16);
+      }
+    }
+  }
+
+
+
+  .contentList {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: var(--space-128);
+    gap: var(--space-48);
+
+    @include bp.respond(laptop) {
+      margin-top: var(--space-96);
+      gap: var(--space-24);
+    }
+
+    .list {
+      .listTitle {
+        margin-bottom: var(--space-12);
+      }
+
+      @include bp.respond(laptop) {
+        .listTitle {
+          margin-bottom: 0;
+        }
+
+        li {
+          padding-left: var(--space-24);
+        }
+      }
+    }
+  }
+
+
+
+  .linksContainer {
+    margin-top: var(--space-96);
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: var(--space-128);
+
+    @include bp.respond(laptop) {
+      margin-top: var(--space-64);
+    }
+
+    h3 {
+      font-size: var(--text-24);
+      text-transform: uppercase;
+      margin-bottom: var(--space-12);
+    }
+
+    ul {
+      list-style: disc;
+      padding-left: var(--space-36) ;
+
+      li {
+        margin-bottom: var(--space-04);
+
+        a {
+          text-decoration: none;
+          color: var(--color-text-secondary);
+
+          &:hover{
+            color: var(--color-text);
+          }
+        }
+      }
+    }
+  }
+
+
+
+  footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-32);
+    width: 100%;
+    max-width: 1000px;
+
+    .topPageButton {
+      display: flex;
+      align-items: center;
+      color: var(--color-text-gray);
+      text-transform: uppercase;
+      text-decoration: none;
+      font-size: var(--text-12);
+      position: relative;
+      transition: color 0.1s ease;
+      padding: 2px 0;
+      height: 20px;
+
+      .iconContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+
+        svg {
+          height: 14px;
+          width: 14px;
+        }
+      }
+
+      p {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0 4px 0 2px;
+        font-size: var(--text-12);
+      }
+
+      &:hover {
+        color: var(--color-text-secondary);
+      }
+    }
+  }
+}
