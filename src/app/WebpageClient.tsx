@@ -10,6 +10,7 @@ import {useEffect, useRef, useState} from "react";
 import Script from "next/script";
 import Player from '@vimeo/player';
 import { motion } from "framer-motion";
+import LegalsFooter from "@/components/webPage/creditsFooter/creditsFooter";
 
 const containerVariants = {
     hidden: {},
@@ -269,11 +270,15 @@ export default function WebPageClient() {
                 </motion.div>
 
                 <div className={styles.footerContainer}>
-                    <p>Evan Gruchot</p>
-                    <p>©TREVN</p>
-                    <Link href={"/privacy"} className={styles.linkButton}>
-                        <p>Mentions légales</p>
-                    </Link>
+                    <div className={styles.legalsButtonsContainer}>
+                        <p>Informations légales</p>
+                        <p>/</p>
+                        <Link href={"/legals"}>Mentions Légales</Link>
+                        <Link href={"/privacy"}>Confidentialité</Link>
+                        <Link href={"/cgu"}>CGU</Link>
+                    </div>
+
+                    <LegalsFooter/>
                 </div>
 
             </section>

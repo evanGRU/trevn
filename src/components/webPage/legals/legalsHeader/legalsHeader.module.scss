@@ -1,0 +1,49 @@
+@use '../../../../styles/breakpoints' as bp;
+
+.headerContainer {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  justify-content: space-between;
+
+  .logo {
+    display: none;
+  }
+
+  .logotype {
+    height: 36px;
+    width: 61px;
+  }
+
+
+  a {
+    text-decoration: none;
+
+    button {
+      min-width: 0;
+      width: 140px;
+      height: 36px;
+      font-weight: 600;
+      background-color: var(--color-white);
+      color: var(--color-text-dark);
+      font-size: var(--text-14);
+
+      &:hover {
+        opacity: 0.8;
+        background-color: var(--color-white);
+      }
+    }
+  }
+
+ @include bp.respond(laptop) {
+   .logo {
+     display: block;
+     height: 36px;
+     width: 190px;
+   }
+
+   .logotype {
+     display: none;
+   }
+ }
+}
