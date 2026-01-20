@@ -342,34 +342,45 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 200px;
+    margin-top: 180px;
     color: var(--color-text-secondary);
     font-weight: 300;
     position: relative;
+    height: 32px;
 
-    .linkButton {
-      text-decoration: none;
-      color: var(--color-text-secondary);
-      font-weight: 300;
-      position: relative;
+    .legalsButtonsContainer {
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      height: 100%;
 
-      &:before {
-        content: "";
-        width: 0;
-        height: 1px;
-        position: absolute;
-        bottom: 2px;
-        left: 0;
-        transition: width 0.1s ease;
-        background-color: var(--color-text-secondary);
+      p{
+        font-family: var(--font-heading), sans-serif;
+        font-size: var(--text-16);
+        line-height: var(--text-16);
+        color: var(--color-background-secondary);
       }
 
-      &:hover {
-        &:before {
-          width: 100%;
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-surface);
+        height: 100%;
+        padding: 0 var(--space-12);
+        border-radius: var(--radius-24);
+        font-size: var(--text-12);
+        font-weight: 300;
+        text-decoration: none;
+        color: var(--color-text-gray);
+        border: var(--glass-border);
+        transition: border 0.3s ease, color 0.3s ease;
+
+        &:hover {
+          color: var(--color-text-secondary);
+          border: var(--glass-border-hover);
         }
       }
-
     }
   }
 }

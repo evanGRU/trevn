@@ -1,0 +1,16 @@
+.container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-background-secondary);
+  border-radius: var(--space-24);
+  height: 32px;
+  padding: 0 var(--space-12);
+
+  p {
+    color: var(--color-text-secondary);
+    font-size: var(--text-12);
+  }
+}
