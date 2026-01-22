@@ -6,11 +6,12 @@ import HomeCard from "@/components/webPage/homeCard/homeCard";
 import Image from "next/image";
 import Link from "next/link";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
-import {useEffect, useRef, useState} from "react";
+import {useRef} from "react";
 import Script from "next/script";
-import {motion, useAnimation} from "framer-motion";
+import {motion} from "framer-motion";
 import LegalsFooter from "@/components/webPage/creditsFooter/creditsFooter";
 import {useMediaQuery} from "@mui/system";
+import MobileHeader from "@/components/webPage/mobileHeader/mobileHeader";
 
 
 const heroContainerVariants = {
@@ -64,114 +65,13 @@ const howItemVariants = {
 
 export default function WebPageClient() {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
-
-    // Mobile Menu
-    const controls = useAnimation();
-    const [openMobileMenu, setOpenMobileMenu] = useState(false);
-    const menuMobileRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-        const runAnimation = async () => {
-            if (openMobileMenu) {
-                await controls.start({
-                    width: 220,
-                    transition: { duration: 0.1, ease: "easeInOut" },
-                });
-
-                await controls.start({
-                    height: 168,
-                    transition: { duration: 0.2, ease: "easeInOut" },
-                });
-            } else {
-                await controls.start({
-                    height: 66,
-                    transition: { duration: 0.1 },
-                });
-
-                await controls.start({
-                    width: 66,
-                    transition: { duration: 0.1 },
-                });
-            }
-        };
-
-        runAnimation();
-    }, [openMobileMenu, controls]);
-
-    useEffect(() => {
-        if (!openMobileMenu) return;
-
-        const handleOutsideInteraction = (event: Event) => {
-            if (
-                menuMobileRef.current &&
-                !menuMobileRef.current.contains(event.target as Node)
-            ) {
-                setOpenMobileMenu(false);
-            }
-        };
-
-        document.addEventListener("pointerdown", handleOutsideInteraction);
-        document.addEventListener("touchstart", handleOutsideInteraction);
-        document.addEventListener("scroll", handleOutsideInteraction, true);
-
-        return () => {
-            document.removeEventListener("pointerdown", handleOutsideInteraction);
-            document.removeEventListener("touchstart", handleOutsideInteraction);
-            document.removeEventListener("scroll", handleOutsideInteraction, true);
-        };
-    }, [openMobileMenu]);
-
     const isTablet = useMediaQuery("(max-width: 1024px)");
     const isMobile = useMediaQuery("(max-width: 768px)");
 
     return (
         <div className={styles.homePage}>
             <section className={styles.heroSection}>
-                <div className={styles.mobileHeroHeader}>
-                    <Image
-                        src={'/logo/logotype_empty.svg'}
-                        alt={"Logo Icon"}
-                        width={44}
-                        height={24}
-                        className={styles.mobileLogo}
-                    />
-
-                    <motion.div
-                        initial={{ width: 66, height: 66 }}
-                        animate={controls}
-                        className={`${styles.mobileMenu} ${openMobileMenu ? styles.mobileMenuOpen : ""}`}
-                        ref={menuMobileRef}
-                    >
-                        <div className={styles.mobileMenuHeader}>
-                            <h3>Menu</h3>
-                            <button
-                                className={styles.mobileMenuButton}
-                                type="button"
-                                onClick={() => setOpenMobileMenu(prev => !prev)}
-                            >
-                                <Image src="/icons/menu.svg" alt="Menu Icon" width={26} height={26} />
-                            </button>
-                        </div>
-
-                        <div className={styles.mobileMenuContainer}>
-                            <Link href="/login">
-                                <button>Connexion</button>
-                            </Link>
-                            <Link href="/signup" className={styles.buttonBorder}>
-                                <button>Inscription</button>
-                            </Link>
-                        </div>
-                    </motion.div>
-
-                    <div className={styles.desktopAuthButtons}>
-                        <Link href="/login">
-                            <button>Connexion</button>
-                        </Link>
-                        <Link href="/signup" className={styles.buttonBorder}>
-                            <button>Inscription</button>
-                        </Link>
-                    </div>
-                </div>
+                <MobileHeader/>
 
                 <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive"/>
                 <div className={styles.heroVideoContainer}>
