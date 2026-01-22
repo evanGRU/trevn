@@ -764,38 +764,57 @@
 }
 
 .footerSection {
-  height: 100vh;
-  padding: var(--space-64) var(--space-128);
+  height: auto;
+  margin-top: 10vh;
+  padding: var(--space-64) var(--space-24) var(--space-32);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
   gap: var(--space-24);
   position: relative;
+  background-image: url("/webPage/backgrounds/mobileFooterBackground.svg") ;
+  background-position: top;
+  background-size: cover;
+  background-repeat: no-repeat;
 
-  .decoration {
+  @include bp.respond(laptop) {
     background-image: url("/webPage/backgrounds/desktopFooterBackground.svg") ;
-    background-position: bottom;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 15rem;
-    left: 0;
+    height: 70vh;
+    margin-top: 30vh;
+    padding: var(--space-64);
   }
 
   .footerHeader {
     width: 100%;
+    height: 100%;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: var(--space-24);
+
+    img {
+      height: 48px;
+      width: auto;
+      aspect-ratio: 150/70;
+
+      @include bp.respond(laptop) {
+        height: 70px;
+      }
+    }
 
     h2 {
       text-align: center;
-      font-size: var(--text-96);
+      font-size: var(--text-32);
+      line-height: var(--text-32);
+      text-wrap: nowrap;
+
+      @include bp.respond(laptop) {
+        font-size: var(--text-96);
+        line-height: var(--text-96);
+      }
     }
   }
 
@@ -804,43 +823,82 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: column;
     margin-top: 180px;
     color: var(--color-text-secondary);
     font-weight: 300;
     position: relative;
-    height: 32px;
+    gap: var(--space-48);
 
-    .legalsButtonsContainer {
+    @include bp.respond(laptop) {
+      flex-direction: row;
+      height: 32px;
+    }
+
+    .legalsContainer {
       display: flex;
       align-items: center;
+      justify-content: center;
+      flex-direction: column;
       gap: var(--space-16);
-      height: 100%;
+      height: fit-content;
+      width: 100%;
+      max-width: 350px;
+
+      @include bp.respond(laptop) {
+        flex-direction: row;
+        width: fit-content;
+        max-width: none;
+      }
 
       p{
         font-family: var(--font-heading), sans-serif;
-        font-size: var(--text-16);
-        line-height: var(--text-16);
+        font-size: var(--text-24);
+        line-height: var(--text-24);
         color: var(--color-background-secondary);
+
+        @include bp.respond(laptop) {
+          font-size: var(--text-16);
+          line-height: var(--text-16);
+        }
       }
 
-      a {
+      .legalsButtons{
         display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--color-surface);
-        height: 100%;
-        padding: 0 var(--space-12);
-        border-radius: var(--radius-24);
-        font-size: var(--text-12);
-        font-weight: 300;
-        text-decoration: none;
-        color: var(--color-text-gray);
-        border: var(--glass-border);
-        transition: border 0.3s ease, color 0.3s ease;
+        flex-direction: row;
+        justify-content: space-between;
 
-        &:hover {
-          color: var(--color-text-secondary);
-          border: var(--glass-border-hover);
+        width: 100%;
+
+        @include bp.respond(laptop) {
+          gap: var(--space-16);
+          width: fit-content;
+        }
+
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: var(--color-surface);
+          height: 100%;
+          padding: var(--space-08) var(--space-16);
+          border-radius: var(--radius-24);
+          font-size: var(--text-12);
+          font-weight: 300;
+          text-decoration: none;
+          color: var(--color-text-gray);
+          border: var(--glass-border);
+          transition: border 0.3s ease, color 0.3s ease;
+          text-wrap: nowrap;
+
+          @include bp.respond(laptop) {
+            padding: var(--space-04) var(--space-12);
+          }
+
+          &:hover {
+            color: var(--color-text-secondary);
+            border: var(--glass-border-hover);
+          }
         }
       }
     }

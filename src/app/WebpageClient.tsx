@@ -237,7 +237,7 @@ export default function WebPageClient() {
                             <p>
                                 Vos soirées gaming {isMobile && <br />}
                                 organisées avec vos amis, {isMobile && <br />}
-                                rapidement et facilement.
+                                rapidement et simplement.
                             </p>
                         </motion.div>
 
@@ -252,14 +252,14 @@ export default function WebPageClient() {
 
             <section className={styles.cardsSection}>
                 <motion.div
-                    initial={{ opacity: 0, x: -50 }}
+                    initial={{ opacity: 0, x: -30 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.4 }}
                     transition={{ duration: 1 }}
                     className={styles.cardSectionTitleContainer}
                 >
                     <h2>Comment ça marche?</h2>
-                    <p>Gérer vos soirées gaming n&apos;a jamais été aussi simple</p>
+                    <p>Gérer vos soirées gaming n&apos;a jamais été aussi facile</p>
                 </motion.div>
 
                 <motion.div
@@ -407,7 +407,6 @@ export default function WebPageClient() {
             </section>
 
             <section className={styles.footerSection}>
-                <div className={styles.decoration}></div>
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -425,12 +424,14 @@ export default function WebPageClient() {
                 </motion.div>
 
                 <div className={styles.footerContainer}>
-                    <div className={styles.legalsButtonsContainer}>
+                    <div className={styles.legalsContainer}>
                         <p>Informations légales</p>
-                        <p>/</p>
-                        <Link href={"/legals"}>Mentions Légales</Link>
-                        <Link href={"/privacy"}>Confidentialité</Link>
-                        <Link href={"/cgu"}>CGU</Link>
+                        {!isTablet && <p>/</p>}
+                        <div className={styles.legalsButtons}>
+                            <Link href={"/legals"}>Mentions Légales</Link>
+                            <Link href={"/privacy"}>Confidentialité</Link>
+                            <Link href={"/cgu"}>CGU</Link>
+                        </div>
                     </div>
 
                     <LegalsFooter/>
