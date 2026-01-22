@@ -3,6 +3,9 @@
 .homePage {
   width: 100%;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8vh;
 }
 
 .heroSection {
@@ -11,7 +14,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 8vh;
   position: relative;
   overflow: hidden;
 
@@ -391,6 +393,7 @@
 
   @include bp.respond(tablet) {
     padding: 0 var(--space-64);
+    margin-bottom: 0;
   }
   @include bp.respond(laptop) {
     padding: var(--space-128) var(--space-64);
@@ -484,7 +487,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-bottom: 8vh;
+  margin-bottom: 16vh;
   background-image: url("/webPage/backgrounds/mobilePartnerBackground.svg");
   background-position: center;
   background-size: cover;
@@ -498,6 +501,9 @@
     background-size: cover;
     background-image: url("/webPage/backgrounds/desktopPartnerBackground.svg");
     min-height: 430px;
+  }
+  @include bp.respond(tablet) {
+    margin-bottom: 0;
   }
   @include bp.respond(laptop) {
     background-image: url("/webPage/backgrounds/desktopPartnerBackground.svg");
@@ -547,44 +553,94 @@
 }
 
 .motionSection {
-  height: 100vh;
+  height: auto;
   display: flex;
-  padding: var(--space-64) var(--space-128);
-  justify-content: space-between;
-  margin-bottom: 5vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 var(--space-24);
+  gap: var(--space-96);
+
+  @include bp.respond(laptop) {
+    height: 100vh;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--space-24);
+    padding: var(--space-64);
+  }
 
   .motionContainer {
     height: 100%;
-    width: 48%;
+    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
 
     img {
-      min-width: 420px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    @include bp.respond(laptop) {
+      width: 50%;
+      justify-content: flex-end;
+
+      img {
+        width: 500px;
+        min-width: 420px;
+      }
     }
   }
 
   .contentContainer {
     height: 100%;
-    width: 48%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--space-32);
+    gap: var(--space-48);
+    padding: var(--space-48) 0;
+
+    @include bp.respond(laptop) {
+      width: 50%;
+      gap: var(--space-32);
+    }
 
     h2 {
-      font-size: var(--text-112);
-      line-height: var(--space-96);
+      font-size: var(--text-80);
+      line-height: var(--text-80);
+      transform: scale(0.90);
       text-align: center;
+
+      @include bp.respond(laptop) {
+        transform: scale(1);
+        max-width: 600px;
+        font-size: var(--text-112);
+        line-height: var(--space-96);
+      }
     }
 
     a {
       text-decoration: none;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       button {
         min-width: 0;
-        font-size: var(--text-20) !important;
+        width: 90%;
+        font-weight: 600;
+        height: 54px;
+        max-width: 300px;
+      }
+
+      @include bp.respond(laptop) {
+        width: unset;
+
+        button {
+          width: unset;
+        }
       }
     }
   }
@@ -665,7 +721,7 @@
   position: relative;
 
   .decoration {
-    background-image: url("/webPage/webDecoration2.svg") ;
+    background-image: url("/webPage/background/desktopFooterBackground.svg") ;
     background-position: bottom;
     background-size: cover;
     background-repeat: no-repeat;

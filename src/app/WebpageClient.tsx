@@ -235,8 +235,8 @@ export default function WebPageClient() {
 
                         <motion.div variants={heroItemVariants}>
                             <p>
-                                Vos soirées gaming {isMobile ? <br /> : ""}
-                                organisées avec vos amis, {isMobile ? <br /> : ""}
+                                Vos soirées gaming {isMobile && <br />}
+                                organisées avec vos amis, {isMobile && <br />}
                                 rapidement et facilement.
                             </p>
                         </motion.div>
@@ -335,8 +335,8 @@ export default function WebPageClient() {
                     className={styles.partnerContainer}
                 >
                     <h3>
-                        Trouve tes jeux {isMobile ? <br /> : ""}
-                        préférés grâce à la {isMobile ? <br /> : ""}
+                        Trouve tes jeux {isMobile && <br />}
+                        préférés grâce à la {isMobile && <br />}
                         bibliothèque{" "}
                         <span className={styles.steamInline}>
                             <Image
@@ -345,8 +345,8 @@ export default function WebPageClient() {
                                 width={180}
                                 height={50}
                             />
-                        </span>{" "}{isMobile ? <br /> : ""}
-                        intégrée à notre {isMobile ? <br /> : ""}
+                        </span>{" "}{isMobile && <br />}
+                        intégrée à notre {isMobile && <br />}
                         plateforme.
                     </h3>
                 </motion.div>
@@ -354,8 +354,8 @@ export default function WebPageClient() {
 
             <section className={styles.motionSection}>
                 <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true, amount: 0.4 }}
                     transition={{ duration: 1 }}
                     className={styles.motionContainer}
@@ -368,13 +368,13 @@ export default function WebPageClient() {
                     />
                 </motion.div>
                 <motion.div
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true, amount: 0.4 }}
                     transition={{ duration: 1 }}
                     className={styles.contentContainer}
                 >
-                    <h2>Tes soirées <br/>commencent <br/> maintenant</h2>
+                    <h2>Tes soirées {isMobile && <br />} commencent {isMobile && <br />} maintenant</h2>
                     <Link href={"/login"}>
                         <DefaultButton>
                             Créé ton premier groupe
