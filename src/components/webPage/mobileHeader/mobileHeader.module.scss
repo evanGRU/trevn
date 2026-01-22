@@ -1,0 +1,222 @@
+@use '../../../styles/_breakpoints' as bp;
+
+.mobileHeader {
+  height: 72px;
+  position: relative;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  padding: var(--space-24);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-background);
+
+  .mobileLogo {
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .mobileMenu {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    padding: 18px;
+    border-radius: var(--radius-12);
+    gap: var(--space-24);
+    z-index: 1000;
+    overflow: hidden;
+    @include bp.respond(laptop) {
+      display: none;
+    }
+
+    .mobileMenuHeader {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      width: 24px;
+      height: 24px;
+      position: relative;
+      flex-shrink: 0;
+
+      h3 {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .mobileMenuButton {
+        background-color: transparent;
+        position: absolute;
+        right: -4;
+        height: 34px;
+        width: 34px;
+        aspect-ratio: 1/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: var(--radius-08);
+        padding: 4px;
+        cursor: pointer;
+
+        img {
+          width: 24px;
+          height: 24px;
+          max-width: none;
+        }
+
+        &:active {
+          background-color: var(--color-background-secondary-hover);
+        }
+      }
+    }
+
+    .mobileMenuContainer {
+      display: flex;
+      flex-direction: column;
+      pointer-events: none;
+      gap: var(--space-08);
+      position: relative;
+      z-index: 1000;
+      height: fit-content;
+      width: 184px;
+      opacity: 0;
+
+      a {
+        height: 36px;
+        width: 100%;
+        text-decoration: none;
+        border-radius: var(--radius-24);
+
+        button {
+          background-color: var(--color-background-secondary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+          color: var(--color-text);
+          font-weight: 600;
+          border-radius: var(--radius-24);
+          border: none;
+          font-size: var(--text-14);
+
+          &:hover {
+            background-color: var(--color-background-secondary-hover);
+          }
+        }
+      }
+
+      .buttonBorder {
+        button {
+          background-color: transparent;
+          border: 1px solid var(--color-background-secondary);
+
+          &:hover {
+            color: var(--color-text);
+            background-color: transparent;
+            border-color: var(--color-background-secondary-hover);
+          }
+        }
+      }
+
+      .homeButton {
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: var(--space-04);
+          font-weight: 400;
+          background-color: transparent;
+          border-radius: var(--radius-04);
+        }
+      }
+
+      .bar {
+        width: 100%;
+        height: 1px;
+        background-color: var(--color-background-secondary);
+      }
+    }
+  }
+
+  .mobileMenuOpen {
+    background-color: var(--color-surface);
+
+    .mobileMenuContainer {
+      pointer-events: auto;
+      opacity: 1;
+    }
+
+    .mobileMenuHeader {
+      width: 184px;
+      height: 24px;
+
+      h3 {
+        display: block;
+        font-family: var(--font-heading), sans-serif;
+        font-size: var(--text-24);
+        line-height: var(--text-24);
+        opacity: 1;
+        transition: opacity 0.2s ease 0.2s;
+      }
+    }
+  }
+
+
+  .desktopAuthButtons {
+    display: none;
+
+    @include bp.respond(laptop) {
+      display: flex;
+      gap: var(--space-08);
+
+      a {
+        height: 36px;
+        width: 100%;
+        text-decoration: none;
+        border-radius: var(--radius-24);
+
+        button {
+          background-color: var(--color-background-secondary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+          color: var(--color-text);
+          font-weight: 600;
+          border-radius: var(--radius-24);
+          border: none;
+          padding: 0 var(--space-24);
+          transition: all 0.3s ease;
+          font-size: var(--text-12);
+
+          &:hover {
+            color: var(--color-text-secondary);
+            background-color: var(--color-background-secondary-hover);
+          }
+        }
+      }
+
+      .buttonBorder {
+        button {
+          background-color: transparent;
+          border: 1px solid var(--color-background-secondary);
+
+          &:hover {
+            background-color: transparent;
+            border-color: var(--color-background-secondary-hover);
+          }
+        }
+      }
+    }
+  }
+}

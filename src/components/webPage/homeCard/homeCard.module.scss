@@ -1,52 +1,137 @@
+@use '../../../styles/_breakpoints' as bp;
+
 .card {
-  height: 16vw;
-  width: 16vw;
-  min-width: 260px;
-  aspect-ratio: 1/1;
-  border-radius: var(--radius-16);
+  height: 112px;
+  width: 90%;
+  border-radius: var(--radius-128);
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   padding: var(--space-32);
   background-color: var(--color-background-dark);
+  gap: var(--space-24);
+  position: relative;
+  z-index: 100;
+
+  @include bp.respond(laptop) {
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    border-radius: var(--radius-40);
+    aspect-ratio: 1.7/1;
+    width: 24vw;
+    min-width: 262px;
+    max-width: 300px;
+    gap: var(--space-24);
+  }
+  @include bp.respond(desktop) {
+    aspect-ratio: 1.8/1;
+    width: 26vw;
+    height: max-content;
+    min-width: 360px;
+    max-width: 430px;
+    max-height: 250px;
+    min-height: 238px;
+  }
 
   .cardIcon {
-    background-color: #292728;
+    background-color: var(--color-surface);
     border-radius: var(--radius-full);
-    width: 3vw;
-    height: 3vw;
+    width: 92px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    padding: var(--space-12);
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 200;
+
+    @include bp.respond(laptop) {
+      position: relative;
+      width: 3vw;
+      min-width: 50px;
+      height: auto;
+      aspect-ratio: 1/1;
+      left: 0;
+      top: 0;
+    }
 
     img {
-      width: 1.5vw;
-      height: 1.5vw;
+      opacity: 0.3;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1/1;
     }
   }
 
   .cardTexts {
+    margin-right: 82px;
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-12);
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-04);
+    position: relative;
+    z-index: 400;
+
+    @include bp.respond(laptop) {
+      margin-right: 0;
+      gap: var(--space-12);
+      justify-content: start;
+    }
 
     h4 {
       font-weight: 500;
-      font-size: var(--text-28);
-      line-height: var(--space-28);
+      font-size: var(--text-24);
+      line-height: var(--space-24);
+      font-family: var(--font-heading), sans-serif;
+      opacity: 0.8;
+
+      @include bp.respond(laptop) {
+        text-align: center;
+        font-size: var(--text-28);
+        line-height: var(--text-28);
+      }
+      @include bp.respond(desktop) {
+        font-size: var(--text-32);
+        line-height: var(--space-32);
+      }
     }
 
     p {
+      font-size: var(--text-14);
+      line-height: var(--text-14);
       font-weight: 300;
-      font-size: var(--text-16);
-      line-height: var(--space-20);
+      color: var(--color-text-secondary);
+      text-align: center;
+
+      @include bp.respond(laptop) {
+        font-size: var(--text-14);
+      }
+      @include bp.respond(desktop) {
+        font-size: var(--text-16);
+        line-height: var(--space-20);
+      }
     }
   }
 }
 
 .cardBackground {
   background-color: var(--color-surface);
+
+  .cardIcon {
+    background-color: var(--color-background-tertiary);
+    left: 10px;
+    right: unset;
+  }
+
+  .cardTexts {
+    margin-left: 82px;
+    margin-right: 0;
+
+    @include bp.respond(laptop) {
+      margin-left: 0;
+    }
+  }
 }
