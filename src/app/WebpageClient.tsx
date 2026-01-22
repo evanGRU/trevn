@@ -121,7 +121,7 @@ export default function WebPageClient() {
         };
     }, [openMobileMenu]);
 
-    const isMobile = useMediaQuery("(max-width: 768px)");
+    const isMobile = useMediaQuery("(max-width: 1024px)");
 
     return (
         <div className={styles.homePage}>
@@ -172,8 +172,6 @@ export default function WebPageClient() {
                     </div>
                 </div>
 
-
-
                 <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive"/>
                 <div className={styles.heroVideoContainer}>
                     <motion.div
@@ -223,8 +221,6 @@ export default function WebPageClient() {
                     </div>
                 </div>
 
-
-
                 <div className={styles.heroContentContainer}>
                     <motion.div
                         variants={heroContainerVariants}
@@ -239,7 +235,7 @@ export default function WebPageClient() {
                         <motion.div variants={heroItemVariants}>
                             <p>
                                 Vos soirées gaming {isMobile ? <br /> : ""}
-                                organisées avec vos amis, {isMobile ? <br /> : ""}
+                                organisées avec vos amis,
                                 rapidement et facilement.
                             </p>
                         </motion.div>
@@ -251,20 +247,9 @@ export default function WebPageClient() {
                         </motion.div>
                     </motion.div>
                 </div>
-
-                {/*<div className={styles.heroContentContainer}>*/}
-                {/*    <motion.div*/}
-                {/*        initial={{ opacity: 0, translateY: 20 }}*/}
-                {/*        animate={{ opacity: 1, translateY: 1 }}*/}
-                {/*        transition={{ duration: 0.6 }}*/}
-                {/*        className={styles.heroCTAContainer}*/}
-                {/*    >*/}
-                {/*        <GlassButton type={"link"} linkHref={"/login"}>*/}
-                {/*            Commence dès maintenant*/}
-                {/*        </GlassButton>*/}
-                {/*    </motion.div>*/}
-                {/*</div>*/}
             </section>
+
+
 
             <section className={styles.cardsSection}>
                 <motion.div
@@ -275,6 +260,7 @@ export default function WebPageClient() {
                     className={styles.cardSectionTitleContainer}
                 >
                     <h2>Comment ça marche?</h2>
+                    <p>Gérer vos soirées gaming n&apos;a jamais été aussi simple</p>
                 </motion.div>
 
                 <motion.div
@@ -284,38 +270,58 @@ export default function WebPageClient() {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
                 >
-                    <motion.div variants={howItemVariants}>
+                    <motion.div variants={howItemVariants} className={isMobile ? styles.homeCardDivLeft : ""}>
                         <HomeCard variant="background" cardPosition="one">
                             <h4>Créé ton groupe</h4>
-                            <p>Ouvre ton propre groupe en lui choisissant son nom et son avatar.</p>
+                            {isMobile ? (
+                                <p>Ouvre et personnalise ton propre groupe.</p>
+                            ) : (
+                                <p>Ouvre ton propre groupe en lui choisissant son nom et son avatar.</p>
+                            )}
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants}>
+                    <motion.div variants={howItemVariants} className={isMobile ? styles.homeCardDivRight : ""}>
                         <HomeCard variant="default" cardPosition="two">
                             <h4>Invite tes amis</h4>
-                            <p>Partage ton code de groupe ou ton lien d&apos;invitation et laisse tes amis te rejoindre.</p>
+                            {isMobile ? (
+                                <p>Partage ton code ou ton lien d&apos;invitation.</p>
+                            ) : (
+                                <p>Partage ton code de groupe ou ton lien d&apos;invitation et laisse tes amis te rejoindre.</p>
+                            )}
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants}>
+                    <motion.div variants={howItemVariants} className={isMobile ? styles.homeCardDivLeft : ""}>
                         <HomeCard variant="background" cardPosition="three">
                             <h4>Ajoute des jeux</h4>
-                            <p>Sélectionnez les jeux qui vous plaisent et créez votre wishlist de groupe.</p>
+                            {isMobile ? (
+                                <p>Sélectionnez vos jeux et créez votre wishlist.</p>
+                            ) : (
+                                <p>Sélectionnez les jeux qui vous plaisent et créez votre wishlist de groupe.</p>
+                            )}
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants}>
+                    <motion.div variants={howItemVariants} className={isMobile ? styles.homeCardDivRight : ""}>
                         <HomeCard variant="default" cardPosition="four">
                             <h4>Like tes préférés</h4>
-                            <p>Fait savoir à tes amis quels sont les jeux qui te plaisent le plus en les likant.</p>
+                            {isMobile ? (
+                                <p>Fait savoir à tes amis quels jeux tu préfères.</p>
+                            ) : (
+                                <p>Fait savoir à tes amis quels sont les jeux qui te plaisent le plus en les likant.</p>
+                            )}
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants}>
-                        <HomeCard variant="background" cardPosition="five">
+                    <motion.div variants={howItemVariants} className={isMobile ? styles.homeCardDivLeft : ""}>
+                        <HomeCard variant={isMobile ? "background" : "default"} cardPosition="five">
                             <h4>Amusez-vous</h4>
-                            <p>Choisissez un jeu parmis les jeux de votre liste et lancez votre partie !</p>
+                            {isMobile ? (
+                                <p>Choisissez un jeu et lancez-vous !</p>
+                            ) : (
+                                <p>Choisissez un jeu parmis les jeux de votre liste et lancez votre partie !</p>
+                            )}
                         </HomeCard>
                     </motion.div>
                 </motion.div>

@@ -218,8 +218,6 @@
     }
   }
 
-
-
   .heroVideoContainer {
     width: 100vw;
     height: 40vh;
@@ -227,9 +225,11 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    @include bp.respond(tablet) {
+      height: 60vh;
+    }
     @include bp.respond(laptop) {
-      width: 100vw;
-      height: 70vh;
+      height: 65vh;
     }
 
     .backgroundHeroContainer {
@@ -270,6 +270,7 @@
       .heroFrameBottom {
         bottom: 0;
         background-image: url("/webPage/heroFrames/mobileHeroFrameBottom.svg");
+        background-position: top;
         @include bp.respond(laptop) {
           background-image: url("/webPage/heroFrames/desktopHeroFrameBottom.svg");
         }
@@ -325,8 +326,6 @@
     }
   }
 
-
-
   .heroContentContainer {
     position: relative;
     z-index: 900;
@@ -339,7 +338,7 @@
     padding: var(--space-48) var(--space-24) var(--space-96);
     @include bp.respond(laptop) {
       height: 100%;
-      padding: var(--space-12) var(--space-24);
+      padding: var(--space-32) var(--space-24);
     }
 
     .heroCTAContainer {
@@ -353,6 +352,7 @@
       h1 {
         font-size: var(--text-36);
         line-height: var(--text-36);
+        text-align: center;
         @include bp.respond(laptop) {
           font-size: var(--text-48);
           line-height: var(--text-48);
@@ -377,14 +377,10 @@
       }
     }
   }
-
-  .heroVideoContainerLoaded {
-
-  }
 }
 
 .cardsSection {
-  padding: var(--space-128) var(--space-128);
+  padding: 0 var(--space-24);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -393,22 +389,92 @@
   gap: var(--space-64);
   width: 100%;
 
+  @include bp.respond(tablet) {
+    padding: 0 var(--space-64);
+  }
+  @include bp.respond(laptop) {
+    padding: var(--space-128) var(--space-64);
+    gap: var(--space-96);
+  }
+  @include bp.respond(desktop) {
+    padding: var(--space-96) var(--space-64);
+  }
+
   .cardSectionTitleContainer{
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-12);
+
     h2 {
       top: 0;
-      font-size: var(--text-128);
-      line-height: 100px;
+      font-size: var(--text-42);
+      line-height: var(--text-42);
+      text-align: center;
+
+      @include bp.respond(tablet) {
+        font-size: var(--text-64);
+        line-height: var(--text-64);
+      }
+      @include bp.respond(laptop) {
+        font-size: var(--text-96);
+        line-height: var(--text-96);
+      }
+
+    }
+
+    p {
+      font-size: var(--text-20);
+      line-height: var(--text-20);
+      text-align: center;
+      font-weight: 300;
+      color: var(--color-text-secondary);
+
+      @include bp.respond(tablet) {
+        font-size: var(--text-24);
+        line-height: var(--text-24);
+      }
     }
   }
 
   .cardsContainer {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-32);
+
+    .homeCardDivLeft, .homeCardDivRight {
+      width: 100%;
+      display: flex;
+      align-items: center;
+
+      @include bp.respond(tablet) {
+        width: 80%;
+      }
+    }
+
+    .homeCardDivLeft {
+      justify-content: start;
+    }
+
+    .homeCardDivRight {
+      justify-content: end;
+    }
+
+    @include bp.respond(laptop) {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--space-16);
+    }
+    @include bp.respond(desktop) {
+      gap: var(--space-24);
+    }
+    @include bp.respond(wide) {
+      width: 1700px;
+    }
   }
 }
 
