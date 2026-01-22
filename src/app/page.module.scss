@@ -3,132 +3,383 @@
 .homePage {
   width: 100%;
   overflow: hidden;
-  h2 {
-    font-size: var(--text-128);
-    line-height: 100px;
-  }
 }
 
 .heroSection {
   height: 100vh;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   margin-bottom: 8vh;
   position: relative;
   overflow: hidden;
 
-  .heroVideoContainer {
-    position: absolute;
-    width: 220vh;
-    height: 100vh;
+  .mobileHeroHeader {
+    height: 72px;
+    position: relative;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    padding: var(--space-24);
     display: flex;
-    justify-content: center;
-    opacity: 0.6;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-background);
 
-    .heroImageContainer{
-      width: 100vw;
-      height: 100vh;
+    .mobileLogo {
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .mobileMenu {
       position: absolute;
-
-      @include bp.respondMobile() {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
+      right: 6px;
+      top: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      padding: 18px;
+      border-radius: var(--radius-12);
+      gap: var(--space-24);
+      z-index: 1000;
+      overflow: hidden;
+      @include bp.respond(laptop) {
+        display: none;
       }
 
-      .heroImage {
-        opacity: 1;
-        transition: opacity 0.2s ease;
+      .mobileMenuHeader {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        width: 24px;
+        height: 24px;
+        position: relative;
+        flex-shrink: 0;
 
-        @include bp.respondMobile() {
-          height: 100%;
-          object-fit: cover;
+        h3 {
+          display: none;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .mobileMenuButton {
+          background-color: transparent;
+          position: absolute;
+          right: -4;
+          height: 34px;
+          width: 34px;
+          aspect-ratio: 1/1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: none;
+          border-radius: var(--radius-08);
+          padding: 4px;
+          cursor: pointer;
+
+          img {
+            width: 24px;
+            height: 24px;
+            max-width: none;
+          }
+
+          &:active {
+            background-color: var(--color-background-secondary-hover);
+          }
+        }
+      }
+
+      .mobileMenuContainer {
+        display: flex;
+        flex-direction: column;
+        pointer-events: none;
+        gap: var(--space-08);
+        position: relative;
+        z-index: 1000;
+        height: fit-content;
+        width: 184px;
+        opacity: 0;
+
+        a {
+          height: 36px;
+          width: 100%;
+          text-decoration: none;
+          border-radius: var(--radius-24);
+
+          button {
+            background-color: var(--color-background-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            color: var(--color-text);
+            font-weight: 600;
+            border-radius: var(--radius-24);
+            border: none;
+            font-size: var(--text-14);
+
+            &:hover {
+              background-color: var(--color-background-secondary-hover);
+            }
+          }
+        }
+
+        .buttonBorder {
+          button {
+            background-color: transparent;
+            border: 1px solid var(--color-background-secondary);
+
+            &:hover {
+              color: var(--color-text);
+              background-color: transparent;
+              border-color: var(--color-background-secondary-hover);
+            }
+          }
         }
       }
     }
 
-    .heroVideo {
-      width: 100%;
-      height: 130%;
-      transform: translateY(-20%);
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0;
-      transition: opacity 1s ease;
-      background-size: contain;
+    .mobileMenuOpen {
+      background-color: var(--color-surface);
+
+      .mobileMenuContainer {
+        pointer-events: auto;
+        opacity: 1;
+      }
+
+      .mobileMenuHeader {
+        width: 184px;
+        height: 24px;
+
+        h3 {
+          display: block;
+          font-family: var(--font-heading), sans-serif;
+          font-size: var(--text-24);
+          line-height: var(--text-24);
+          opacity: 1;
+          transition: opacity 0.2s ease 0.2s;
+        }
+      }
+    }
+
+
+    .desktopAuthButtons {
+      display: none;
+
+      @include bp.respond(laptop) {
+        display: flex;
+        gap: var(--space-08);
+
+        a {
+          height: 36px;
+          width: 100%;
+          text-decoration: none;
+          border-radius: var(--radius-24);
+
+          button {
+            background-color: var(--color-background-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            color: var(--color-text);
+            font-weight: 600;
+            border-radius: var(--radius-24);
+            border: none;
+            padding: 0 var(--space-24);
+            transition: all 0.3s ease;
+            font-size: var(--text-12);
+
+            &:hover {
+              color: var(--color-text-secondary);
+              background-color: var(--color-background-secondary-hover);
+            }
+          }
+        }
+
+        .buttonBorder {
+          button {
+            background-color: transparent;
+            border: 1px solid var(--color-background-secondary);
+
+            &:hover {
+              background-color: transparent;
+              border-color: var(--color-background-secondary-hover);
+            }
+          }
+        }
+      }
     }
   }
 
-  .heroContentContainer {
-    position: relative;
-    z-index: 99999;
-    width: 100%;
-    height: 100%;
+
+
+  .heroVideoContainer {
+    width: 100vw;
+    height: 40vh;
     display: flex;
+    justify-content: center;
     align-items: center;
-    flex-direction: column;
-    justify-content: space-between;
+    position: relative;
+    @include bp.respond(laptop) {
+      width: 100vw;
+      height: 70vh;
+    }
+
+    .backgroundHeroContainer {
+      width: 100%;
+      height: 100%;
+      background-image: url("/webPage/heroImage2.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      .heroFrameTop, .heroFrameBottom{
+        width: 100%;
+        height: 60%;
+        aspect-ratio: 390/164;
+        position: absolute;
+        left: 0;
+        background-size: cover;
+        background-position: bottom;
+        background-repeat: no-repeat;
+        z-index: 300;
+        @include bp.respond(laptop) {
+          aspect-ratio: 1920/399;
+        }
+      }
+
+      .heroFrameTop {
+        top: 0;
+        background-image: url("/webPage/heroFrames/mobileHeroFrameTop.svg");
+        @include bp.respond(laptop) {
+          background-image: url("/webPage/heroFrames/desktopHeroFrameTop.svg");
+        }
+      }
+
+      .heroFrameBottom {
+        bottom: 0;
+        background-image: url("/webPage/heroFrames/mobileHeroFrameBottom.svg");
+        @include bp.respond(laptop) {
+          background-image: url("/webPage/heroFrames/desktopHeroFrameBottom.svg");
+        }
+      }
+
+      .heroVideo {
+        width: auto;
+        height: 100%;
+        aspect-ratio: 16/9;
+        pointer-events: none;
+        z-index: 0;
+
+        @include bp.respond(mobile) {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
 
     .heroTitleContainer {
-      height: 75%;
+      height: 100%;
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: var(--space-24);
+      position: absolute;
+      top: 0;
+      left: 0;
 
       .heroTitle {
         background: var(--glass-background);
         border: var(--glass-border);
         border-radius: 200px;
         backdrop-filter: var(--glass-backdrop);
-        padding: var(--space-64);
-        z-index: 2000;
-        width: fit-content;
+        z-index: 200;
         height: fit-content;
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: var(--space-16);
+        width: 200px;
 
-        @include bp.respondMobile() {
-          padding: var(--space-16);
-          width: 300px;
+        @include bp.respond(laptop) {
+          padding: var(--space-64);
+          width: fit-content;
+
+          img {
+            display: block;
+            width: 400px;
+          }
         }
       }
     }
+  }
+
+
+
+  .heroContentContainer {
+    position: relative;
+    z-index: 900;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-48) var(--space-24) var(--space-96);
+    @include bp.respond(laptop) {
+      height: 100%;
+      padding: var(--space-12) var(--space-24);
+    }
 
     .heroCTAContainer {
-      transform: translateY(2px);
       width: 100%;
-      height: 25%;
+      height: 100%;
       display: flex;
-      align-items: end;
-      justify-content: center;
-      background-image: url("/webPage/heroFrame2.png");
-      background-position: top;
-      background-size: cover;
-      background-repeat: no-repeat;
-      padding-bottom: var(--space-32);
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-08);
+
+      h1 {
+        font-size: var(--text-36);
+        line-height: var(--text-36);
+        @include bp.respond(laptop) {
+          font-size: var(--text-48);
+          line-height: var(--text-48);
+        }
+      }
+
+      p {
+        font-size: var(--text-20);
+        line-height: var(--text-20);
+        text-align: center;
+        color: var(--color-text-secondary);
+        font-weight: 300;
+      }
 
       a {
-        @include bp.respondMobile() {
-          font-size: var(--text-12);
-          min-width: 0;
+        margin-top: var(--space-36);
+        font-size: var(--text-16);
+        min-width: 0;
+        @include bp.respond(laptop) {
+          margin-top: var(--space-24);
         }
       }
     }
   }
 
   .heroVideoContainerLoaded {
-    .heroImage {
-      opacity: 0 !important;
-    }
-    .heroVideo {
-      opacity: 1;
-    }
+
   }
 }
 
@@ -148,6 +399,8 @@
     justify-content: center;
     h2 {
       top: 0;
+      font-size: var(--text-128);
+      line-height: 100px;
     }
   }
 
@@ -270,6 +523,8 @@
 
       h2 {
         z-index: 200;
+        font-size: var(--text-128);
+        line-height: 100px;
       }
 
       p {

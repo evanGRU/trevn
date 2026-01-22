@@ -8,11 +8,42 @@ import Link from "next/link";
 import DefaultButton from "@/components/general/defaultButton/defaultButton";
 import {useEffect, useRef, useState} from "react";
 import Script from "next/script";
-import Player from '@vimeo/player';
-import { motion } from "framer-motion";
+import {motion, useAnimation} from "framer-motion";
 import LegalsFooter from "@/components/webPage/creditsFooter/creditsFooter";
+import {useMediaQuery} from "@mui/system";
 
-const containerVariants = {
+
+const heroContainerVariants = {
+    hidden: {
+        opacity: 0,
+    },
+    visible: {
+        opacity: 1,
+        transition: {
+            duration: 1,
+            staggerChildren: 0.2,
+            delayChildren: 0.2,
+        },
+    },
+};
+
+const heroItemVariants = {
+    hidden: {
+        opacity: 0,
+        y: 20,
+        filter: "blur(4px)",
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        transition: {
+            duration: 0.4,
+        },
+    },
+};
+
+const howContainerVariants = {
     hidden: {},
     visible: {
         transition: {
@@ -22,8 +53,8 @@ const containerVariants = {
     },
 };
 
-const itemVariants = {
-    hidden: { opacity: 0, y: 30, filter: 'blur(6px)' },
+const howItemVariants = {
+    hidden: { opacity: 0, y: 30, filter: 'blur(4px)' },
     visible: {
         opacity: 1,
         y: 0,
@@ -33,83 +64,206 @@ const itemVariants = {
 
 export default function WebPageClient() {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
-    const [videoPlaying, setVideoPlaying] = useState(false);
+
+    // Mobile Menu
+    const controls = useAnimation();
+    const [openMobileMenu, setOpenMobileMenu] = useState(false);
+    const menuMobileRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (!iframeRef.current) return;
+        const runAnimation = async () => {
+            if (openMobileMenu) {
+                await controls.start({
+                    width: 220,
+                    transition: { duration: 0.1, ease: "easeInOut" },
+                });
 
-        const player = new Player(iframeRef.current);
-        player.on('play', () => {
-            setVideoPlaying(true);
-        });
+                await controls.start({
+                    height: 168,
+                    transition: { duration: 0.2, ease: "easeInOut" },
+                });
+            } else {
+                await controls.start({
+                    height: 66,
+                    transition: { duration: 0.1 },
+                });
+
+                await controls.start({
+                    width: 66,
+                    transition: { duration: 0.1 },
+                });
+            }
+        };
+
+        runAnimation();
+    }, [openMobileMenu, controls]);
+
+    useEffect(() => {
+        if (!openMobileMenu) return;
+
+        const handleOutsideInteraction = (event: Event) => {
+            if (
+                menuMobileRef.current &&
+                !menuMobileRef.current.contains(event.target as Node)
+            ) {
+                setOpenMobileMenu(false);
+            }
+        };
+
+        document.addEventListener("pointerdown", handleOutsideInteraction);
+        document.addEventListener("touchstart", handleOutsideInteraction);
+        document.addEventListener("scroll", handleOutsideInteraction, true);
 
         return () => {
-            player.off('play');
+            document.removeEventListener("pointerdown", handleOutsideInteraction);
+            document.removeEventListener("touchstart", handleOutsideInteraction);
+            document.removeEventListener("scroll", handleOutsideInteraction, true);
         };
-    }, []);
+    }, [openMobileMenu]);
+
+    const isMobile = useMediaQuery("(max-width: 768px)");
 
     return (
         <div className={styles.homePage}>
             <section className={styles.heroSection}>
-                <Script
-                    src="https://player.vimeo.com/api/player.js"
-                    strategy="afterInteractive"
-                />
+                <div className={styles.mobileHeroHeader}>
+                    <Image
+                        src={'/logo/logotype_empty.svg'}
+                        alt={"Logo Icon"}
+                        width={44}
+                        height={24}
+                        className={styles.mobileLogo}
+                    />
 
-                <div className={`${styles.heroVideoContainer} ${videoPlaying ? styles.heroVideoContainerLoaded : ""}`}>
+                    <motion.div
+                        initial={{ width: 66, height: 66 }}
+                        animate={controls}
+                        className={`${styles.mobileMenu} ${openMobileMenu ? styles.mobileMenuOpen : ""}`}
+                        ref={menuMobileRef}
+                    >
+                        <div className={styles.mobileMenuHeader}>
+                            <h3>Menu</h3>
+                            <button
+                                className={styles.mobileMenuButton}
+                                type="button"
+                                onClick={() => setOpenMobileMenu(prev => !prev)}
+                            >
+                                <Image src="/icons/menu.svg" alt="Menu Icon" width={26} height={26} />
+                            </button>
+                        </div>
+
+                        <div className={styles.mobileMenuContainer}>
+                            <Link href="/login">
+                                <button>Connexion</button>
+                            </Link>
+                            <Link href="/signup" className={styles.buttonBorder}>
+                                <button>Inscription</button>
+                            </Link>
+                        </div>
+                    </motion.div>
+
+                    <div className={styles.desktopAuthButtons}>
+                        <Link href="/login">
+                            <button>Connexion</button>
+                        </Link>
+                        <Link href="/signup" className={styles.buttonBorder}>
+                            <button>Inscription</button>
+                        </Link>
+                    </div>
+                </div>
+
+
+
+                <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive"/>
+                <div className={styles.heroVideoContainer}>
                     <motion.div
                         initial={{ opacity: 0, scale: 1 }}
-                        animate={{ opacity: 1, scale: 1.05 }}
+                        animate={{ opacity: 0.6, scale: 1.05 }}
                         transition={{ duration: 1 }}
-                        className={styles.heroImageContainer}
+                        className={styles.backgroundHeroContainer}
                     >
-                        <Image
-                            src={'/webPage/heroImage2.jpg'}
-                            alt={"Hero Image"}
-                            width={1920}
-                            height={1080}
-                            className={styles.heroImage}
+                        <motion.div
+                            initial={{ translateY: isMobile ? "-50%" : "-60%" }}
+                            animate={{ translateY: isMobile ? "-80%" : "-65%" }}
+                            transition={{ duration: 1.2, ease: "easeInOut" }}
+                            className={styles.heroFrameTop}
+                        />
+
+                        <iframe
+                            ref={iframeRef}
+                            src="https://player.vimeo.com/video/1154389024?background=1&autoplay=1&loop=1&muted=1&autopause=0"
+                            frameBorder="0"
+                            allow="autoplay"
+                            title="BACKGROUND_VIDEO"
+                            className={styles.heroVideo}
+                        ></iframe>
+
+                        <motion.div
+                            initial={{ translateY: isMobile ? "50%" : "60%" }}
+                            animate={{ translateY: isMobile ? "80%" : "65%" }}
+                            transition={{ duration: 1.2, ease: "easeInOut" }}
+                            className={styles.heroFrameBottom}
                         />
                     </motion.div>
 
-                    <iframe
-                        ref={iframeRef}
-                        src="https://player.vimeo.com/video/1154389024?background=1&autoplay=1&loop=1&muted=1&autopause=0"
-                        frameBorder="0"
-                        allow="autoplay"
-                        title="BACKGROUND_VIDEO"
-                        className={styles.heroVideo}
-                    ></iframe>
-                </div>
-
-                <div className={styles.heroContentContainer}>
                     <div className={styles.heroTitleContainer}>
                         <motion.div
-                            initial={{ opacity: 0, translateY: -40 }}
-                            animate={{ opacity: 1, translateY: 0 }}
-                            transition={{ duration: 0.6 }}
+                            initial={{ opacity: 0, scale: 1.1, filter: 'blur(2px)' }}
+                            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                            transition={{ duration: 1 }}
                             className={styles.heroTitle}
                         >
                             <Image
-                                src={'/logo/logo_empty.svg'}
+                                src={'/logo/logotext_empty.svg'}
                                 alt={"Logo Icon"}
-                                width={660}
-                                height={126}
+                                width={150}
+                                height={48}
                             />
                         </motion.div>
                     </div>
+                </div>
 
+
+
+                <div className={styles.heroContentContainer}>
                     <motion.div
-                        initial={{ opacity: 0, translateY: 20 }}
-                        animate={{ opacity: 1, translateY: 1 }}
-                        transition={{ duration: 0.6 }}
+                        variants={heroContainerVariants}
+                        initial="hidden"
+                        animate="visible"
                         className={styles.heroCTAContainer}
                     >
-                        <GlassButton type={"link"} linkHref={"/login"}>
-                            Commence dès maintenant
-                        </GlassButton>
+                        <motion.div variants={heroItemVariants}>
+                            <h1>Proposez, votez, jouez</h1>
+                        </motion.div>
+
+                        <motion.div variants={heroItemVariants}>
+                            <p>
+                                Vos soirées gaming {isMobile ? <br /> : ""}
+                                organisées avec vos amis, {isMobile ? <br /> : ""}
+                                rapidement et facilement.
+                            </p>
+                        </motion.div>
+
+                        <motion.div variants={heroItemVariants}>
+                            <GlassButton type="link" linkHref="/login">
+                                Je commence
+                            </GlassButton>
+                        </motion.div>
                     </motion.div>
                 </div>
+
+                {/*<div className={styles.heroContentContainer}>*/}
+                {/*    <motion.div*/}
+                {/*        initial={{ opacity: 0, translateY: 20 }}*/}
+                {/*        animate={{ opacity: 1, translateY: 1 }}*/}
+                {/*        transition={{ duration: 0.6 }}*/}
+                {/*        className={styles.heroCTAContainer}*/}
+                {/*    >*/}
+                {/*        <GlassButton type={"link"} linkHref={"/login"}>*/}
+                {/*            Commence dès maintenant*/}
+                {/*        </GlassButton>*/}
+                {/*    </motion.div>*/}
+                {/*</div>*/}
             </section>
 
             <section className={styles.cardsSection}>
@@ -125,40 +279,40 @@ export default function WebPageClient() {
 
                 <motion.div
                     className={styles.cardsContainer}
-                    variants={containerVariants}
+                    variants={howContainerVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
                 >
-                    <motion.div variants={itemVariants}>
+                    <motion.div variants={howItemVariants}>
                         <HomeCard variant="background" cardPosition="one">
                             <h4>Créé ton groupe</h4>
                             <p>Ouvre ton propre groupe en lui choisissant son nom et son avatar.</p>
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={itemVariants}>
+                    <motion.div variants={howItemVariants}>
                         <HomeCard variant="default" cardPosition="two">
                             <h4>Invite tes amis</h4>
                             <p>Partage ton code de groupe ou ton lien d&apos;invitation et laisse tes amis te rejoindre.</p>
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={itemVariants}>
+                    <motion.div variants={howItemVariants}>
                         <HomeCard variant="background" cardPosition="three">
                             <h4>Ajoute des jeux</h4>
                             <p>Sélectionnez les jeux qui vous plaisent et créez votre wishlist de groupe.</p>
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={itemVariants}>
+                    <motion.div variants={howItemVariants}>
                         <HomeCard variant="default" cardPosition="four">
                             <h4>Like tes préférés</h4>
                             <p>Fait savoir à tes amis quels sont les jeux qui te plaisent le plus en les likant.</p>
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={itemVariants}>
+                    <motion.div variants={howItemVariants}>
                         <HomeCard variant="background" cardPosition="five">
                             <h4>Amusez-vous</h4>
                             <p>Choisissez un jeu parmis les jeux de votre liste et lancez votre partie !</p>
