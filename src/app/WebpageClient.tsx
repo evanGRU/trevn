@@ -121,7 +121,8 @@ export default function WebPageClient() {
         };
     }, [openMobileMenu]);
 
-    const isMobile = useMediaQuery("(max-width: 1024px)");
+    const isTablet = useMediaQuery("(max-width: 1024px)");
+    const isMobile = useMediaQuery("(max-width: 768px)");
 
     return (
         <div className={styles.homePage}>
@@ -181,8 +182,8 @@ export default function WebPageClient() {
                         className={styles.backgroundHeroContainer}
                     >
                         <motion.div
-                            initial={{ translateY: isMobile ? "-50%" : "-60%" }}
-                            animate={{ translateY: isMobile ? "-80%" : "-65%" }}
+                            initial={{ translateY: isTablet ? "-50%" : "-60%" }}
+                            animate={{ translateY: isTablet ? "-80%" : "-65%" }}
                             transition={{ duration: 1.2, ease: "easeInOut" }}
                             className={styles.heroFrameTop}
                         />
@@ -197,8 +198,8 @@ export default function WebPageClient() {
                         ></iframe>
 
                         <motion.div
-                            initial={{ translateY: isMobile ? "50%" : "60%" }}
-                            animate={{ translateY: isMobile ? "80%" : "65%" }}
+                            initial={{ translateY: isTablet ? "50%" : "60%" }}
+                            animate={{ translateY: isTablet ? "80%" : "65%" }}
                             transition={{ duration: 1.2, ease: "easeInOut" }}
                             className={styles.heroFrameBottom}
                         />
@@ -235,7 +236,7 @@ export default function WebPageClient() {
                         <motion.div variants={heroItemVariants}>
                             <p>
                                 Vos soirées gaming {isMobile ? <br /> : ""}
-                                organisées avec vos amis,
+                                organisées avec vos amis, {isMobile ? <br /> : ""}
                                 rapidement et facilement.
                             </p>
                         </motion.div>
@@ -248,8 +249,6 @@ export default function WebPageClient() {
                     </motion.div>
                 </div>
             </section>
-
-
 
             <section className={styles.cardsSection}>
                 <motion.div
@@ -270,7 +269,7 @@ export default function WebPageClient() {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
                 >
-                    <motion.div variants={howItemVariants} className={isMobile ? styles.homeCardDivLeft : ""}>
+                    <motion.div variants={howItemVariants} className={isTablet ? styles.homeCardDivLeft : ""}>
                         <HomeCard variant="background" cardPosition="one">
                             <h4>Créé ton groupe</h4>
                             {isMobile ? (
@@ -281,7 +280,7 @@ export default function WebPageClient() {
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants} className={isMobile ? styles.homeCardDivRight : ""}>
+                    <motion.div variants={howItemVariants} className={isTablet ? styles.homeCardDivRight : ""}>
                         <HomeCard variant="default" cardPosition="two">
                             <h4>Invite tes amis</h4>
                             {isMobile ? (
@@ -292,7 +291,7 @@ export default function WebPageClient() {
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants} className={isMobile ? styles.homeCardDivLeft : ""}>
+                    <motion.div variants={howItemVariants} className={isTablet ? styles.homeCardDivLeft : ""}>
                         <HomeCard variant="background" cardPosition="three">
                             <h4>Ajoute des jeux</h4>
                             {isMobile ? (
@@ -303,7 +302,7 @@ export default function WebPageClient() {
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants} className={isMobile ? styles.homeCardDivRight : ""}>
+                    <motion.div variants={howItemVariants} className={isTablet ? styles.homeCardDivRight : ""}>
                         <HomeCard variant="default" cardPosition="four">
                             <h4>Like tes préférés</h4>
                             {isMobile ? (
@@ -314,7 +313,7 @@ export default function WebPageClient() {
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants} className={isMobile ? styles.homeCardDivLeft : ""}>
+                    <motion.div variants={howItemVariants} className={isTablet ? styles.homeCardDivLeft : ""}>
                         <HomeCard variant={isMobile ? "background" : "default"} cardPosition="five">
                             <h4>Amusez-vous</h4>
                             {isMobile ? (
@@ -328,13 +327,6 @@ export default function WebPageClient() {
             </section>
 
             <section className={styles.partnerSection}>
-                <Image
-                    src="/webPage/webDecoration1.svg"
-                    alt="Web Decoration 01"
-                    width={1920}
-                    height={430}
-                    className={styles.decoration}
-                />
                 <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -343,7 +335,9 @@ export default function WebPageClient() {
                     className={styles.partnerContainer}
                 >
                     <h3>
-                        Trouve tes jeux préférés grâce à la bibliothèque{" "}
+                        Trouve tes jeux {isMobile ? <br /> : ""}
+                        préférés grâce à la {isMobile ? <br /> : ""}
+                        bibliothèque{" "}
                         <span className={styles.steamInline}>
                             <Image
                                 src="/webPage/steamLogo.png"
@@ -351,8 +345,9 @@ export default function WebPageClient() {
                                 width={180}
                                 height={50}
                             />
-                        </span>{" "}
-                        intégrée à notre plateforme.
+                        </span>{" "}{isMobile ? <br /> : ""}
+                        intégrée à notre {isMobile ? <br /> : ""}
+                        plateforme.
                     </h3>
                 </motion.div>
             </section>

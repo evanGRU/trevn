@@ -380,7 +380,6 @@
 }
 
 .cardsSection {
-  padding: 0 var(--space-24);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -388,6 +387,7 @@
   margin-bottom: 16vh;
   gap: var(--space-64);
   width: 100%;
+  padding: 0 var(--space-24);
 
   @include bp.respond(tablet) {
     padding: 0 var(--space-64);
@@ -478,6 +478,73 @@
   }
 }
 
+.partnerSection {
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 8vh;
+  background-image: url("/webPage/backgrounds/mobilePartnerBackground.svg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: visible;
+  min-height: 284px;
+  padding: 0 var(--space-24);
+
+  @include bp.respond(mobile) {
+    padding: 0 var(--space-64);
+    background-size: cover;
+    background-image: url("/webPage/backgrounds/desktopPartnerBackground.svg");
+    min-height: 430px;
+  }
+  @include bp.respond(laptop) {
+    background-image: url("/webPage/backgrounds/desktopPartnerBackground.svg");
+    min-height: 430px;
+  }
+
+  .partnerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+
+    h3 {
+      font-weight: 400;
+      font-size: var(--text-24);
+      line-height: var(--text-32);
+      text-align: center;
+      width: 100%;
+      border-radius: var(--radius-20);
+
+      @include bp.respond(mobile) {
+        font-size: var(--text-30);
+        line-height: var(--text-30);
+      }
+    }
+
+    .steamInline {
+      display: inline-flex;
+      align-items: center;
+      vertical-align: middle;
+
+      img {
+        height: 30px;
+        width: auto;
+        aspect-ratio: 180px/50px;
+
+        @include bp.respond(mobile) {
+          height: 35px;
+        }
+        @include bp.respond(tablet) {
+          height: 50px;
+        }
+      }
+    }
+  }
+}
 
 .motionSection {
   height: 100vh;
@@ -519,41 +586,6 @@
         min-width: 0;
         font-size: var(--text-20) !important;
       }
-    }
-  }
-}
-
-.partnerSection {
-  height: fit-content;
-  padding: var(--space-64) var(--space-128) var(--space-96) var(--space-128);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 8vh;
-  position: relative;
-
-  .decoration {
-    position: absolute;
-    width: 100%;
-  }
-
-  .partnerContainer {
-    position: relative;
-    h3 {
-      font-weight: 400;
-      font-size: var(--text-30);
-      line-height: 20px;
-      text-align: center;
-      width: 100%;
-      border-radius: var(--radius-20);
-      min-width: 550px;
-    }
-
-    .steamInline {
-      display: inline-flex;
-      align-items: center;
-      vertical-align: middle;
     }
   }
 }
