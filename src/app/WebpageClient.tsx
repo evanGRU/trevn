@@ -393,7 +393,7 @@ export default function WebPageClient() {
                 >
                     <div className={styles.glassContainer}>
                         <h2>Rejoins <br/> la communauté</h2>
-                        <p>Participe à la béta, donne ton avis et aide-nous à créer la meilleure <br/> plateforme pour les soirées gaming entre potes.</p>
+                        <p>Participe à la béta, donne ton avis et aide-nous à créer la meilleure {!isTablet && <br/>} plateforme pour les soirées gaming entre potes.</p>
                         <GlassButton
                             type={"link"}
                             linkHref={"https://discord.gg/mvWp38PcrV"}
