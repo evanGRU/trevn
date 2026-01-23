@@ -13,6 +13,7 @@ import {AuthModes, UserErrorCode} from "@/utils/types";
 import DefaultField from "@/components/general/defaultField/defaultField";
 import {userPrompts} from "@/utils/prompts";
 import MainModalHeader from "@/components/general/mainModalHeader/mainModalHeader";
+import {useMediaQueries} from "@/utils/helpers/useMediaQueries";
 
 interface FormValues {
     username: string;
@@ -22,6 +23,7 @@ interface FormValues {
 
 export default function AuthForm({ type }: {type: AuthModes}) {
     const router = useRouter();
+    const {isTablet} = useMediaQueries();
     const isLogin = type === "login";
     const {successToast, errorToast} = useToasts();
     const [formValues, setFormValues] = useState<FormValues>({
@@ -225,13 +227,15 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                         </div>
                         {isLogin && (
                             <div className={styles.loginUtils}>
-                                <label>
-                                    <input type="checkbox" />
-                                    <span className={styles.checkmark}>
+                                {!isTablet && (
+                                    <label>
+                                        <input type="checkbox" />
+                                        <span className={styles.checkmark}>
                                             <TickIcon/>
                                         </span>
-                                    Se souvenir de moi
-                                </label>
+                                        Se souvenir de moi
+                                    </label>
+                                )}
                                 <button
                                     type={"button"}
                                     onClick={handleResetPassword}

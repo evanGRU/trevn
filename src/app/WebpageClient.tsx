@@ -10,9 +10,8 @@ import {useRef} from "react";
 import Script from "next/script";
 import {motion} from "framer-motion";
 import LegalsFooter from "@/components/webPage/creditsFooter/creditsFooter";
-import {useMediaQuery} from "@mui/system";
 import MobileHeader from "@/components/webPage/mobileHeader/mobileHeader";
-
+import {useMediaQueries} from "@/utils/helpers/useMediaQueries";
 
 const heroContainerVariants = {
     hidden: {
@@ -65,8 +64,7 @@ const howItemVariants = {
 
 export default function WebPageClient() {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
-    const isTablet = useMediaQuery("(max-width: 1024px)");
-    const isMobile = useMediaQuery("(max-width: 768px)");
+    const {isMobile, isTablet} = useMediaQueries();
 
     return (
         <div className={styles.homePage}>
