@@ -82,8 +82,8 @@
       }
 
       h1 {
-        font-size: var(--text-36);
-        line-height: var(--text-36);
+        font-size: var(--text-32);
+        line-height: var(--text-32);
         text-align: center;
         text-wrap: nowrap;
         @include bp.respond(mobile) {

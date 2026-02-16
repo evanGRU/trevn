@@ -3,20 +3,21 @@
 import {useParams, useRouter} from "next/navigation";
 import styles from "./page.module.scss";
 import {AnimatePresence, motion} from "framer-motion";
-import Link from "next/link";
-import Image from "next/image";
 import {useToasts} from "@/utils/helpers/useToasts";
 import React, {useEffect, useState} from "react";
 import {Group} from "@/utils/types";
 import {DbImage} from "@/components/general/dbImage/dbImage";
 import {getPublicAvatarUrl} from "@/utils/globalFunctions";
 import GlassButton from "@/components/general/glassButton/glassButton";
+import MainModalHeader from "@/components/general/mainModalHeader/mainModalHeader";
+import {useMediaQueries} from "@/utils/helpers/useMediaQueries";
 
 export default function InvitePageClient() {
     const {code} = useParams();
     const {errorToast, successToast} = useToasts();
     const [group, setGroup] = useState<Group>();
     const router = useRouter();
+    const {isMobile} = useMediaQueries();
 
     useEffect(() => {
         const fetchGroup = async () => {
@@ -68,6 +69,11 @@ export default function InvitePageClient() {
 
     return group && (
         <div className={styles.invitePage}>
+            {isMobile && (
+                <div className={styles.inviteHeader}>
+                    <MainModalHeader hrefPath={"/groups"}>{"Ne pas rejoindre"}</MainModalHeader>
+                </div>
+            )}
             <AnimatePresence mode="wait">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -76,27 +82,8 @@ export default function InvitePageClient() {
                     transition={{ duration: 0.3 }}
                     className={styles.inviteContainer}
                 >
-                    <div className={styles.headerContainer}>
-                        <div className={styles.headerHeader}>
-                            <Link href={"/groups"} className={styles.backButton}>
-                                <Image
-                                    src="/icons/arrowUnfold.svg"
-                                    alt="Logotype Trevn"
-                                    width={12}
-                                    height={12}
-                                />
-                                <p>Ne pas rejoindre</p>
-                            </Link>
-
-                            <Link href={"/"} className={styles.homeButton}>
-                                <Image
-                                    src="/logo/logotype_empty.svg"
-                                    alt="Logotype Trevn"
-                                    width={24}
-                                    height={40}
-                                />
-                            </Link>
-                        </div>
+                    <div className={styles.inviteContainerHeader}>
+                        {!isMobile && <MainModalHeader hrefPath={"/groups"}>{"Ne pas rejoindre"}</MainModalHeader>}
                         <div className={styles.headerTitle}>
                             <h1>{"Invitation à un groupe"}</h1>
                         </div>
