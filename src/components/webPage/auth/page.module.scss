@@ -17,7 +17,7 @@
   background-position: left;
   background-size: cover;
   background-repeat: no-repeat;
-  border-radius:  var(--radius-40);
+  border-radius: var(--radius-40);
 
   user-select: none;
 
@@ -26,6 +26,7 @@
     align-items: center;
     flex-direction: row;
     justify-content: center;
+    border-radius: 0;
   }
 }
 
@@ -42,6 +43,7 @@
 }
 
 .formContainer {
+  background-color: var(--glass-background);
   border: var(--glass-border);
   backdrop-filter: var(--glass-backdrop);
   border-radius: var(--radius-40);
