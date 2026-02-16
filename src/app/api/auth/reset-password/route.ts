@@ -10,8 +10,8 @@ export async function POST(req: Request) {
         const { email, password } = await req.json();
 
         if (password) {
-            const {data} = await supabase.auth.getSession();
-            if (!data.session) {
+            const {data: { user }} = await supabase.auth.getUser()
+            if (!user) {
                 return NextResponse.json({ error: "auth_missing" });
             }
 
