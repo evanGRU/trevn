@@ -1,15 +1,45 @@
+@use '../../styles/_breakpoints' as bp;
+
 .resetPage {
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  width: 100%;
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-top: env(safe-area-inset-top);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  background-image: url("/backgrounds/authBackground.jpg") ;
+  background-position: left;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: var(--radius-40);
+
+  user-select: none;
+
+  @include bp.respond(mobile) {
+    padding: var(--space-24);
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    border-radius: 0;
+  }
+}
+
+.resetHeader {
+  width: 100%;
+  height: 72px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("/backgrounds/authBackground.jpg") ;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  user-select: none;
-  gap: 10px;
+
+  margin-top: var(--space-24);
+  padding: var(--space-24);
 }
 
 .resetContainer {
@@ -17,17 +47,26 @@
   border: var(--glass-border);
   backdrop-filter: var(--glass-backdrop);
   border-radius: var(--radius-40);
-  padding: var(--space-48);
-  width: 524px;
-  height: auto;
 
-  .resetHeader {
+  width: 100%;
+  height: auto;
+  padding: var(--space-48) var(--space-36);
+
+  @include bp.respond(mobile) {
+    padding: var(--space-48);
+    max-width: 524px;
+  }
+
+  .resetContainerHeader {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-24);
+    gap: var(--space-48);
     margin-bottom: var(--space-32);
     width: 100%;
+    @include bp.respond(tablet) {
+      gap: var(--space-32);
+    }
 
     .headerTitle {
       display: flex;
@@ -35,10 +74,18 @@
       justify-content: center;
 
       h1 {
-        font-size: var(--text-48);
-        line-height: var(--space-48);
+        font-size: var(--text-36);
+        line-height: var(--text-36);
         text-align: center;
-        width: 80%;
+        text-wrap: nowrap;
+        @include bp.respond(mobile) {
+          font-size: var(--text-42);
+          line-height: var(--text-42);
+        }
+        @include bp.respond(laptop) {
+          font-size: var(--text-48);
+          line-height: var(--space-48);
+        }
       }
     }
   }
@@ -58,19 +105,13 @@
       width: 100%;
     }
 
-    .buttonsContainer {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 48px;
+    button[type=submit] {
       margin-top: var(--space-12);
-      gap: var(--space-08);
-
-      button[type=submit] {
-        height: 100%;
-        font-size: var(--text-16) !important;
-        font-weight: 600;
+      height: 42px;
+      font-size: var(--text-16) !important;
+      width: 240px;
+      min-width: unset;
+      @include bp.respond(laptop) {
       }
     }
   }
