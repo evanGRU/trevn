@@ -11,80 +11,53 @@
   .backButton{
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: var(--color-text-secondary);
+    background-color: var(--glass-background);
+    border: var(--glass-border);
+    backdrop-filter: var(--glass-backdrop);
     text-transform: uppercase;
     text-decoration: none;
     font-size: var(--text-14);
-    font-weight: 600;
+    font-weight: 400;
     position: absolute;
     left: 0;
     transition: color 0.3s ease, background-color 0.3s ease;
     height: 32px;
     width: auto;
-    aspect-ratio: 1/1;
-    border-radius: var(--space-08);
+    border-radius: var(--radius-40);
+    padding: var(--space-08) var(--space-12);
     @include bp.respond(laptop) {
       aspect-ratio: unset;
       font-size: var(--text-12);
-      font-weight: 400;
-      justify-content: unset;
     }
 
     img {
-      height: 24px;
+      height: 20px;
       width: auto;
       aspect-ratio: 1/1;
       z-index: 400;
+      transform: rotateZ(90deg);
       @include bp.respond(laptop) {
         height: 14px;
-        transform: rotateZ(90deg);
       }
     }
 
     p {
-      display: none;
-      @include bp.respond(laptop) {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        z-index: 1000;
-        padding: 0 4px 0 2px;
-      }
+      color: var(--color-text);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+      padding: 0 4px 0 2px;
     }
-
-    @include bp.respond(laptop) {
-      &:before {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        height: 100%;
-        background-color: var(--color-background);
-        width: 0;
-        opacity: 0;
-        transition: width 0.3s ease, opacity 0.3s ease;
-        z-index: 300;
-      }
-    }
-
 
     &:hover {
-      color: var(--color-text);
-      background-color: var(--glass-background);
-
-      @include bp.respond(laptop) {
-        background-color: transparent;
-        &:before {
-          width: 100%;
-          opacity: 1;
-        }
-      }
+      background-color: var(--glass-background-hover);
+      border: var(--glass-border-hover);
     }
   }
 
   .logo {
     width: auto;
-    height: 24px;
+    height: 32px;
   }
 }

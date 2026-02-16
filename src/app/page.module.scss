@@ -112,12 +112,20 @@
         padding: var(--space-16);
         width: 200px;
 
-        @include bp.respond(laptop) {
-          padding: var(--space-64);
+        @include bp.respond(tablet) {
+          padding: var(--space-32);
           width: fit-content;
 
           img {
             display: block;
+            width: 300px;
+          }
+        }
+
+        @include bp.respond(laptop) {
+          padding: var(--space-64);
+
+          img {
             width: 400px;
           }
         }
@@ -147,23 +155,34 @@
       flex-direction: column;
       align-items: center;
       gap: var(--space-08);
+      @include bp.respond(tablet) {
+        padding: var(--space-96) var(--space-96);
+      }
+      @include bp.respond(laptop) {
+        padding: 0 0;
+      }
 
       h1 {
         font-size: var(--text-36);
         line-height: var(--text-36);
         text-align: center;
-        @include bp.respond(laptop) {
+        @include bp.respond(tablet) {
           font-size: var(--text-48);
           line-height: var(--text-48);
         }
       }
 
       p {
-        font-size: var(--text-20);
-        line-height: var(--text-20);
+        font-size: var(--text-16);
+        line-height: var(--text-16);
         text-align: center;
         color: var(--color-text-secondary);
         font-weight: 300;
+        @include bp.respond(tablet) {
+          font-size: var(--text-20);
+          line-height: var(--text-20);
+        }
+
       }
 
       a {
@@ -188,11 +207,11 @@
   width: 100%;
   padding: 0 var(--space-24);
 
-  @include bp.respond(tablet) {
+  @include bp.respond(mobile) {
     padding: 0 var(--space-64);
     margin-bottom: 0;
   }
-  @include bp.respond(laptop) {
+  @include bp.respond(tablet) {
     padding: var(--space-128) var(--space-64);
     gap: var(--space-96);
   }
@@ -221,7 +240,6 @@
         font-size: var(--text-96);
         line-height: var(--text-96);
       }
-
     }
 
     p {
@@ -504,8 +522,8 @@
           line-height: var(--text-64);
         }
         @include bp.respond(laptop) {
-          font-size: var(--text-128);
-          line-height: var(--text-96);
+          font-size: var(--text-96);
+          line-height: var(--text-80);
         }
       }
 
@@ -607,7 +625,10 @@
       font-size: var(--text-32);
       line-height: var(--text-32);
       text-wrap: nowrap;
-
+      @include bp.respond(tablet) {
+        font-size: var(--text-48);
+        line-height: var(--text-48);
+      }
       @include bp.respond(laptop) {
         font-size: var(--text-96);
         line-height: var(--text-96);

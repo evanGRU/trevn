@@ -27,7 +27,7 @@
       font-size: var(--text-16);
       color: #FFFFFF;
       background-color: transparent;
-      border-radius: var(--radius-10);
+      border-radius: var(--radius-20);
       border: solid 1px #D7D7D7;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
       @include bp.respond(laptop) {

@@ -2,16 +2,13 @@ import styles from "./mainModalHeader.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import {useMediaQueries} from "@/utils/helpers/useMediaQueries";
-
 
 export default function MainModalHeader({children, hrefPath} : {children: React.ReactNode, hrefPath: string}) {
-    const {isTablet} = useMediaQueries();
     return (
         <div className={styles.mainModalHeader}>
             <Link href={hrefPath} className={styles.backButton}>
                 <Image
-                    src={`/icons/${isTablet ? "home.svg" : "arrowUnfold.svg" }`}
+                    src={"/icons/arrowUnfold.svg"}
                     alt="Home Icon"
                     width={12}
                     height={12}
