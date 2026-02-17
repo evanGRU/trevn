@@ -23,7 +23,7 @@ interface FormValues {
 
 export default function AuthForm({ type }: {type: AuthModes}) {
     const router = useRouter();
-    const {isMobile} = useMediaQueries();
+    const {isMobile, isLaptop} = useMediaQueries();
     const isLogin = type === "login";
     const {successToast, errorToast} = useToasts();
     const [formValues, setFormValues] = useState<FormValues>({
@@ -105,11 +105,15 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                 return;
             }
 
-            if (isLogin) {
-                router.push(`${redirect ?? "/groups"}`);
+            if (isLaptop) {
+                router.push("/maintenance/mobile");
             } else {
-                router.push(`/login${redirect ? `?redirect=${redirect}` : ''}`);
-                successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser ton inscription.");
+                if (isLogin) {
+                    router.push(`${redirect ?? "/groups"}`);
+                } else {
+                    router.push(`/login${redirect ? `?redirect=${redirect}` : ''}`);
+                    successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser ton inscription.");
+                }
             }
         } catch (err) {
             console.error(err);

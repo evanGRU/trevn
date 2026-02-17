@@ -98,10 +98,13 @@
 
 /* 6. Glass UI */
 :root {
-  --glass-background: rgba(255, 255, 255, 0.05);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
   --glass-backdrop: blur(20px);
 
+  --glass-background: rgba(255, 255, 255, 0.05);
   --glass-background-hover: rgba(255, 255, 255, 0.1);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
   --glass-border-hover: 1px solid rgba(255, 255, 255, 0.3);
+
+  --glass-background-dark: rgba(16, 16, 16, 0.5);
+  --glass-border-dark: 1px solid #282828;
 }
