@@ -32,8 +32,8 @@ export default function MaintenanceMobilePageClient() {
                 <h1>La version mobile est actuellement en préparation</h1>
 
                 <div className={styles.texts}>
-                    <p>Nous travaillons à son optimisation pour vous proposer une expérience optimale sur smartphone et tablette.</p>
-                    <p>En attendant, tu peux profiter pleinement de l’application dès maintenant depuis ton ordinateur.</p>
+                    <p>Nous travaillons à son optimisation pour vous proposer une expérience idéale sur smartphone et tablette.</p>
+                    <p>En attendant, vous pouvez profiter pleinement de l’application dès maintenant depuis votre ordinateur.</p>
                     <p>Merci de votre patience et à très vite sur la version mobile !</p>
                 </div>
 

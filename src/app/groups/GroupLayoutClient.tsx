@@ -16,6 +16,7 @@ import {useParams, useRouter, useSearchParams} from "next/navigation";
 import {useToasts} from "@/utils/helpers/useToasts";
 import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
 import {Group, Profile} from "@/utils/types";
+import {useMediaQueries} from "@/utils/helpers/useMediaQueries";
 
 export default function GroupsPageLayoutClient({children}: {children: React.ReactNode}) {
     const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState<boolean>(false);
@@ -29,6 +30,13 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
     const searchParams = useSearchParams();
     const { errorToast } = useToasts();
     const router = useRouter();
+
+    const {isLaptop} = useMediaQueries();
+    useEffect(() => {
+        if (isLaptop) {
+            router.push('/maintenance/mobile')
+        }
+    }, [isLaptop]);
 
     useEffect(() => {
         const toast = searchParams.get("toast");
