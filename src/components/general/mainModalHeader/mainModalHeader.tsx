@@ -3,14 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-
 export default function MainModalHeader({children, hrefPath} : {children: React.ReactNode, hrefPath: string}) {
     return (
         <div className={styles.mainModalHeader}>
             <Link href={hrefPath} className={styles.backButton}>
                 <Image
-                    src="/icons/arrowUnfold.svg"
-                    alt="Logotype Trevn"
+                    src={"/icons/arrowUnfold.svg"}
+                    alt="Home Icon"
                     width={12}
                     height={12}
                 />

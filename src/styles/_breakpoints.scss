@@ -3,7 +3,7 @@ $breakpoints: (
         tablet: 768px,
         laptop: 1024px,
         desktop: 1280px,
-        wide: 1536px,
+        wide: 1920px,
 );
 
 @mixin respond($device) {

@@ -75,7 +75,8 @@
   --text-42: 2.625rem;  /* 46px */
   --text-48: 3rem;      /* 48px */
   --text-64: 4rem;      /* 64px */
-  --text-96: 6rem;      /* 88px */
+  --text-80: 5rem;      /* 80px */
+  --text-96: 6rem;      /* 96px */
   --text-112: 7rem;     /* 112px */
   --text-128: 8rem;     /* 128px */
 }
@@ -89,16 +90,21 @@
   --radius-16: 1rem;     /* 16px */
   --radius-20: 1.25rem;  /* 20px */
   --radius-24: 1.5rem;   /* 24px */
+  --radius-30: 1.875rem; /* 30px */
   --radius-40: 2.5rem;   /* 40px */
+  --radius-128: 8rem;    /* 128px */
   --radius-full: 100%;   /* full */
 }
 
 /* 6. Glass UI */
 :root {
-  --glass-background: rgba(255, 255, 255, 0.05);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
   --glass-backdrop: blur(20px);
 
+  --glass-background: rgba(255, 255, 255, 0.05);
   --glass-background-hover: rgba(255, 255, 255, 0.1);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
   --glass-border-hover: 1px solid rgba(255, 255, 255, 0.3);
+
+  --glass-background-dark: rgba(16, 16, 16, 0.5);
+  --glass-border-dark: 1px solid #282828;
 }

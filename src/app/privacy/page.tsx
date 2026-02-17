@@ -1,5 +1,4 @@
 import type {Metadata} from "next";
-import LegalsHeader from "@/components/webPage/legals/legalsHeader/legalsHeader";
 import styles from './page.module.scss';
 import React from "react";
 import BackButton from "@/components/webPage/legals/backButton/backButton";
@@ -7,6 +6,7 @@ import LastUpdateContainer from "@/components/webPage/legals/lastUpdateContainer
 import LegalSection from "@/components/webPage/legals/legalSection/legalSection";
 import Link from "next/link";
 import LegalsFooter from "@/components/webPage/creditsFooter/creditsFooter";
+import MobileHeader from "@/components/webPage/mobileHeader/mobileHeader";
 
 export const metadata: Metadata = {
     title: "Politique de confidentialité",
@@ -19,7 +19,9 @@ export const metadata: Metadata = {
 export default async function PrivacyPage() {
     return (
         <div className={styles.privacyPage} id={"privacyPage"}>
-            <LegalsHeader/>
+            <div className={styles.headerContainer}>
+                <MobileHeader homeButton={true}/>
+            </div>
 
             <div className={styles.headerTitle}>
                 <BackButton/>
