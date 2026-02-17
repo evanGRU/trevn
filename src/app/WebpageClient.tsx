@@ -259,7 +259,7 @@ export default function WebPageClient() {
                     className={styles.motionContainer}
                 >
                     <Image
-                        src={'/webPage/gameCapsule.svg'}
+                        src={'/webPage/gameCapsule.png'}
                         alt={"Game Capsule"}
                         width={500}
                         height={10}
