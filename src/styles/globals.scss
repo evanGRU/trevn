@@ -110,7 +110,8 @@ ul {
 .errorMessage {
   color: #E94B42;
   font-size: var(--text-12);
-  height: 16px;
+  height: auto;
+  min-height: 20px;
 }
 
 .fullBackground {

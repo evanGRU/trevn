@@ -19,7 +19,9 @@ export default function DefaultField({type, label, value, placeholder, handleCha
 
     return (
         <div className={styles.defaultField}>
-            <label htmlFor={type}>{label} {isRequired && <span>*</span>}</label>
+            {label && (
+                <label htmlFor={type}>{label} {isRequired && <span>*</span>}</label>
+            )}
             <div className={styles.fieldContainer}>
                 <input
                     id={type}

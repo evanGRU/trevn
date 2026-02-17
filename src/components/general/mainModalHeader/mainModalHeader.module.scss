@@ -1,27 +1,48 @@
+@use '../../../styles/_breakpoints' as bp;
+
 .mainModalHeader {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
+  height: 24px;
+  position: relative;
 
   .backButton{
     display: flex;
     align-items: center;
-    color: var(--color-text-secondary);
+    background-color: var(--glass-background);
+    border: var(--glass-border);
+    backdrop-filter: var(--glass-backdrop);
     text-transform: uppercase;
     text-decoration: none;
-    font-size: var(--text-12);
-    position: relative;
-    transition: color 0.3s ease;
-    padding: 2px 0;
+    font-size: var(--text-14);
+    font-weight: 400;
+    position: absolute;
+    left: 0;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    height: 32px;
+    width: auto;
+    border-radius: var(--radius-40);
+    padding: var(--space-08) var(--space-12);
+    @include bp.respond(laptop) {
+      aspect-ratio: unset;
+      font-size: var(--text-12);
+    }
 
     img {
+      height: 20px;
+      width: auto;
+      aspect-ratio: 1/1;
+      z-index: 400;
       transform: rotateZ(90deg);
-      height: 14px;
-      width: 14px;
+      @include bp.respond(laptop) {
+        height: 14px;
+      }
     }
 
     p {
+      color: var(--color-text);
       height: 100%;
       display: flex;
       align-items: center;
@@ -29,29 +50,14 @@
       padding: 0 4px 0 2px;
     }
 
-    &:before {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      height: 100%;
-      background-color: var(--color-background);
-      width: 0;
-      opacity: 0;
-      transition: width 0.3s ease, opacity 0.3s ease;
-    }
-
     &:hover {
-      color: var(--color-text);
-      &:before {
-        width: 100%;
-        opacity: 1;
-      }
+      background-color: var(--glass-background-hover);
+      border: var(--glass-border-hover);
     }
   }
 
   .logo {
     width: auto;
-    height: 24px;
+    height: 32px;
   }
 }

@@ -10,6 +10,7 @@ import {resetPasswordPrompts} from "@/utils/prompts";
 import {UserErrorCode} from "@/utils/types";
 import styles from "./page.module.scss";
 import MainModalHeader from "@/components/general/mainModalHeader/mainModalHeader";
+import {useMediaQueries} from "@/utils/helpers/useMediaQueries";
 
 interface FormValues {
     newPassword: string;
@@ -19,6 +20,7 @@ interface FormValues {
 export default function ResetPasswordPageClient() {
     const {errorToast, successToast} = useToasts();
     const router = useRouter();
+    const {isMobile} = useMediaQueries();
 
     const [formValues, setFormValues] = useState<FormValues>({
         newPassword: "",
@@ -97,6 +99,12 @@ export default function ResetPasswordPageClient() {
 
     return (
         <div className={styles.resetPage}>
+            {isMobile && (
+                <div className={styles.resetHeader}>
+                    <MainModalHeader hrefPath={"/"}>{"Accueil"}</MainModalHeader>
+                </div>
+            )}
+
             <AnimatePresence mode="wait">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -105,10 +113,10 @@ export default function ResetPasswordPageClient() {
                     transition={{ duration: 0.3 }}
                     className={styles.resetContainer}
                 >
-                    <div className={styles.resetHeader}>
-                        <MainModalHeader hrefPath={"/login"}>{"Annuler"}</MainModalHeader>
+                    <div className={styles.resetContainerHeader}>
+                        {!isMobile && <MainModalHeader hrefPath={"/login"}>{"Annuler"}</MainModalHeader>}
                         <div className={styles.headerTitle}>
-                            <h1>Réinitialiser ton mot de passe</h1>
+                            <h1>Réinitialiser ton <br/> mot de passe</h1>
                         </div>
                     </div>
 
@@ -119,8 +127,8 @@ export default function ResetPasswordPageClient() {
                                 value={formValues["newPassword"]}
                                 handleChange={(e) => handleChange("newPassword", e.target.value)}
                                 errorMessage={errorCode.newPassword && resetPasswordPrompts["newPassword"].errors[errorCode.newPassword]}
-                                label={resetPasswordPrompts["newPassword"].label}
-                                placeholder={resetPasswordPrompts["newPassword"].placeholder}
+                                label={isMobile ? "" : resetPasswordPrompts["newPassword"].label}
+                                placeholder={isMobile ? resetPasswordPrompts["newPassword"]["label"] : resetPasswordPrompts["newPassword"]["placeholder"]}
                                 isRequired={true}
                             />
                             <DefaultField
@@ -128,18 +136,16 @@ export default function ResetPasswordPageClient() {
                                 value={formValues["newPasswordConfirm"]}
                                 handleChange={(e) => handleChange("newPasswordConfirm", e.target.value)}
                                 errorMessage={errorCode.newPasswordConfirm && resetPasswordPrompts["newPasswordConfirm"].errors[errorCode.newPasswordConfirm]}
-                                label={resetPasswordPrompts["newPasswordConfirm"].label}
-                                placeholder={resetPasswordPrompts["newPasswordConfirm"].placeholder}
+                                label={isMobile ? "" : resetPasswordPrompts["newPasswordConfirm"].label}
+                                placeholder={isMobile ? resetPasswordPrompts["newPasswordConfirm"]["label"] : resetPasswordPrompts["newPasswordConfirm"]["placeholder"]}
                                 isRequired={true}
                                 autoFocus={false}
                             />
                         </div>
 
-                        <div className={styles.buttonsContainer}>
-                            <GlassButton type={"submit"} isDisabled={isLoading}>
-                                {"Réinitialiser"}
-                            </GlassButton>
-                        </div>
+                        <GlassButton type={"submit"} isDisabled={isLoading}>
+                            {"Réinitialiser"}
+                        </GlassButton>
                     </form>
 
                 </motion.div>

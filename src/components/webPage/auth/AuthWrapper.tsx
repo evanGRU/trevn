@@ -13,6 +13,7 @@ import {AuthModes, UserErrorCode} from "@/utils/types";
 import DefaultField from "@/components/general/defaultField/defaultField";
 import {userPrompts} from "@/utils/prompts";
 import MainModalHeader from "@/components/general/mainModalHeader/mainModalHeader";
+import {useMediaQueries} from "@/utils/helpers/useMediaQueries";
 
 interface FormValues {
     username: string;
@@ -22,6 +23,7 @@ interface FormValues {
 
 export default function AuthForm({ type }: {type: AuthModes}) {
     const router = useRouter();
+    const {isMobile, isLaptop} = useMediaQueries();
     const isLogin = type === "login";
     const {successToast, errorToast} = useToasts();
     const [formValues, setFormValues] = useState<FormValues>({
@@ -103,11 +105,15 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                 return;
             }
 
-            if (isLogin) {
-                router.push(`${redirect ?? "/groups"}`);
+            if (isLaptop) {
+                router.push("/maintenance/mobile");
             } else {
-                router.push(`/login${redirect ? `?redirect=${redirect}` : ''}`);
-                successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser ton inscription.");
+                if (isLogin) {
+                    router.push(`${redirect ?? "/groups"}`);
+                } else {
+                    router.push(`/login${redirect ? `?redirect=${redirect}` : ''}`);
+                    successToast("Ton compte est prêt ! Vérifie ta boîte mail pour finaliser ton inscription.");
+                }
             }
         } catch (err) {
             console.error(err);
@@ -169,6 +175,12 @@ export default function AuthForm({ type }: {type: AuthModes}) {
 
     return (
         <div className={styles.authPage}>
+            {isMobile && (
+                <div className={styles.authHeader}>
+                    <MainModalHeader hrefPath={"/"}>{"Accueil"}</MainModalHeader>
+                </div>
+            )}
+
             <AnimatePresence mode="wait">
                 <motion.div
                     key={type}
@@ -179,12 +191,14 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                     className={styles.formContainer}
                 >
                     <div className={styles.formHeader}>
-                        <MainModalHeader hrefPath={"/"}>{"Accueil"}</MainModalHeader>
+                        {!isMobile && (
+                            <MainModalHeader hrefPath={"/"}>{"Accueil"}</MainModalHeader>
+                        )}
                         <div className={styles.formHeaderTexts}>
-                            <h1>{isLogin ? "Content de te revoir !" : "Bienvenue !"}</h1>
+                            <h1>{isLogin ? "Content de te revoir" : "Bienvenue parmi nous"}</h1>
                             <p>{isLogin
                                 ? "Connecte-toi pour accéder à tes groupes."
-                                : "Crée ton compte pour commencer."}
+                                : "Commence par créer ton compte."}
                             </p>
                         </div>
                     </div>
@@ -197,8 +211,8 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                                     value={formValues["username"]}
                                     handleChange={(e) => handleChange("username", e.target.value)}
                                     errorMessage={errorCode.username && userPrompts["username"].errors[errorCode.username]}
-                                    label={userPrompts["username"].label}
-                                    placeholder={userPrompts["username"].placeholder}
+                                    label={isMobile ? "" : userPrompts["username"].label}
+                                    placeholder={isMobile ? userPrompts["username"].label : userPrompts["username"].placeholder}
                                     isRequired={true}
                                     maxLength={20}
                                 />
@@ -208,8 +222,8 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                                 value={formValues["email"]}
                                 handleChange={(e) => handleChange("email", e.target.value)}
                                 errorMessage={errorCode.email && userPrompts["email"].errors[errorCode.email]}
-                                label={userPrompts["email"].label}
-                                placeholder={userPrompts["email"].placeholder}
+                                label={isMobile ? "" : userPrompts["email"].label}
+                                placeholder={isMobile ? userPrompts["email"].label : userPrompts["email"].placeholder}
                                 isRequired={true}
                             />
                             <DefaultField
@@ -217,8 +231,8 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                                 value={formValues["password"]}
                                 handleChange={(e) => handleChange("password", e.target.value)}
                                 errorMessage={errorCode.password && userPrompts["password"].errors[errorCode.password]}
-                                label={userPrompts["password"].label}
-                                placeholder={userPrompts["password"].placeholder}
+                                label={isMobile ? "" : userPrompts["password"].label}
+                                placeholder={isMobile ? userPrompts["password"].label : userPrompts["password"].placeholder}
                                 isRequired={true}
                                 autoFocus={false}
                             />
@@ -230,7 +244,7 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                                     <span className={styles.checkmark}>
                                             <TickIcon/>
                                         </span>
-                                    Se souvenir de moi
+                                    <p>Se souvenir de moi</p>
                                 </label>
                                 <button
                                     type={"button"}
@@ -251,11 +265,11 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                     <div className={styles.formFooter}>
                         <p>
                             {isLogin
-                                ? "Vous n'avez pas encore de compte?"
-                                : "Vous avez déjà un compte?"}
+                                ? "Pas encore de compte ?"
+                                : "Tu as déjà un compte ?"}
                         </p>
                         <a href={isLogin ? `/signup${redirect ? `?redirect=${redirect}` : ''}` : `/login${redirect ? `?redirect=${redirect}` : ''}`}>
-                            {isLogin ? "Inscrivez-vous" : "Connectez-vous"}
+                            {isLogin ? "Inscris-toi" : "Connecte-toi"}
                         </a>
                     </div>
                 </motion.div>
