@@ -64,7 +64,7 @@ const howItemVariants = {
 
 export default function WebPageClient() {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
-    const {isMobile, isTablet, isLaptop} = useMediaQueries();
+    const {maxIsMobile, maxIsTablet, maxIsLaptop} = useMediaQueries();
 
     return (
         <div className={styles.homePage}>
@@ -80,8 +80,8 @@ export default function WebPageClient() {
                         className={styles.backgroundHeroContainer}
                     >
                         <motion.div
-                            initial={{ translateY: isLaptop ? "-50%" : "-60%" }}
-                            animate={{ translateY: isLaptop ? "-80%" : "-65%" }}
+                            initial={{ translateY: maxIsLaptop ? "-50%" : "-60%" }}
+                            animate={{ translateY: maxIsLaptop ? "-80%" : "-65%" }}
                             transition={{ duration: 1.2, ease: "easeInOut" }}
                             className={styles.heroFrameTop}
                         />
@@ -96,8 +96,8 @@ export default function WebPageClient() {
                         ></iframe>
 
                         <motion.div
-                            initial={{ translateY: isLaptop ? "50%" : "60%" }}
-                            animate={{ translateY: isLaptop ? "80%" : "65%" }}
+                            initial={{ translateY: maxIsLaptop ? "50%" : "60%" }}
+                            animate={{ translateY: maxIsLaptop ? "80%" : "65%" }}
                             transition={{ duration: 1.2, ease: "easeInOut" }}
                             className={styles.heroFrameBottom}
                         />
@@ -133,8 +133,8 @@ export default function WebPageClient() {
 
                         <motion.div variants={heroItemVariants}>
                             <p>
-                                Vos soirées gaming {isMobile && <br />}
-                                organisées avec vos amis, {isMobile && <br />}
+                                Vos soirées gaming {maxIsMobile && <br />}
+                                organisées avec vos amis, {maxIsMobile && <br />}
                                 rapidement et simplement.
                             </p>
                         </motion.div>
@@ -167,10 +167,10 @@ export default function WebPageClient() {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
                 >
-                    <motion.div variants={howItemVariants} className={isLaptop ? styles.homeCardDivLeft : ""}>
+                    <motion.div variants={howItemVariants} className={maxIsLaptop ? styles.homeCardDivLeft : ""}>
                         <HomeCard variant="background" cardPosition="one">
                             <h4>Créé ton groupe</h4>
-                            {isTablet ? (
+                            {maxIsTablet ? (
                                 <p>Ouvre et personnalise ton propre groupe.</p>
                             ) : (
                                 <p>Ouvre ton propre groupe en lui choisissant son nom et son avatar.</p>
@@ -178,10 +178,10 @@ export default function WebPageClient() {
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants} className={isLaptop ? styles.homeCardDivRight : ""}>
+                    <motion.div variants={howItemVariants} className={maxIsLaptop ? styles.homeCardDivRight : ""}>
                         <HomeCard variant="default" cardPosition="two">
                             <h4>Invite tes amis</h4>
-                            {isTablet ? (
+                            {maxIsTablet ? (
                                 <p>Partage ton code ou ton lien d&apos;invitation.</p>
                             ) : (
                                 <p>Partage ton code de groupe ou ton lien d&apos;invitation et laisse tes amis te rejoindre.</p>
@@ -189,10 +189,10 @@ export default function WebPageClient() {
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants} className={isLaptop ? styles.homeCardDivLeft : ""}>
+                    <motion.div variants={howItemVariants} className={maxIsLaptop ? styles.homeCardDivLeft : ""}>
                         <HomeCard variant="background" cardPosition="three">
                             <h4>Ajoute des jeux</h4>
-                            {isTablet ? (
+                            {maxIsTablet ? (
                                 <p>Sélectionnez vos jeux et créez votre wishlist.</p>
                             ) : (
                                 <p>Sélectionnez les jeux qui vous plaisent et créez votre wishlist de groupe.</p>
@@ -200,10 +200,10 @@ export default function WebPageClient() {
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants} className={isLaptop ? styles.homeCardDivRight : ""}>
+                    <motion.div variants={howItemVariants} className={maxIsLaptop ? styles.homeCardDivRight : ""}>
                         <HomeCard variant="default" cardPosition="four">
                             <h4>Like tes préférés</h4>
-                            {isTablet ? (
+                            {maxIsTablet ? (
                                 <p>Fait savoir à tes amis quels jeux tu préfères.</p>
                             ) : (
                                 <p>Fait savoir à tes amis quels sont les jeux qui te plaisent le plus en les likant.</p>
@@ -211,10 +211,10 @@ export default function WebPageClient() {
                         </HomeCard>
                     </motion.div>
 
-                    <motion.div variants={howItemVariants} className={isLaptop ? styles.homeCardDivLeft : ""}>
-                        <HomeCard variant={isLaptop ? "background" : "default"} cardPosition="five">
+                    <motion.div variants={howItemVariants} className={maxIsLaptop ? styles.homeCardDivLeft : ""}>
+                        <HomeCard variant={maxIsLaptop ? "background" : "default"} cardPosition="five">
                             <h4>Amusez-vous</h4>
-                            {isTablet ? (
+                            {maxIsTablet ? (
                                 <p>Choisissez un jeu et lancez-vous !</p>
                             ) : (
                                 <p>Choisissez un jeu parmis les jeux de votre liste et lancez votre partie !</p>
@@ -233,8 +233,8 @@ export default function WebPageClient() {
                     className={styles.partnerContainer}
                 >
                     <h3>
-                        Trouve tes jeux {isMobile && <br />}
-                        préférés grâce à la {isMobile && <br />}
+                        Trouve tes jeux {maxIsMobile && <br />}
+                        préférés grâce à la {maxIsMobile && <br />}
                         bibliothèque{" "}
                         <span className={styles.steamInline}>
                             <Image
@@ -243,8 +243,8 @@ export default function WebPageClient() {
                                 width={180}
                                 height={50}
                             />
-                        </span>{" "}{isMobile && <br />}
-                        intégrée à notre {isMobile && <br />}
+                        </span>{" "}{maxIsMobile && <br />}
+                        intégrée à notre {maxIsMobile && <br />}
                         plateforme.
                     </h3>
                 </motion.div>
@@ -272,7 +272,7 @@ export default function WebPageClient() {
                     transition={{ duration: 1 }}
                     className={styles.contentContainer}
                 >
-                    <h2>Tes soirées {isMobile && <br />} commencent {isMobile && <br />} maintenant</h2>
+                    <h2>Tes soirées {maxIsMobile && <br />} commencent {maxIsMobile && <br />} maintenant</h2>
                     <Link href={"/login"}>
                         <DefaultButton>
                             Créé ton premier groupe
@@ -291,7 +291,7 @@ export default function WebPageClient() {
                 >
                     <div className={styles.glassContainer}>
                         <h2>Rejoins <br/> la communauté</h2>
-                        <p>Participe à la béta, donne ton avis et aide-nous à créer la meilleure {!isLaptop && <br/>} plateforme pour les soirées gaming entre potes.</p>
+                        <p>Participe à la béta, donne ton avis et aide-nous à créer la meilleure {!maxIsLaptop && <br/>} plateforme pour les soirées gaming entre potes.</p>
                         <GlassButton
                             type={"link"}
                             linkHref={"https://discord.gg/mvWp38PcrV"}
@@ -324,7 +324,7 @@ export default function WebPageClient() {
                 <div className={styles.footerContainer}>
                     <div className={styles.legalsContainer}>
                         <p>Informations légales</p>
-                        {!isLaptop && <p>/</p>}
+                        {!maxIsLaptop && <p>/</p>}
                         <div className={styles.legalsButtons}>
                             <Link href={"/legals"}>Mentions Légales</Link>
                             <Link href={"/privacy"}>Confidentialité</Link>

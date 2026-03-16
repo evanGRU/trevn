@@ -1,0 +1,19 @@
+.globalHeaderResponsive {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-24);
+  margin-bottom: var(--space-24);
+
+  .logo {
+    height: 32px;
+    width: 54px;
+  }
+
+  .headerButtons {
+    display: flex;
+    align-items: center;
+    gap: var(--space-04);
+  }
+}

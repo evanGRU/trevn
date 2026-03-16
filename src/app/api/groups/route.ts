@@ -26,7 +26,8 @@ export async function GET() {
           ),
           groups_members!inner (
             user_id
-          )
+          ),
+          games_count:groups_games_with_likes(count)
         `)
         .eq('groups_members.user_id', user.id)
         .order('created_at', { ascending: false });
@@ -43,6 +44,7 @@ export async function GET() {
         avatar: Array.isArray(group?.avatar)
             ? group?.avatar[0] ?? null
             : group?.avatar,
+        games_count: group?.games_count?.[0]?.count ?? 0
     }));
 
     return NextResponse.json(groups);

@@ -12,9 +12,10 @@ interface DefaultFieldProps {
     errorMessage?: string;
     maxLength?: number;
     autoFocus?: boolean;
+    version?: string;
 }
 
-export default function DefaultField({type, label, value, placeholder, handleChange, isRequired, errorMessage, maxLength, autoFocus = true}: DefaultFieldProps) {
+export default function DefaultField({type, label, value, placeholder, handleChange, isRequired, errorMessage, maxLength, autoFocus = true, version = "default"}: DefaultFieldProps) {
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
     return (
@@ -22,7 +23,7 @@ export default function DefaultField({type, label, value, placeholder, handleCha
             {label && (
                 <label htmlFor={type}>{label} {isRequired && <span>*</span>}</label>
             )}
-            <div className={styles.fieldContainer}>
+            <div className={`${styles.fieldContainer} ${version === "mobile" ? styles.mobileFieldContainer : ""}`}>
                 <input
                     id={type}
                     value={value}
@@ -53,7 +54,7 @@ export default function DefaultField({type, label, value, placeholder, handleCha
                     </div>
                 )}
             </div>
-            <p className={"errorMessage"}>{errorMessage ?? " "}</p>
+            {version !== "mobile" && <p className={"errorMessage"}>{errorMessage ?? " "}</p>}
         </div>
     )
 }

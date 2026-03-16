@@ -23,7 +23,7 @@ interface FormValues {
 
 export default function AuthForm({ type }: {type: AuthModes}) {
     const router = useRouter();
-    const {isMobile, isLaptop} = useMediaQueries();
+    const {maxIsMobile, maxIsTablet, maxIsLaptop} = useMediaQueries();
     const isLogin = type === "login";
     const {successToast, errorToast} = useToasts();
     const [formValues, setFormValues] = useState<FormValues>({
@@ -105,7 +105,7 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                 return;
             }
 
-            if (isLaptop) {
+            if (maxIsLaptop) {
                 router.push("/maintenance/mobile");
             } else {
                 if (isLogin) {
@@ -175,7 +175,7 @@ export default function AuthForm({ type }: {type: AuthModes}) {
 
     return (
         <div className={styles.authPage}>
-            {isMobile && (
+            {maxIsMobile && (
                 <div className={styles.authHeader}>
                     <MainModalHeader hrefPath={"/"}>{"Accueil"}</MainModalHeader>
                 </div>
@@ -191,7 +191,7 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                     className={styles.formContainer}
                 >
                     <div className={styles.formHeader}>
-                        {!isMobile && (
+                        {!maxIsMobile && (
                             <MainModalHeader hrefPath={"/"}>{"Accueil"}</MainModalHeader>
                         )}
                         <div className={styles.formHeaderTexts}>
@@ -211,8 +211,8 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                                     value={formValues["username"]}
                                     handleChange={(e) => handleChange("username", e.target.value)}
                                     errorMessage={errorCode.username && userPrompts["username"].errors[errorCode.username]}
-                                    label={isMobile ? "" : userPrompts["username"].label}
-                                    placeholder={isMobile ? userPrompts["username"].label : userPrompts["username"].placeholder}
+                                    label={maxIsTablet ? "" : userPrompts["username"].label}
+                                    placeholder={maxIsTablet ? userPrompts["username"].label : userPrompts["username"].placeholder}
                                     isRequired={true}
                                     maxLength={20}
                                 />
@@ -222,8 +222,8 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                                 value={formValues["email"]}
                                 handleChange={(e) => handleChange("email", e.target.value)}
                                 errorMessage={errorCode.email && userPrompts["email"].errors[errorCode.email]}
-                                label={isMobile ? "" : userPrompts["email"].label}
-                                placeholder={isMobile ? userPrompts["email"].label : userPrompts["email"].placeholder}
+                                label={maxIsTablet ? "" : userPrompts["email"].label}
+                                placeholder={maxIsTablet ? userPrompts["email"].label : userPrompts["email"].placeholder}
                                 isRequired={true}
                             />
                             <DefaultField
@@ -231,8 +231,8 @@ export default function AuthForm({ type }: {type: AuthModes}) {
                                 value={formValues["password"]}
                                 handleChange={(e) => handleChange("password", e.target.value)}
                                 errorMessage={errorCode.password && userPrompts["password"].errors[errorCode.password]}
-                                label={isMobile ? "" : userPrompts["password"].label}
-                                placeholder={isMobile ? userPrompts["password"].label : userPrompts["password"].placeholder}
+                                label={maxIsTablet ? "" : userPrompts["password"].label}
+                                placeholder={maxIsTablet ? userPrompts["password"].label : userPrompts["password"].placeholder}
                                 isRequired={true}
                                 autoFocus={false}
                             />
