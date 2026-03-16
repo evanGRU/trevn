@@ -10,11 +10,11 @@ import {useMediaQueries} from "@/utils/helpers/useMediaQueries";
 
 export default function EmailConfirmedPageClient() {
     const router = useRouter();
-    const {isMobile} = useMediaQueries();
+    const {maxIsMobile} = useMediaQueries();
 
     return (
         <div className={styles.confirmPage}>
-            {isMobile && (
+            {maxIsMobile && (
                 <div className={styles.confirmHeader}>
                     <MainModalHeader hrefPath={"/"}>{"Accueil"}</MainModalHeader>
                 </div>
@@ -28,7 +28,7 @@ export default function EmailConfirmedPageClient() {
                     className={styles.confirmContainer}
                 >
                     <div className={styles.confirmContainerHeader}>
-                        {!isMobile && (
+                        {!maxIsMobile && (
                             <MainModalHeader hrefPath={"/"}>{"Accueil"}</MainModalHeader>
                         )}
                         <div className={styles.confirmHeaderTexts}>

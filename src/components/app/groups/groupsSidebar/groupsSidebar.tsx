@@ -8,7 +8,7 @@ import Link from "next/link";
 import {useParams} from "next/navigation";
 import {Skeleton} from "@mui/material";
 import {useEffect, useState} from "react";
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 
 const containerVariants = {
     hidden: {},
@@ -31,12 +31,14 @@ interface GroupsListProps {
     groups: Group[];
     setModalState: React.Dispatch<React.SetStateAction<boolean>>;
     isLoading: boolean;
+    maxIsTablet: boolean;
 }
 
-export default function GroupsSidebar({groups, setModalState, isLoading}: GroupsListProps) {
+export default function GroupsSidebar({groups, setModalState, isLoading, maxIsTablet}: GroupsListProps) {
     const params = useParams();
     const selectedGroupId = params.groupId;
     const [groupsAreLoading, setGroupsAreLoading] = useState(true);
+    const totalGroups = groups.length;
 
     useEffect(() => {
         let timeout: NodeJS.Timeout;
@@ -53,48 +55,78 @@ export default function GroupsSidebar({groups, setModalState, isLoading}: Groups
     return (
         <aside className={styles.groupsListSection}>
             <div className={styles.groupsListContainer}>
-                <div className={styles.groupsListHeader}>
-                    <div className={styles.groupsTitle}>
-                        <h4>Tous tes groupes</h4>
-                    </div>
+                <div className={styles.groupsTitle}>
+                    <h4>Tous tes groupes</h4>
                 </div>
 
-
-                    {groupsAreLoading ? (
-                        <div className={styles.groupsList}>
-                            {Array.from({ length: 4 }).map((_, i) => (
-                                <Skeleton key={i} variant="rectangular" animation={false} width={"100%"} height={56} style={{borderRadius: "10px"}}/>
-                            ))}
-                        </div>
-                    ) : (
-                        <motion.div
-                            className={styles.groupsList}
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate={groupsAreLoading ? "hidden" : "visible"}
-                        >
-                            {(groups.map((g: Group) => (
-                                <motion.div key={`groupe-${g?.id}`} variants={itemVariants}>
+                {groupsAreLoading ? (
+                    <div className={styles.groupsList}>
+                        {Array.from({ length: 4 }).map((_, i) => (
+                            <Skeleton
+                                key={i}
+                                variant="rectangular"
+                                animation={false}
+                                width={"100%"}
+                                height={maxIsTablet ? 72 : 56}
+                                style={{
+                                    borderRadius: maxIsTablet ? 0 : "16px",
+                                    marginBottom: maxIsTablet ? "4px" : 0,
+                                    marginTop: maxIsTablet ? "4px" : 0
+                                }}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <motion.div
+                        className={styles.groupsList}
+                        variants={containerVariants}
+                        initial={"hidden"}
+                        animate={"visible"}
+                    >
+                        <AnimatePresence>
+                            {(groups.map((g: Group, index: number) => (
+                                <motion.div
+                                    key={`groupe-${g?.id}`}
+                                    variants={itemVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="hidden"
+                                >
                                     <Link
-                                        className={`${styles.groupCard} ${g?.id === selectedGroupId ? styles.selectedGroup : ""}`}
+                                        className={`
+                                        ${styles.groupCard} 
+                                        ${!maxIsTablet && g?.id === selectedGroupId ? styles.selectedGroup : ""} 
+                                        ${maxIsTablet && index === (totalGroups - 1) ? styles.lastGroupCard : ""}
+                                    `}
                                         href={`/groups/${g?.id}`}
                                     >
-                                        <DbImage
-                                            src={getPublicAvatarUrl(g?.avatar.type, g?.avatar.name)}
-                                            alt="Group avatar"
-                                            width={48}
-                                            height={48}
-                                        />
-                                        <p>{g?.name}</p>
+                                        <div className={styles.groupCardDetails}>
+                                            <DbImage
+                                                src={getPublicAvatarUrl(g?.avatar.type, g?.avatar.name)}
+                                                alt="Group avatar"
+                                                width={48}
+                                                height={48}
+                                            />
+                                            <p>{g?.name}</p>
+                                        </div>
+
+                                        {maxIsTablet && (
+                                            <div className={styles.groupCardArrowContainer}>
+                                                <p>{g?.games_count}</p>
+                                                <Image src="/icons/arrowRight.svg" alt="Right arrow icon" width={24} height={24}/>
+                                            </div>
+                                        )}
                                     </Link>
                                 </motion.div>
                             )))}
-                        </motion.div>
-                    )}
+                        </AnimatePresence>
+
+                    </motion.div>
+                )}
 
             </div>
 
-            {groups.length > 0 && (
+            {!maxIsTablet && groups.length > 0 && (
                 <div className={styles.newGroupButtonContainer}>
                     <DefaultButton handleClick={() => setModalState(true)}>
                         <Image
