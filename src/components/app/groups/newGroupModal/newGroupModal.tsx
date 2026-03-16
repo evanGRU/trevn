@@ -1,7 +1,7 @@
 import styles from "./newGroupModal.module.scss";
 import Image from "next/image";
 import DefaultField from "@/components/general/defaultField/defaultField";
-import {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import GlassButton from "@/components/general/glassButton/glassButton";
 import {nanoid} from "nanoid";
 import {useToasts} from "@/utils/helpers/useToasts";
@@ -12,6 +12,8 @@ import {DbImage} from "@/components/general/dbImage/dbImage";
 import ModalWrapper from "@/components/general/modalWrapper/modalWrapper";
 import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
 import {Skeleton} from "@mui/material";
+import {useMediaQueries} from "@/utils/helpers/useMediaQueries";
+import MobileGenericButton from "@/components/app/responsive/mobileGenericButton/mobileGenericButton";
 
 interface NewGroupModalProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -189,97 +191,121 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
         }
     };
 
+    // Responsive section
+    const {maxIsTablet} = useMediaQueries();
+    const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+
+    const isFormComplete = useMemo(() => {
+        if (!newGroupName) return false;
+        if (!selectedAvatar && !imageFile) return false;
+        return validateForm();
+    }, [newGroupName, selectedAvatar, imageFile]);
+
     return (
-        <ModalWrapper setModal={setModal} closeIconTopPosition={"336px"}>
-            <div className={styles.createGroupContainer}>
+        <ModalWrapper setModal={setModal} closeIconTopPosition={"336px"} maxIsTablet={maxIsTablet}>
+            {maxIsTablet ? (
+                <div className={styles.mobileFormHeader}>
+                    <MobileGenericButton buttonDetails={{variant: "icon", content: "close", callback: () => setModal(prev => !prev)}}/>
+                    <h1>Nouveau groupe</h1>
+                    <MobileGenericButton
+                        buttonDetails={{variant: "validation", content: isFormComplete ? "checkGreen" : "check", disabled: !isFormComplete, callback: () => handleCreateGroup}}
+                        formId={"newGroupForm"}
+                    />
+                </div>
+            ) : (
                 <div className={styles.formHeader}>
                     <h1>Créer un nouveau groupe</h1>
                     <p>Fais de ton groupe un espace unique en choisissant son nom et son icône.</p>
                 </div>
+            )}
 
-                <form className={styles.createGroupForm} onSubmit={handleCreateGroup}>
-                    <div className={styles.avatarInput}>
-                        <label htmlFor={"avatar"}>Avatar de groupe <span>*</span></label>
-                        <div className={styles.avatarContainer}>
-                            <button
-                                type={"button"}
-                                className={`${styles.avatarPreviewButton} ${previewUrl ? styles.avatarPreviewButtonFull : ""} ${errorMessages.avatar ? styles.requiredError : ""}`}>
-                                <label htmlFor="newAvatarInput">
-                                    {previewUrl ? (
-                                        <DbImage
-                                            src={previewUrl}
-                                            alt="Preview avatar"
-                                            width={96}
-                                            height={96}
-                                        />
-                                    ) : (
-                                        <Image
-                                            src="/icons/picture.svg"
-                                            alt="Avatar icon"
-                                            width={32}
-                                            height={32}
-                                        />
-                                    )}
-                                </label>
-                                <input
-                                    id="newAvatarInput"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleFileSelect}
-                                />
-                            </button>
-
-                            <div className={styles.avatarsButtonsContainer}>
-                                <p>Si tu ne sais pas quoi mettre voici quelques idées, tu pourras toujours le modifier plus tard.</p>
-                                <div className={styles.avatarsSelectors}>
-                                    {areAvatarsPresetsLoading ? (
-                                        Array.from({length: 6}).map((_, i) => (
-                                            <Skeleton
-                                                key={i}
-                                                variant="rectangular"
-                                                animation={false}
-                                                width={"48px"}
-                                                height={"48px"}
-                                                style={{borderRadius: "4px"}}
-                                            />
-                                        ))
-                                    ) : (avatarsPresets?.map((avatar: Avatar) => (
-                                        <DbImage
-                                            key={avatar.id}
-                                            src={getPublicAvatarUrl(avatar.type, avatar.name)}
-                                            alt="Avatar preset"
-                                            width={48}
-                                            height={48}
-                                            className={`${styles.avatarPreset} ${selectedAvatar === avatar.id ? styles.selectedAvatar : ""}`}
-                                            onClick={() => {
-                                                setImageFile(null);
-                                                setErrorMessages((prev) => ({
-                                                    ...prev,
-                                                    avatar: ""
-                                                }));
-                                                setSelectedAvatar(avatar.id);
-                                                setPreviewUrl(getPublicAvatarUrl(avatar.type, avatar.name));
-                                            }}
-                                        />
-                                ))
-
-                                    )}
-                                </div>
-                            </div>
-                        </div>
+            <form id="newGroupForm" className={styles.createGroupForm} onSubmit={handleCreateGroup}>
+                <div className={styles.avatarContainer}>
+                    <div className={styles.avatarPreviewContainer}>
+                        {!maxIsTablet && <label htmlFor={"avatar"}>Avatar de groupe <span>*</span></label>}
+                        <button
+                            type={"button"}
+                            className={`${styles.avatarPreviewButton} ${previewUrl ? styles.avatarPreviewButtonFull : ""} ${errorMessages.avatar ? styles.requiredError : ""}`}>
+                            <label htmlFor="newAvatarInput">
+                                {previewUrl ? (
+                                    <DbImage
+                                        src={previewUrl}
+                                        alt="Preview avatar"
+                                        width={96}
+                                        height={96}
+                                        className={styles.previewImage}
+                                    />
+                                ) : (
+                                    <Image
+                                        src="/icons/picture.svg"
+                                        alt="Avatar icon"
+                                        width={32}
+                                        height={32}
+                                    />
+                                )}
+                            </label>
+                            <input
+                                id="newAvatarInput"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileSelect}
+                            />
+                        </button>
                     </div>
 
-                    <div className={styles.fieldAndButtonContainer}>
-                        <DefaultField
-                            type={"text"}
-                            label={"Nom du groupe"}
-                            value={newGroupName}
-                            handleChange={(e) => handleChange("name", e.target.value)}
-                            isRequired={true}
-                            errorMessage={errorMessages?.name}
-                            maxLength={30}
-                        />
+                    <div className={styles.avatarsButtonsContainer}>
+                        {!maxIsTablet && <p>Si tu ne sais pas quoi mettre voici quelques idées, tu pourras toujours le modifier plus tard.</p>}
+                        <div className={styles.avatarsSelectors}>
+                            {areAvatarsPresetsLoading ? (
+                                Array.from({length: 6}).map((_, i) => (
+                                    <Skeleton
+                                        key={i}
+                                        variant="rectangular"
+                                        animation={false}
+                                        width={"48px"}
+                                        height={"48px"}
+                                        style={{borderRadius: "4px"}}
+                                    />
+                                ))
+                            ) : (
+                                avatarsPresets?.map((avatar: Avatar) => (
+                                    <DbImage
+                                        key={avatar.id}
+                                        src={getPublicAvatarUrl(avatar.type, avatar.name)}
+                                        alt="Avatar preset"
+                                        width={48}
+                                        height={48}
+                                        className={`${styles.avatarPreset} ${selectedAvatar === avatar.id ? styles.selectedAvatar : ""}`}
+                                        onClick={() => {
+                                            setImageFile(null);
+                                            setErrorMessages((prev) => ({
+                                                ...prev,
+                                                avatar: ""
+                                            }));
+                                            setSelectedAvatar(avatar.id);
+                                            setPreviewUrl(getPublicAvatarUrl(avatar.type, avatar.name));
+                                        }}
+                                    />
+                                ))
+                            )}
+                        </div>
+                    </div>
+                </div>
 
+                <div className={styles.fieldAndButtonContainer}>
+                    <DefaultField
+                        type={"text"}
+                        label={maxIsTablet ? "" :  "Nom du groupe"}
+                        placeholder={maxIsTablet ? "Nom du groupe" : ""}
+                        value={newGroupName}
+                        handleChange={(e) => handleChange("name", e.target.value)}
+                        isRequired={true}
+                        errorMessage={errorMessages?.name}
+                        maxLength={30}
+                        version={maxIsTablet ? "mobile" : "default"}
+                    />
+
+                    {!maxIsTablet && (
                         <div className={styles.submitButton}>
                             <GlassButton
                                 type={"submit"}
@@ -288,12 +314,15 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                                 Créer mon groupe
                             </GlassButton>
                         </div>
-                    </div>
-                </form>
-            </div>
+                    )}
+                </div>
+            </form>
 
-            <div className={styles.joinGroupContainer}>
-                <h3>Tu as un code d&apos;invitation?</h3>
+            <div className={`${styles.joinGroupContainer} ${isJoinModalOpen ? styles.mobileJoinGroupContainer : ""}`}>
+                <div className={styles.joinGroupTitleContainer} onClick={() => maxIsTablet && setIsJoinModalOpen(prevState => !prevState)}>
+                    <h3>Tu as un code d&apos;invitation?</h3>
+                    {maxIsTablet && <Image src="/icons/arrowRight.svg" alt="Right arrow icon" width={24} height={24}/>}
+                </div>
                 <form className={styles.joinGroupForm} onSubmit={handleJoinGroup}>
                     <input
                         name="invitationCode"
@@ -304,6 +333,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                         onChange={() => {
                             setErrorMessages({invitationCode: ""});
                         }}
+                        className={!!errorMessages.invitationCode || isLoading ? styles.errorInput : ""}
                     />
 
                     <button
@@ -314,7 +344,7 @@ export default function NewGroupModal({setModal, refreshGroups}: NewGroupModalPr
                         Rejoindre
                     </button>
                 </form>
-                <p className={"errorMessage"}>{errorMessages.invitationCode}</p>
+                {!maxIsTablet && <p className={"errorMessage"}>{errorMessages.invitationCode}</p>}
             </div>
         </ModalWrapper>
     )
