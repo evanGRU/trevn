@@ -15,8 +15,10 @@ import Loader from "@/components/general/loader/loader";
 import {useParams, useRouter, useSearchParams} from "next/navigation";
 import {useToasts} from "@/utils/helpers/useToasts";
 import {useSWRWithError} from "@/utils/helpers/useSWRWithError";
-import {Group, Profile} from "@/utils/types";
+import {Group, mobileGenericButtonDetails, Profile} from "@/utils/types";
 import {useMediaQueries} from "@/utils/helpers/useMediaQueries";
+import GlobalMobileHeader from "@/components/app/responsive/globalMobileHeader/globalMobileHeader";
+import MobileNavbar from "@/components/app/responsive/mobileNavbar/mobileNavbar";
 
 export default function GroupsPageLayoutClient({children}: {children: React.ReactNode}) {
     const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState<boolean>(false);
@@ -31,12 +33,11 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
     const { errorToast } = useToasts();
     const router = useRouter();
 
-    const {isLaptop} = useMediaQueries();
-    useEffect(() => {
-        if (isLaptop) {
-            router.push('/maintenance/mobile')
-        }
-    }, [isLaptop]);
+    // useEffect(() => {
+    //     if (isLaptop) {
+    //         router.push('/maintenance/mobile')
+    //     }
+    // }, [isLaptop]);
 
     useEffect(() => {
         const toast = searchParams.get("toast");
@@ -97,47 +98,59 @@ export default function GroupsPageLayoutClient({children}: {children: React.Reac
         errorMessage: "Une erreur s'est produite en essayant de récupérer ton profil.",
     });
 
-    // const {
-    //     data: gamesWithLikes,
-    //     isLoading: gamesWithLikesLoading,
-    // } = useSWRWithError<GameCapsuleData[]>("/api/games/leaderboard", {
-    //     errorMessage: "Une erreur s'est produite en essayant de récupérer le classement des jeux les plus likés.",
-    // });
+
+    // Responsive section
+    const {maxIsTablet} = useMediaQueries();
+
+    const mobileButtonsArray: mobileGenericButtonDetails[] = [
+        {variant: "text", content: "Nouveau", callback: () => setIsNewGroupModalOpen(prev => !prev)},
+        // {variant: "icon", content: "bell"}
+    ];
 
     return (!profileLoading && profile) ? (
         <div className={styles.mainPage}>
-            <MainHeader profile={profile} refreshProfile={refreshProfile}/>
+            {maxIsTablet ? <GlobalMobileHeader mobileGenericButtonArray={mobileButtonsArray}/>
+                : <MainHeader profile={profile} refreshProfile={refreshProfile}/>}
+
 
             <div className={styles.mainAppContainer}>
                 <GroupsSidebar
                     groups={groupsList ?? []}
                     setModalState={setIsNewGroupModalOpen}
                     isLoading={groupsLoading}
+                    maxIsTablet={maxIsTablet}
                 />
-                <MenuScrollContext.Provider value={menuRef}>
-                    <main ref={containerRef} className={`mainContainer ${styles.mainContentContainer}`} onScroll={handleScroll}>
-                        {groupsList?.length === 0 && (
-                            <div className={styles.noGroupsContainer}>
-                                <h1>C’est un peu vide ici…</h1>
-                                <p>Crée ton premier groupe !</p>
 
-                                <DefaultButton handleClick={() => setIsNewGroupModalOpen(true)}>
-                                    <Image src="/icons/plus.svg" width={20} height={20} alt="Plus icon" />
-                                    Nouveau groupe
-                                </DefaultButton>
-                            </div>
-                        )}
-
-                        {groupsList && groupsList.length > 0 && (
-                            groupId ? (children) : (
+                {!maxIsTablet && (
+                    <MenuScrollContext.Provider value={menuRef}>
+                        <main ref={containerRef} className={`mainContainer ${styles.mainContentContainer}`} onScroll={handleScroll}>
+                            {groupsList?.length === 0 && (
                                 <div className={styles.noGroupsContainer}>
-                                    <h1>Bienvenue sur Trevn {profile.username} !</h1>
-                                    <p>Retrouve ici, prochainement, le classement des jeux les plus likés par les utilisateurs et bien plus encore...</p>
+                                    <h1>C’est un peu vide ici…</h1>
+                                    <p>Crée ton premier groupe !</p>
+
+                                    <DefaultButton handleClick={() => setIsNewGroupModalOpen(true)}>
+                                        <Image src="/icons/plus.svg" width={20} height={20} alt="Plus icon" />
+                                        Nouveau groupe
+                                    </DefaultButton>
                                 </div>
-                            )
-                        )}
-                    </main>
-                </MenuScrollContext.Provider>
+                            )}
+
+                            {groupsList && groupsList.length > 0 && (
+                                groupId ? (children) : (
+                                    <div className={styles.noGroupsContainer}>
+                                        <h1>Bienvenue sur Trevn {profile.username} !</h1>
+                                        <p>Retrouve ici, prochainement, le classement des jeux les plus likés par les utilisateurs et bien plus encore...</p>
+                                    </div>
+                                )
+                            )}
+                        </main>
+                    </MenuScrollContext.Provider>
+                )}
+
+                {maxIsTablet && (
+                    <MobileNavbar profile={profile} activeMenu={"groups"}/>
+                )}
             </div>
 
             <AnimatePresence mode="wait">

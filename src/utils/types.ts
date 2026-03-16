@@ -48,6 +48,7 @@ export type Group = {
     avatar: Avatar;
     id: string;
     name: string;
+    games_count: number;
 } | null;
 
 // UserSettings
@@ -115,3 +116,13 @@ export type GameCapsuleData = {
     likes_count: number;
     name: string;
 };
+
+// MobileGenericButton
+
+export type mobileGenericButtonDetails = {
+    variant: "text" | "icon" | "validation";
+    content: string;
+    redirect?: string;
+    disabled?: boolean;
+    callback?: () => void;
+}

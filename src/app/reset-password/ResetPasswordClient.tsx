@@ -20,7 +20,7 @@ interface FormValues {
 export default function ResetPasswordPageClient() {
     const {errorToast, successToast} = useToasts();
     const router = useRouter();
-    const {isMobile} = useMediaQueries();
+    const {maxIsMobile} = useMediaQueries();
 
     const [formValues, setFormValues] = useState<FormValues>({
         newPassword: "",
@@ -99,7 +99,7 @@ export default function ResetPasswordPageClient() {
 
     return (
         <div className={styles.resetPage}>
-            {isMobile && (
+            {maxIsMobile && (
                 <div className={styles.resetHeader}>
                     <MainModalHeader hrefPath={"/"}>{"Accueil"}</MainModalHeader>
                 </div>
@@ -114,7 +114,7 @@ export default function ResetPasswordPageClient() {
                     className={styles.resetContainer}
                 >
                     <div className={styles.resetContainerHeader}>
-                        {!isMobile && <MainModalHeader hrefPath={"/login"}>{"Annuler"}</MainModalHeader>}
+                        {!maxIsMobile && <MainModalHeader hrefPath={"/login"}>{"Annuler"}</MainModalHeader>}
                         <div className={styles.headerTitle}>
                             <h1>Réinitialiser ton <br/> mot de passe</h1>
                         </div>
@@ -127,8 +127,8 @@ export default function ResetPasswordPageClient() {
                                 value={formValues["newPassword"]}
                                 handleChange={(e) => handleChange("newPassword", e.target.value)}
                                 errorMessage={errorCode.newPassword && resetPasswordPrompts["newPassword"].errors[errorCode.newPassword]}
-                                label={isMobile ? "" : resetPasswordPrompts["newPassword"].label}
-                                placeholder={isMobile ? resetPasswordPrompts["newPassword"]["label"] : resetPasswordPrompts["newPassword"]["placeholder"]}
+                                label={maxIsMobile ? "" : resetPasswordPrompts["newPassword"].label}
+                                placeholder={maxIsMobile ? resetPasswordPrompts["newPassword"]["label"] : resetPasswordPrompts["newPassword"]["placeholder"]}
                                 isRequired={true}
                             />
                             <DefaultField
@@ -136,8 +136,8 @@ export default function ResetPasswordPageClient() {
                                 value={formValues["newPasswordConfirm"]}
                                 handleChange={(e) => handleChange("newPasswordConfirm", e.target.value)}
                                 errorMessage={errorCode.newPasswordConfirm && resetPasswordPrompts["newPasswordConfirm"].errors[errorCode.newPasswordConfirm]}
-                                label={isMobile ? "" : resetPasswordPrompts["newPasswordConfirm"].label}
-                                placeholder={isMobile ? resetPasswordPrompts["newPasswordConfirm"]["label"] : resetPasswordPrompts["newPasswordConfirm"]["placeholder"]}
+                                label={maxIsMobile ? "" : resetPasswordPrompts["newPasswordConfirm"].label}
+                                placeholder={maxIsMobile ? resetPasswordPrompts["newPasswordConfirm"]["label"] : resetPasswordPrompts["newPasswordConfirm"]["placeholder"]}
                                 isRequired={true}
                                 autoFocus={false}
                             />

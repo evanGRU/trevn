@@ -17,7 +17,7 @@ export default function InvitePageClient() {
     const {errorToast, successToast} = useToasts();
     const [group, setGroup] = useState<Group>();
     const router = useRouter();
-    const {isMobile} = useMediaQueries();
+    const {maxIsMobile} = useMediaQueries();
 
     useEffect(() => {
         const fetchGroup = async () => {
@@ -69,7 +69,7 @@ export default function InvitePageClient() {
 
     return group && (
         <div className={styles.invitePage}>
-            {isMobile && (
+            {maxIsMobile && (
                 <div className={styles.inviteHeader}>
                     <MainModalHeader hrefPath={"/groups"}>{"Ne pas rejoindre"}</MainModalHeader>
                 </div>
@@ -83,7 +83,7 @@ export default function InvitePageClient() {
                     className={styles.inviteContainer}
                 >
                     <div className={styles.inviteContainerHeader}>
-                        {!isMobile && <MainModalHeader hrefPath={"/groups"}>{"Ne pas rejoindre"}</MainModalHeader>}
+                        {!maxIsMobile && <MainModalHeader hrefPath={"/groups"}>{"Ne pas rejoindre"}</MainModalHeader>}
                         <div className={styles.headerTitle}>
                             <h1>{"Invitation à un groupe"}</h1>
                         </div>

@@ -1,30 +1,50 @@
-.modalContainer {
-  background: var(--glass-background);
-  border: var(--glass-border);
-  border-radius: var(--radius-40);
-  padding: var(--space-48);
-  position: relative;
-  backdrop-filter: var(--glass-backdrop);
-  width: 524px;
-  height: auto;
-}
+@use '../../../styles/_breakpoints' as bp;
 
-.closeModalIcon {
-  position: absolute;
-  height: 40px;
-  width: 40px;
+.globalModalContainer {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--radius-full);
-  backdrop-filter: var(--glass-backdrop);
-  transition: all 0.3s ease;
+}
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+.modalContainer {
+  background: var(--color-background);
+  border-top: 1px solid var(--color-background-secondary);
+  border-radius: var(--radius-40) var(--radius-40) 0 0;
+  padding: var(--space-40) var(--space-16);
+  backdrop-filter: var(--glass-backdrop);
+  width: 100%;
+  height: auto;
+
+  @include bp.respond(tablet) {
+    width: 524px;
+    height: auto;
+    padding: var(--space-48);
+    background: var(--glass-background);
+    border: var(--glass-border);
+    position: relative;
+    border-radius: var(--radius-40);
+  }
+}
+
+.closeModalIcon {
+  @include bp.respond(tablet) {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-full);
+    backdrop-filter: var(--glass-backdrop);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
   }
 }
